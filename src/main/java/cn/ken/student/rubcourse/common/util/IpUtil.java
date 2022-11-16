@@ -6,11 +6,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * @Author : JCccc
- * @CreateTime : 2018-11-23
- * @Description :
- * @Point: Keep a good mood
- **/
+ * <pre>
+ * <p></p>
+ * </pre>
+ *
+ * @author <a href="https://github.com/kil1ua">Ken-Chy129</a>
+ * @date 2022/11/16 18:07
+ */
 public class IpUtil {
     
     public static String getIpAddr(HttpServletRequest request) {
