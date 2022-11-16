@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.IpUtil;
+import cn.ken.student.rubcourse.dto.StudentReq;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IStudentService;
@@ -24,11 +25,24 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private StudentMapper studentMapper;
-    
+
     @Override
-    public Result addStudent(Student student, HttpServletRequest httpServletRequest) {
-        studentMapper.insert(student);
-        System.out.println(IpUtil.getIpAddr(httpServletRequest));
-        return Result.success(student);
+    public Result addStudent(HttpServletRequest httpServletRequest, Student student) {
+        return null;
+    }
+
+    @Override
+    public Result getStudentById(HttpServletRequest httpServletRequest, Long id) {
+        return Result.success(studentMapper.selectById(id));
+    }
+
+    @Override
+    public Result getStudentByClassId(HttpServletRequest httpServletRequest, Long classId, Integer pageNo, Integer pageSize) {
+        return null;
+    }
+
+    @Override
+    public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentReq studentReq) {
+        return null;
     }
 }
