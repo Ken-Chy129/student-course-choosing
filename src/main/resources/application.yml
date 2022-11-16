@@ -10,6 +10,16 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+  redis:
+    host: localhost
+    port: 6379
+    password: 129496
+    database: 0
+    jedis:
+      pool: #链接池设置
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
 
 
 mybatis-plus:
@@ -18,3 +28,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
+    

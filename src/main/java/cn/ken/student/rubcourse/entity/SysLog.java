@@ -24,14 +24,14 @@ public class SysLog implements Serializable {
 
     private Long id;
 
+    @ApiModelProperty("请求类型(0-正常,1-异常)")
+    private Integer type;
+    
     @ApiModelProperty("请求ip")
-    private Integer requestIp;
+    private String requestIp;
 
     @ApiModelProperty("学生学号")
     private Integer studentId;
-
-    @ApiModelProperty("请求凭证")
-    private Long token;
 
     @ApiModelProperty("请求接口")
     private String requestApi;
@@ -41,8 +41,17 @@ public class SysLog implements Serializable {
 
     @ApiModelProperty("响应体")
     private String responseBody;
-
+    
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
+    public SysLog(Long id, Integer type, String requestIp, Integer studentId, String requestApi, String requestBody, String responseBody) {
+        this.id = id;
+        this.type = type;
+        this.requestIp = requestIp;
+        this.studentId = studentId;
+        this.requestApi = requestApi;
+        this.requestBody = requestBody;
+        this.responseBody = responseBody;
+    }
 }
