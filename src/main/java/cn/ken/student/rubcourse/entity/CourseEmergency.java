@@ -1,0 +1,54 @@
+package cn.ken.student.rubcourse.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * <p>
+ * 课程应急设置
+ * </p>
+ *
+ * @author Ken-Chy129
+ * @since 2022-11-16
+ */
+@Data
+@TableName("scc_course_emergency")
+@ApiModel(value = "CourseEmergency对象", description = "课程应急设置")
+public class CourseEmergency implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
+
+    @ApiModelProperty("课程编号")
+    private Integer courseId;
+
+    @ApiModelProperty("仅开放给班级")
+    private Integer onlyToClass;
+
+    @ApiModelProperty("只开放给年级")
+    private Integer onlyToGrade;
+
+    @ApiModelProperty("禁止选择")
+    private Boolean isBanned;
+
+    @ApiModelProperty("被禁止选择的班级")
+    private Integer bannedClass;
+
+    @ApiModelProperty("被禁止选择的学生")
+    private Integer bannedStudent;
+
+    @ApiModelProperty("逻辑删除")
+    private Boolean isDeleted;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty("修改时间")
+    private LocalDateTime updateTime;
+
+}
