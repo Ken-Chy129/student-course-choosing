@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -34,7 +35,7 @@ public class LogAop {
     private SysLogMapper sysRequestLogMapper;
     
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     
     @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..))")
     public void cut() {}
@@ -44,7 +45,7 @@ public class LogAop {
         Long id = SnowflakeUtil.nextId();
         String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
         // todo: 更改成通过header获取token到redis查询
-        Integer studentId = (Integer) redisTemplate.opsForValue().get("10001");
+        Integer studentId = Integer.valueOf(Objects.requireNonNull(redisTemplate.opsForValue().get("10001")));
         String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
         SysLog sysLog = new SysLog(id, 0, ipAddr, studentId, methodName, JsonUtil.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
         
