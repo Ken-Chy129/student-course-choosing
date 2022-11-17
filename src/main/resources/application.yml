@@ -20,7 +20,8 @@ spring:
         max-idle: 8
         min-idle: 0
         max-active: 8
-
+  main:
+    allow-bean-definition-overriding: true
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
