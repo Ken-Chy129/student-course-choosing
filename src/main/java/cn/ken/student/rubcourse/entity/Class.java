@@ -1,7 +1,11 @@
 package cn.ken.student.rubcourse.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -44,4 +48,11 @@ public class Class implements Serializable {
     @ApiModelProperty("毕业所需学分")
     private Integer graduationCredits;
 
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @ApiModelProperty(value = "修改时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 }

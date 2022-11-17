@@ -1,7 +1,10 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IChooseRoundService extends IService<ChooseRound> {
 
+    Result getChooseRound(HttpServletRequest httpServletRequest);
+
+    Result addChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound);
 }

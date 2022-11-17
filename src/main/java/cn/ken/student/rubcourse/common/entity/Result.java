@@ -2,6 +2,8 @@ package cn.ken.student.rubcourse.common.entity;
 
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import red.zyc.desensitization.Sensitive;
 
@@ -37,7 +39,7 @@ public class Result implements Serializable {
     }
 
     public static Result success(Object data) {
-        return new Result(ErrorCodeEnums.SUCCESS.getCode(), ErrorCodeEnums.SUCCESS.getDesc(), JSON.toJSON(Sensitive.desensitize(data)));
+        return new Result(ErrorCodeEnums.SUCCESS.getCode(), ErrorCodeEnums.SUCCESS.getDesc(), Sensitive.desensitize(data));
     }
 
     public static Result fail() {

@@ -27,7 +27,7 @@ import javax.validation.ConstraintViolationException;
  */
 @Slf4j
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandle {
     
 
     /**
@@ -110,7 +110,7 @@ public class ControllerExceptionHandler {
     }
     
     @ResponseBody
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Throwable.class)
     public Result handleShiroException(Exception e) {
         e.printStackTrace();
         log.error("接口出现内部异常:{}", e.getMessage());

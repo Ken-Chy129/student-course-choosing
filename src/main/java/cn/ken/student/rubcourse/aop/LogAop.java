@@ -41,7 +41,7 @@ public class LogAop {
     public void cut() {}
     
     @Around(value = "cut()")
-    public Object around(ProceedingJoinPoint proceedingJoinPoint){
+    public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long id = SnowflakeUtil.nextId();
         String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
         // todo: 更改成通过header获取token到redis查询
@@ -55,12 +55,12 @@ public class LogAop {
             sysLog.setResponseBody(JsonUtil.toString(result));
         } catch (Throwable e) {
             log.error(e.getMessage());
-            sysLog.setResponseBody(JsonUtil.toString(e));
+            sysLog.setResponseBody(JsonUtil.toString(e.getMessage()));
             sysLog.setType(1);
-        } finally {
             sysRequestLogMapper.insert(sysLog);
+            throw e;
         }
-        
+        sysRequestLogMapper.insert(sysLog);
         return result;
     }
 }

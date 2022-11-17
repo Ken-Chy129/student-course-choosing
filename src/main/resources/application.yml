@@ -4,14 +4,14 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/student_course_choosing?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    url: jdbc:mysql://1.12.238.52:3306/student_course_choosing?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: 129496
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   redis:
-    host: localhost
+    host: 1.12.238.52
     port: 6379
     password: 129496
     database: 0

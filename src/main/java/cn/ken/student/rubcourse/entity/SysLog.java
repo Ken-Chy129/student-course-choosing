@@ -1,5 +1,7 @@
 package cn.ken.student.rubcourse.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -41,8 +43,9 @@ public class SysLog implements Serializable {
 
     @ApiModelProperty("响应体")
     private String responseBody;
-    
-    @ApiModelProperty("创建时间")
+
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     public SysLog(Long id, Integer type, String requestIp, Integer studentId, String requestApi, String requestBody, String responseBody) {

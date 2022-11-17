@@ -1,8 +1,7 @@
 package cn.ken.student.rubcourse.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -27,7 +26,11 @@ public class SysManager implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String username;
+    @ApiModelProperty("管理员名称")
+    private String managerName;
+
+    @ApiModelProperty("管理员类型(0-普通,1-超级)")
+    private Integer type;
 
     @ApiModelProperty("密码")
     private String password;
@@ -44,10 +47,12 @@ public class SysManager implements Serializable {
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 }

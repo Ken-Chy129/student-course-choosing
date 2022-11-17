@@ -1,6 +1,8 @@
 package cn.ken.student.rubcourse.entity;
 
 import cn.ken.student.rubcourse.annotation.ValueInIntegers;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -76,9 +78,11 @@ public class Student implements Serializable {
     private String salt;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "修改时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 }

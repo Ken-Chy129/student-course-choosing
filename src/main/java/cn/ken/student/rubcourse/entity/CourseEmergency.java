@@ -1,5 +1,7 @@
 package cn.ken.student.rubcourse.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -45,10 +47,11 @@ public class CourseEmergency implements Serializable {
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;
 
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @ApiModelProperty("修改时间")
+    @ApiModelProperty(value = "修改时间", hidden = true)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-
 }
