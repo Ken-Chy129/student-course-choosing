@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.chooseRound.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,7 +17,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IChooseRoundService extends IService<ChooseRound> {
 
-    Result getChooseRound(HttpServletRequest httpServletRequest);
+    Result getPresentRound(HttpServletRequest httpServletRequest);
+
+    Result getRoundList(HttpServletRequest httpServletRequest, ChooseRoundListReq chooseRoundListReq);
 
     Result addChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound);
+
+    Result updateChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound);
+
+    Result removeChooseRound(HttpServletRequest httpServletRequest, Integer chooseRoundId);
 }

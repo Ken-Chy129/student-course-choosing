@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 选课轮次
@@ -30,7 +32,7 @@ public class ChooseRound implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "选课轮次", hidden = true)
+    @ApiModelProperty(value = "选课轮次")
     private Integer id;
 
     @ApiModelProperty("年份")
@@ -43,10 +45,12 @@ public class ChooseRound implements Serializable {
     @ApiModelProperty("轮次")
     private Integer roundNo;
 
+    @NotNull(message = "轮次时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("起始时间")
     private LocalDateTime startTime;
 
+    @NotNull(message = "轮次时间不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("终止时间")
     private LocalDateTime endTime;

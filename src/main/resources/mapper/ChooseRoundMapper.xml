@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.ChooseRoundMapper">
 
+    <select id="selectTimePeriod" resultType="cn.ken.student.rubcourse.entity.ChooseRound" parameterType="cn.ken.student.rubcourse.entity.ChooseRound">
+        select * from scc_choose_round round
+        where #{startTime}
+        between round.start_time and round.end_time
+        or #{endTime}
+        between round.start_time and round.end_time
+    </select>
 </mapper>

@@ -4,6 +4,8 @@ import cn.ken.student.rubcourse.entity.ChooseRound;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 选课轮次 Mapper 接口
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ChooseRoundMapper extends BaseMapper<ChooseRound> {
 
+    List<ChooseRound> selectTimePeriod(ChooseRound chooseRound);
 }

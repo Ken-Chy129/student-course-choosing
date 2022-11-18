@@ -23,6 +23,11 @@ public enum ErrorCodeEnums {
     SYS_NO_PERMISSION("10001", "管理员权限不足"),
     
     STUDENT_EXISTS("20001", "该学生已存在"),
+    
+    
+    CHOOSE_ROUND_UNAVAILABLE("30001", "轮次信息不合法"),
+    CHOOSE_ROUND_TIME_REPEAT("30002", "轮次时间段重叠"),
+    CHOOSE_ROUND_TIME_UNAVAILABLE("30003", "轮次时间不合法"),
     ;
 
     private final String code;

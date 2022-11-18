@@ -39,7 +39,7 @@ public class Result implements Serializable {
     }
 
     public static Result success(Object data) {
-        return new Result(ErrorCodeEnums.SUCCESS.getCode(), ErrorCodeEnums.SUCCESS.getDesc(), Sensitive.desensitize(data));
+        return new Result(ErrorCodeEnums.SUCCESS.getCode(), ErrorCodeEnums.SUCCESS.getDesc(), data);
     }
 
     public static Result fail() {
