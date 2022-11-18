@@ -21,7 +21,7 @@ public class CourseTeacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Integer id;
 
     @ApiModelProperty("教师编号")
     private Integer teacherId;

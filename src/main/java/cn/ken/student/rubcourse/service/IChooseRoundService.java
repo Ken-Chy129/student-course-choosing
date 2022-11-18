@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.chooseRound.ChooseRoundListReq;
+import cn.ken.student.rubcourse.dto.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import com.baomidou.mybatisplus.extension.service.IService;
 

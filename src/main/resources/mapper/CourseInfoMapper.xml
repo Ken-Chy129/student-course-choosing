@@ -2,4 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseInfoMapper">
 
+    <select id="getCourseInfoList" resultType="cn.ken.student.rubcourse.entity.CourseInfo" parameterType="cn.ken.student.rubcourse.dto.CourseInfoListReq">
+        SELECT *, week_day FROM scc_course_info sci
+        LEFT JOIN scc_course_timeplace sct
+        ON sci.id = sct.course_id
+        WHERE
+        (sci.id like concat("%",#{searchContent},"%")
+        or course_name like concat("%",#{searchContent},"%")
+        or teacher like concat("%",#{searchContent},"%"))
+        <if test="collegeId != null">
+            and college_id = #{collegeId}
+        </if>
+        <if test="generalType != null">
+            and general_type = #{generalType}
+        </if>
+        <if test="credit != null">
+            and credit = #{credit}
+        </if>
+        <if test="campus != null">
+            and campus = #{campus}
+        </if>
+        <if test="isMooc != null">
+            and is_mooc = #{isMooc}
+        </if>
+        <if test="weekDay != null">
+            and week_day = #{weekDay}
+        </if>      
+    </select>
 </mapper>

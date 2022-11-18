@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,34 +26,31 @@ public class CourseInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("课程编号")
-    private Integer id;
+    private String id;
 
     @ApiModelProperty("课程名称")
     private String courseName;
 
-    @ApiModelProperty("所在校区(0-天河校区,1-番禺校区.2-华文校区,3-珠海校区,4-深圳校区)")
-    private Integer campus;
+    @ApiModelProperty("所在校区")
+    private Short campus;
 
     @ApiModelProperty("考试时间")
     private String examTime;
 
     @ApiModelProperty("排课单位")
-    private String departmentName;
+    private Short collegeId;
 
-    @ApiModelProperty("课组名称")
-    private String groupName;
-
-    @ApiModelProperty("课程类别")
-    private Integer type;
+    @ApiModelProperty("课程类别[基础必修,专业必修,基础选修,专业选修,通识选修]")
+    private Short type;
 
     @ApiModelProperty("通识课类别")
-    private Integer generalType;
+    private Short generalType;
 
     @ApiModelProperty("是否慕课")
     private Boolean isMooc;
 
     @ApiModelProperty("授课语言")
-    private Integer language;
+    private Short language;
 
     @ApiModelProperty("已选人数")
     private Integer choosingNum;
@@ -61,16 +59,16 @@ public class CourseInfo implements Serializable {
     private Integer capacity;
 
     @ApiModelProperty("课程学分")
-    private Integer credit;
+    private BigDecimal credit;
 
     @ApiModelProperty("考试类型")
-    private Integer examType;
+    private Short examType;
 
-    @ApiModelProperty("所属学期")
-    private Integer semester;
+    @ApiModelProperty("教师")
+    private String teacher;
 
     @ApiModelProperty("课程状态")
-    private Integer status;
+    private Short status;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)

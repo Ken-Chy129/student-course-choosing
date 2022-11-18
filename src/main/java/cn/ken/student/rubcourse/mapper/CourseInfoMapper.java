@@ -1,8 +1,11 @@
 package cn.ken.student.rubcourse.mapper;
 
+import cn.ken.student.rubcourse.dto.CourseInfoListReq;
 import cn.ken.student.rubcourse.entity.CourseInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CourseInfoMapper extends BaseMapper<CourseInfo> {
+    
+    List<CourseInfo> getCourseInfoList(CourseInfoListReq courseInfoListReq);
 
 }

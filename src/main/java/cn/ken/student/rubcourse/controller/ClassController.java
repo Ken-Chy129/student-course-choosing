@@ -1,5 +1,7 @@
 package cn.ken.student.rubcourse.controller;
 
+import cn.ken.student.rubcourse.service.IClassService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/rubcourse/class")
+@RequestMapping("/class")
 public class ClassController {
+    
+    @Autowired
+    private IClassService classService;
+    
 
 }

@@ -1,9 +1,11 @@
-package cn.ken.student.rubcourse.dto.chooseRound;
+package cn.ken.student.rubcourse.dto;
 
 import cn.ken.student.rubcourse.common.entity.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 /**
  * <pre>
@@ -15,7 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ChooseRoundListReq extends Page {
+public class ChooseRoundListReq extends Page implements Serializable {
 
     @ApiModelProperty("当前选课轮次Id")
     Integer presentRoundId;
