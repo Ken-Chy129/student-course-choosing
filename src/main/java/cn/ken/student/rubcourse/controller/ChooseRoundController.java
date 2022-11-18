@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.chooseRound.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,26 +27,31 @@ public class ChooseRoundController {
     private IChooseRoundService chooseRoundService;
     
     @GetMapping("/presentRound")
+    @ApiOperation("通过当前时间自动获取当前选课轮次")
     public Result getPresentRound(HttpServletRequest httpServletRequest) throws Exception {
         return chooseRoundService.getPresentRound(httpServletRequest);
     }
 
     @GetMapping("/roundList")
+    @ApiOperation("获取选课轮次列表")
     public Result getRoundList(HttpServletRequest httpServletRequest, ChooseRoundListReq chooseRoundListReq) throws Exception {
         return chooseRoundService.getRoundList(httpServletRequest, chooseRoundListReq);
     }
     
     @PostMapping("addChooseRound")
+    @ApiOperation("添加选课轮次，时间段不可重复")
     public Result addChooseRound(HttpServletRequest httpServletRequest, @Valid ChooseRound chooseRound) throws Exception {
         return chooseRoundService.addChooseRound(httpServletRequest, chooseRound);
     }
 
     @PutMapping("updateChooseRound")
+    @ApiOperation("修改选课轮次信息")
     public Result updateChooseRound(HttpServletRequest httpServletRequest, @Valid ChooseRound chooseRound) throws Exception {
         return chooseRoundService.updateChooseRound(httpServletRequest, chooseRound);
     }
     
     @DeleteMapping("removeChooseRound")
+    @ApiOperation("删除选课轮次")
     public Result removeChooseRound(HttpServletRequest httpServletRequest, Integer chooseRoundId) throws Exception {
         return chooseRoundService.removeChooseRound(httpServletRequest, chooseRoundId);
     }
