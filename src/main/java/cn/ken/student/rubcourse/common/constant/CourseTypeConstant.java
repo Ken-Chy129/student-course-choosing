@@ -21,7 +21,7 @@ public class CourseTypeConstant extends ArrayList<String> {
         this.add("通识教育选修课");
         this.add("基础教育必修课");
         this.add("基础教育选修课");
-        this.add("专业教育必修");
-        this.add("专业教育选修");
+        this.add("专业教育必修课");
+        this.add("专业教育选修课");
     }
 }
