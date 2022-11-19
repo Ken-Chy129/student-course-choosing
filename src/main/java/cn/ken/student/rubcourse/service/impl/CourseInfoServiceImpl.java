@@ -7,6 +7,7 @@ import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.CourseDetailResp;
 import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.CourseInfoListReq;
+import cn.ken.student.rubcourse.dto.CourseNameListResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
@@ -48,9 +49,14 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     private CourseDependenceMapper courseDependenceMapper;
 
     @Override
-    public Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
-        List<CourseInfo> courseInfoList = courseInfoMapper.getCourseInfoList(courseInfoListReq);
-        System.out.println("===========================" + courseInfoList.size());
+    public Result getCourseInfoList(HttpServletRequest httpServletRequest, String searchContent) {
+        List<CourseNameListResp> courseNameList = courseInfoMapper.getCourseNameList(searchContent);
+        return Result.success(courseNameList);
+    }
+
+    @Override
+    public Result getCourseInfoPage(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
+        List<CourseInfo> courseInfoList = courseInfoMapper.getCourseInfoPage(courseInfoListReq);
         List<CourseDetailResp> result = new ArrayList<>();
         for (CourseInfo courseInfo : courseInfoList) {
             CourseDetailResp courseDetailResp = new CourseDetailResp(courseInfo);

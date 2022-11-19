@@ -26,7 +26,7 @@
         </collection>
     </resultMap>
     
-    <select id="getCourseInfoList" resultMap="courseDetail" parameterType="cn.ken.student.rubcourse.dto.CourseInfoListReq">
+    <select id="getCourseInfoPage" resultMap="courseDetail" parameterType="cn.ken.student.rubcourse.dto.CourseInfoListReq">
         SELECT sci.*, duration_time, week_day, day_no, place FROM scc_course_info sci
         LEFT JOIN scc_course_timeplace sct
         ON sci.id = sct.course_id
@@ -56,5 +56,16 @@
             </if>
             and status = 0
         </where>
+    </select>
+    
+    <select id="getCourseNameList" resultType="cn.ken.student.rubcourse.dto.CourseNameListResp">
+        select id, course_name from scc_course_info
+        <where>
+            <if test="searchContent != null">
+                (id like concat("%",#{searchContent},"%")
+                or course_name like concat("%",#{searchContent},"%"))
+            </if>
+            and status = 0
+        </where>    
     </select>
 </mapper>

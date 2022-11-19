@@ -20,9 +20,12 @@ import java.util.List;
  */
 public interface ICourseInfoService extends IService<CourseInfo> {
 
-    Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq);
+    Result getCourseInfoList(HttpServletRequest httpServletRequest, String searchContent);
+
+    Result getCourseInfoPage(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq);
 
     Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq);
 
     Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds);
+    
 }

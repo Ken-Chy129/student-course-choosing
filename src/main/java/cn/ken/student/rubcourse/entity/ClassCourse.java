@@ -38,7 +38,7 @@ public class ClassCourse implements Serializable {
     @ApiModelProperty("是否必修")
     private Boolean isMust;
 
-    @ApiModelProperty("逻辑删除")
+    @ApiModelProperty(value = "逻辑删除", hidden = true)
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间", hidden = true)

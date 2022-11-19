@@ -31,7 +31,7 @@ public class CourseInfoAddReq implements Serializable {
     @ApiModelProperty("排课单位[1-信息科学技术学院]")
     private Short college;
 
-    @ApiModelProperty("课程类别[0-通识教育必修课,1-通识教育选修课,2-基础教育必修课,3-基础教育选修课,4-通识教育选修课]")
+    @ApiModelProperty("课程类别[0-通识教育必修课,1-通识教育选修课,2-基础教育必修课,3-基础教育选修课,4-专业教育必修,5-专业教育选修]")
     private Integer type;
 
     @ApiModelProperty("通识课类别，非通识课则不填[0-经管法类, 1-高级外语类, 2-创新创业类, 3-艺术素养类, 4-数学理工类, 5-生命科学类, 6-文史哲类]")
