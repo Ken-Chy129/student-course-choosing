@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.dto.CourseDetailResp;
 import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.CourseInfoListReq;
 import cn.ken.student.rubcourse.entity.*;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +50,19 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     @Override
     public Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
         List<CourseInfo> courseInfoList = courseInfoMapper.getCourseInfoList(courseInfoListReq);
-        IPage<CourseInfo> page = PageUtil.getPage(new Page<>(), courseInfoListReq.getPageNo(), courseInfoListReq.getPageSize(), courseInfoList);
+        System.out.println("===========================" + courseInfoList.size());
+        List<CourseDetailResp> result = new ArrayList<>();
+        for (CourseInfo courseInfo : courseInfoList) {
+            CourseDetailResp courseDetailResp = new CourseDetailResp(courseInfo);
+            StringBuilder placeTime = new StringBuilder();
+            List<CourseTimeplace> courseTimeplaceList = courseInfo.getCourseTimeplaceList();
+            for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
+                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay())).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
+            }
+            courseDetailResp.setPlaceTime(placeTime.toString());
+            result.add(courseDetailResp);
+        }
+        IPage<CourseDetailResp> page = PageUtil.getPage(new Page<>(), courseInfoListReq.getPageNo(), courseInfoListReq.getPageSize(), result);
         return Result.success(page);
     }
 
@@ -66,10 +80,11 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
             courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseInfoAddReq.getDayNoList().get(i)));
             courseTimeplaceMapper.insert(courseTimeplace);
         }
-        for (int i=0; i<courseInfoAddReq.getPreCourseIdList().size(); i++) {
+        for (String preCourseId : courseInfoAddReq.getPreCourseIdList()) {
             CourseDependence courseDependence = new CourseDependence();
             courseDependence.setId(SnowflakeUtil.nextId());
             courseDependence.setCourseId(courseInfo.getId());
+            courseDependence.setPreCourseId(preCourseId);
             courseDependenceMapper.insert(courseDependence);
         }
         courseInfoMapper.insert(courseInfo);

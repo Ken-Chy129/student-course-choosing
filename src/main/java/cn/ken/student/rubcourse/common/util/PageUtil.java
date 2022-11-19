@@ -19,7 +19,7 @@ public class PageUtil {
         page.setTotal(result.size());
         page.setCurrent(currentPage);
         page.setPages((result.size() / pageSize) + ((result.size() % pageSize == 0) ? 0 : 1));
-        page.setRecords(result.subList(pageSize * (currentPage-1), pageSize * currentPage));
+        page.setRecords(result.subList(pageSize * (currentPage-1), Math.min(result.size(), pageSize * currentPage)));
         return page;
     }
 }
