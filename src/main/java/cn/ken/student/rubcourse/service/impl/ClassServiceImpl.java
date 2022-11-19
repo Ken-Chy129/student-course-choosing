@@ -1,10 +1,13 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.service.IClassService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -17,4 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements IClassService {
 
+    @Override
+    public Result getClassList(HttpServletRequest httpServletRequest) {
+        return null;
+    }
 }

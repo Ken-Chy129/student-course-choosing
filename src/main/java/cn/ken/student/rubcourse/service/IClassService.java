@@ -1,7 +1,10 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.Class;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IClassService extends IService<Class> {
 
+    Result getClassList(HttpServletRequest httpServletRequest);
 }

@@ -24,7 +24,7 @@ public class CourseTimeplace implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("课程编号")
     private String courseId;
@@ -36,7 +36,7 @@ public class CourseTimeplace implements Serializable {
     private Short weekDay;
 
     @ApiModelProperty("每天第几节课上课")
-    private Short dayNo;
+    private String dayNo;
 
     @ApiModelProperty("上课地点")
     private String place;

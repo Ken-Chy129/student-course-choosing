@@ -6,13 +6,12 @@ import cn.ken.student.rubcourse.dto.CourseInfoListReq;
 import cn.ken.student.rubcourse.entity.CourseInfo;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -38,7 +37,10 @@ public class CourseInfoController {
     public Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq) {
         return courseInfoService.addCourseInfo(httpServletRequest, courseInfoAddReq);
     }
-    
-    
+
+    @PostMapping("removeCourseInfo")
+    public Result removeCourseInfo(HttpServletRequest httpServletRequest, @RequestParam List<String> courseInfoIds) {
+        return courseInfoService.removeCourseInfo(httpServletRequest, courseInfoIds);
+    }
 
 }

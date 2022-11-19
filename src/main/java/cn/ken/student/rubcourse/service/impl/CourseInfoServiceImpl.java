@@ -1,13 +1,15 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.CourseInfoListReq;
+import cn.ken.student.rubcourse.entity.College;
 import cn.ken.student.rubcourse.entity.CourseInfo;
 import cn.ken.student.rubcourse.entity.CourseTimeplace;
-import cn.ken.student.rubcourse.mapper.CourseInfoMapper;
-import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
+import cn.ken.student.rubcourse.entity.Subject;
+import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,9 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     
     @Autowired
     private CourseTimeplaceMapper courseTimeplaceMapper;
+    
+    @Autowired
+    private CollegeMapper collegeMapper;
 
     @Override
     public Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
@@ -51,32 +55,46 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
         CourseInfo courseInfo = getCourseInfo(courseInfoAddReq);
         for (int i=0; i < courseInfoAddReq.getDurationList().size(); i++) {
             CourseTimeplace courseTimeplace = new CourseTimeplace();
+            courseTimeplace.setId(SnowflakeUtil.nextId());
             courseTimeplace.setCourseId(courseInfo.getId());
             courseTimeplace.setDurationTime(courseInfoAddReq.getDurationList().get(i));
             courseTimeplace.setPlace(courseInfoAddReq.getPlaceList().get(i));
             courseTimeplace.setWeekDay(courseInfoAddReq.getWeekDayList().get(i));
-            courseTimeplace.setDayNo(courseInfoAddReq.getDayNoList().get(i));
+            courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseInfoAddReq.getDayNoList().get(i)));
             courseTimeplaceMapper.insert(courseTimeplace);
         }
         courseInfoMapper.insert(courseInfo);
         return Result.success();
     }
 
+    @Override
+    public Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds) {
+        courseInfoMapper.deleteBatchIds(courseInfoIds);
+        LambdaQueryWrapper<CourseTimeplace> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(CourseTimeplace::getCourseId, courseInfoIds);
+        courseTimeplaceMapper.delete(queryWrapper);
+        return Result.success();
+    }
+
     private CourseInfo getCourseInfo(CourseInfoAddReq courseInfoAddReq) {
         CourseInfo courseInfo = new CourseInfo();
         courseInfo.setCourseName(courseInfoAddReq.getCourseName());
-        courseInfo.setType(courseInfoAddReq.getType());
-        courseInfo.setCampus(courseInfoAddReq.getCampus());
+        courseInfo.setType(CourseTypeConstant.INSTANCE.get(courseInfoAddReq.getType()));
+        courseInfo.setCampus(CampusConstant.INSTANCE.get(courseInfoAddReq.getCampus()));
         courseInfo.setCapacity(courseInfoAddReq.getCapacity());
         courseInfo.setCredit(courseInfoAddReq.getCredit());
-        courseInfo.setCollegeId(courseInfoAddReq.getCollegeId());
-        courseInfo.setGeneralType(courseInfoAddReq.getGeneralType());
+        courseInfo.setCollege(collegeMapper.selectById(courseInfoAddReq.getCollege()).getCollegeName());
+        if (courseInfoAddReq.getGeneralType() != null) {
+            courseInfo.setGeneralType(GeneralTypeConstant.INSTANCE.get(courseInfoAddReq.getGeneralType()));
+        }
         courseInfo.setIsMooc(courseInfoAddReq.getIsMooc());
         courseInfo.setExamTime(courseInfoAddReq.getExamTime());
-        courseInfo.setExamType(courseInfoAddReq.getExamType());
-        courseInfo.setLanguage(courseInfoAddReq.getLanguage());
+        courseInfo.setExamType(ExamTypeConstant.INSTANCE.get(courseInfoAddReq.getExamType()));
+        courseInfo.setLanguage(LanguageTypeConstant.INSTANCE.get(courseInfoAddReq.getLanguage()));
         courseInfo.setTeacher(courseInfoAddReq.getTeacher());
-        String id = courseInfo.getCampus().toString() + (courseInfo.getCollegeId().toString().length() == 1 ? "0" : "") + courseInfo.getCollegeId().toString() + courseInfo.getType().toString() + (courseInfo.getGeneralType().toString().length() == 1 ? "0" : "") + (num++).toString();
+        
+        String id = courseInfoAddReq.getCampus() + (courseInfoAddReq.getCollege().toString().length() == 1 ? "0" : "") + courseInfoAddReq.getCollege().toString() + courseInfoAddReq.getType().toString() + (courseInfoAddReq.getGeneralType() == null ? "0" : String.valueOf(courseInfoAddReq.getGeneralType()+1)) + (num++).toString();
+        System.out.println(id);
         courseInfo.setId(id);
         return courseInfo;
     }

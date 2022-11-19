@@ -25,16 +25,16 @@ public class CourseInfoListReq extends Page implements Serializable {
     private String searchContent;
 
     @ApiModelProperty("排课单位")
-    private Integer collegeId;
+    private String college;
     
     @ApiModelProperty("通识课类型[基础必修,专业必修,基础选修,专业选修,通识选修]")
-    private Integer generalType;
+    private String generalType;
 
     @ApiModelProperty("学分")
     private BigDecimal credit;
 
     @ApiModelProperty("所在校区[天河校区,番禺校区,华文校区,珠海校区,深圳校区]")
-    private Integer campus;
+    private String campus;
 
     @ApiModelProperty("是否慕课")
     private Boolean isMooc;

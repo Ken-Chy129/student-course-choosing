@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/rubcourse/classCourse")
+@RequestMapping("/classCourse")
 public class ClassCourseController {
 
 }

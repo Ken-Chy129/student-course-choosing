@@ -24,7 +24,7 @@ public class College implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Short id;
 
     @ApiModelProperty("学院名称")
     private String collegeName;

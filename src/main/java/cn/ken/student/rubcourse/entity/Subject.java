@@ -21,14 +21,10 @@ public class Subject implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("学院id")
-    private Integer collegeId;
+    private Short id;
 
     @ApiModelProperty("系id")
-    private Integer departmentId;
-
-    @ApiModelProperty("专业id")
-    private Integer subjectId;
+    private Short departmentId;
 
     @ApiModelProperty("专业名")
     private String subjectName;

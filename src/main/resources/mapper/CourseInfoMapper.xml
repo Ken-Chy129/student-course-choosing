@@ -10,8 +10,8 @@
         (sci.id like concat("%",#{searchContent},"%")
         or course_name like concat("%",#{searchContent},"%")
         or teacher like concat("%",#{searchContent},"%"))
-        <if test="collegeId != null">
-            and college_id = #{collegeId}
+        <if test="college != null">
+            and college = #{college}
         </if>
         <if test="generalType != null">
             and general_type = #{generalType}

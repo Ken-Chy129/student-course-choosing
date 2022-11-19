@@ -20,12 +20,11 @@ import lombok.Data;
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    private Short id;
 
-    @ApiModelProperty("学院id")
-    private Integer collegeId;
-
-    @ApiModelProperty("系id")
-    private Integer departmentId;
+    @ApiModelProperty("院id")
+    private Short collegeId;
 
     @ApiModelProperty("系名")
     private String departmentName;

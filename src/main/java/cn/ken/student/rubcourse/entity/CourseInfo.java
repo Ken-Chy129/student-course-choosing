@@ -32,25 +32,25 @@ public class CourseInfo implements Serializable {
     private String courseName;
 
     @ApiModelProperty("所在校区")
-    private Short campus;
+    private String campus;
 
     @ApiModelProperty("考试时间")
     private String examTime;
 
     @ApiModelProperty("排课单位")
-    private Short collegeId;
+    private String college;
 
     @ApiModelProperty("课程类别[基础必修,专业必修,基础选修,专业选修,通识选修]")
-    private Short type;
+    private String type;
 
     @ApiModelProperty("通识课类别")
-    private Short generalType;
+    private String generalType;
 
     @ApiModelProperty("是否慕课")
     private Boolean isMooc;
 
     @ApiModelProperty("授课语言")
-    private Short language;
+    private String language;
 
     @ApiModelProperty("已选人数")
     private Integer choosingNum;
@@ -62,7 +62,7 @@ public class CourseInfo implements Serializable {
     private BigDecimal credit;
 
     @ApiModelProperty("考试类型")
-    private Short examType;
+    private String examType;
 
     @ApiModelProperty("教师")
     private String teacher;

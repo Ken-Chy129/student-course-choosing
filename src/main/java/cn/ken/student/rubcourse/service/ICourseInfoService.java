@@ -7,6 +7,8 @@ import cn.ken.student.rubcourse.entity.CourseInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -21,4 +23,6 @@ public interface ICourseInfoService extends IService<CourseInfo> {
     Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq);
 
     Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq);
+
+    Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds);
 }
