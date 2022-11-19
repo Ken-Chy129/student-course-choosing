@@ -1,7 +1,10 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.Department;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IDepartmentService extends IService<Department> {
 
+    Result getDepartmentList(HttpServletRequest httpServletRequest, Integer collegeId);
+    
+    Result addDepartment(HttpServletRequest httpServletRequest, Integer collegeId, String departmentName);
+    
 }

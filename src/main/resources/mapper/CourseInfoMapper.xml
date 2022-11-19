@@ -27,6 +27,7 @@
         </if>
         <if test="weekDay != null">
             and week_day = #{weekDay}
-        </if>      
+        </if>
+        and status = 0
     </select>
 </mapper>

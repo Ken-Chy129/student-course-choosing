@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
@@ -54,20 +55,15 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         }
         List<ChooseRound> list = chooseRoundMapper.selectList(queryWrapper);
         
-        IPage<ChooseRound> chooseRoundPage = new Page<>();
-        Integer currentPage = chooseRoundListReq.getPageNo();
-        Integer pageSize = chooseRoundListReq.getPageSize();
-        chooseRoundPage.setTotal(list.size());
-        chooseRoundPage.setCurrent(currentPage);
-        chooseRoundPage.setPages((list.size() / pageSize) + ((list.size() % pageSize == 0) ? 0 : 1));
-        chooseRoundPage.setRecords(list.subList(pageSize * (currentPage-1), pageSize * currentPage));
-        return Result.success(chooseRoundPage);
+        IPage<ChooseRound> page = PageUtil.getPage(new Page<>(), chooseRoundListReq.getPageNo(), chooseRoundListReq.getPageSize(), list);
+        
+        return Result.success(page);
     }
 
     @Override
     public Result addChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound) {
         if (chooseRound.getStartTime().isAfter(chooseRound.getEndTime())) {
-            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_UNAVAILABLE);
+            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_INVALID);
         }
         List<ChooseRound> list = chooseRoundMapper.selectTimePeriod(chooseRound);
         if (list.size() != 0) {
@@ -78,7 +74,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         try {
             chooseRoundMapper.insert(chooseRound);
         } catch (Exception e) {
-            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_UNAVAILABLE);
+            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_INVALID);
         }
         return Result.success();
     }
@@ -86,7 +82,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     @Override
     public Result updateChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound) {
         if (chooseRound.getStartTime().isAfter(chooseRound.getEndTime())) {
-            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_UNAVAILABLE);
+            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_INVALID);
         }
         List<ChooseRound> list = chooseRoundMapper.selectTimePeriod(chooseRound);
         if (list.size() > 1) {
@@ -99,7 +95,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         try {
             chooseRoundMapper.updateById(chooseRound);
         } catch (Exception e) {
-            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_UNAVAILABLE);
+            return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_INVALID);
         }
         return Result.success();
     }

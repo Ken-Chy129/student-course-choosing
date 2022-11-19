@@ -1,10 +1,16 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.Subject;
 import cn.ken.student.rubcourse.mapper.SubjectMapper;
 import cn.ken.student.rubcourse.service.ISubjectService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +23,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements ISubjectService {
 
+    @Autowired
+    private SubjectMapper subjectMapper;
+    
+    @Override
+    public Result getSubjectList(HttpServletRequest httpServletRequest, Integer departmentId) {
+        LambdaQueryWrapper<Subject> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Subject::getDepartmentId, departmentId);
+        List<Subject> subjects = subjectMapper.selectList(queryWrapper);
+        return Result.success(subjects);
+    }
+
+    @Override
+    public Result addSubject(HttpServletRequest httpServletRequest, Integer departmentId, String subjectName) {
+        Subject subject = new Subject();
+        subject.setDepartmentId(departmentId);
+        subject.setSubjectName(subjectName);
+        subjectMapper.insert(subject);
+        return Result.success(subject);
+    }
 }

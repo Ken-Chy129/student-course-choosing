@@ -25,6 +25,7 @@ public class Class implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(hidden = true)
     private Integer id;
 
     @ApiModelProperty("学院名称")

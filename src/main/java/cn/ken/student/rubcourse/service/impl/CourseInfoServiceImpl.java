@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.CourseInfoListReq;
@@ -9,6 +10,8 @@ import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +48,8 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     @Override
     public Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
         List<CourseInfo> courseInfoList = courseInfoMapper.getCourseInfoList(courseInfoListReq);
-        
-        return Result.success(courseInfoList);
+        IPage<CourseInfo> page = PageUtil.getPage(new Page<>(), courseInfoListReq.getPageNo(), courseInfoListReq.getPageSize(), courseInfoList);
+        return Result.success(page);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package cn.ken.student.rubcourse.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -20,11 +22,12 @@ import lombok.Data;
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    private Short id;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty("院id")
-    private Short collegeId;
+    private Integer collegeId;
 
     @ApiModelProperty("系名")
     private String departmentName;

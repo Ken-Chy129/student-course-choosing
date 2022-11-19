@@ -30,7 +30,7 @@ public class CourseDependence implements Serializable {
     private String courseId;
 
     @ApiModelProperty("先修课程编号")
-    private Integer preCourseId;
+    private String preCourseId;
 
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;

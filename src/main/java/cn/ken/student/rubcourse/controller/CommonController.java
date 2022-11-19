@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2022/11/19 14:39
  */
 @RestController
-@RequestMapping("common")
+@RequestMapping("/common")
 public class CommonController {
     
     @GetMapping("getCampusList")

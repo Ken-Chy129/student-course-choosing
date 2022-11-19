@@ -21,6 +21,6 @@ public class DayNoConstant extends ArrayList<String> {
         this.add("第6节-第8节");
         this.add("第7节-第8节");
         this.add("第10节-第11节");
-        this.add("第11节-第12节");
+        this.add("第10节-第12节");
     }
 }
