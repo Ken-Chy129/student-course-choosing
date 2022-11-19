@@ -12,6 +12,7 @@ import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -99,10 +100,18 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
 
     @Override
     public Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds) {
-        courseInfoMapper.deleteBatchIds(courseInfoIds);
-        LambdaQueryWrapper<CourseTimeplace> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(CourseTimeplace::getCourseId, courseInfoIds);
-        courseTimeplaceMapper.delete(queryWrapper);
+        LambdaUpdateWrapper<CourseInfo> updateWrapper0 = new LambdaUpdateWrapper<>();
+        updateWrapper0.in(CourseInfo::getId, courseInfoIds)
+                .set(CourseInfo::getStatus, 1);
+        courseInfoMapper.update(null, updateWrapper0);
+        LambdaUpdateWrapper<CourseTimeplace> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.in(CourseTimeplace::getCourseId, courseInfoIds)
+                .set(CourseTimeplace::getIsDeleted, true);
+        courseTimeplaceMapper.update(null, updateWrapper);
+        LambdaUpdateWrapper<CourseDependence> updateWrapper1 = new LambdaUpdateWrapper<>();
+        updateWrapper1.in(CourseDependence::getCourseId, courseInfoIds)
+                .set(CourseDependence::getIsDeleted, true);
+        courseDependenceMapper.update(null, updateWrapper1);
         return Result.success();
     }
 
