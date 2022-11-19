@@ -66,6 +66,7 @@ public class CourseInfoAddReq implements Serializable {
 
     @ApiModelProperty("第几节课上课(0:1-2,1:3-4,2:6-7,3:6-8,4:7-8,5:10-11,6:10-12)")
     private List<Short> dayNoList;
-    
-    
+
+    @ApiModelProperty("先修课程id")
+    private List<String> preCourseIdList;
 }

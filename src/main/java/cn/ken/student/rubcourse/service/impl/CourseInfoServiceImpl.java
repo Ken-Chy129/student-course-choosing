@@ -5,10 +5,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.CourseInfoListReq;
-import cn.ken.student.rubcourse.entity.College;
-import cn.ken.student.rubcourse.entity.CourseInfo;
-import cn.ken.student.rubcourse.entity.CourseTimeplace;
-import cn.ken.student.rubcourse.entity.Subject;
+import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -41,6 +38,9 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     
     @Autowired
     private CollegeMapper collegeMapper;
+    
+    @Autowired
+    private CourseDependenceMapper courseDependenceMapper;
 
     @Override
     public Result getCourseInfoList(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq) {
@@ -53,7 +53,7 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
     @Transactional
     public Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq) {
         CourseInfo courseInfo = getCourseInfo(courseInfoAddReq);
-        for (int i=0; i < courseInfoAddReq.getDurationList().size(); i++) {
+        for (int i=0; i<courseInfoAddReq.getDurationList().size(); i++) {
             CourseTimeplace courseTimeplace = new CourseTimeplace();
             courseTimeplace.setId(SnowflakeUtil.nextId());
             courseTimeplace.setCourseId(courseInfo.getId());
@@ -62,6 +62,12 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
             courseTimeplace.setWeekDay(courseInfoAddReq.getWeekDayList().get(i));
             courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseInfoAddReq.getDayNoList().get(i)));
             courseTimeplaceMapper.insert(courseTimeplace);
+        }
+        for (int i=0; i<courseInfoAddReq.getPreCourseIdList().size(); i++) {
+            CourseDependence courseDependence = new CourseDependence();
+            courseDependence.setId(SnowflakeUtil.nextId());
+            courseDependence.setCourseId(courseInfo.getId());
+            courseDependenceMapper.insert(courseDependence);
         }
         courseInfoMapper.insert(courseInfo);
         return Result.success();

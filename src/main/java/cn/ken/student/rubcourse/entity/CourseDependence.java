@@ -27,7 +27,7 @@ public class CourseDependence implements Serializable {
     private Long id;
 
     @ApiModelProperty("课程编号")
-    private Integer courseId;
+    private String courseId;
 
     @ApiModelProperty("先修课程编号")
     private Integer preCourseId;
