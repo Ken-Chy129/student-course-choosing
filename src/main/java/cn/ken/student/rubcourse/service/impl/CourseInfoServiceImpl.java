@@ -37,7 +37,7 @@ import java.util.List;
 @Service
 public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseInfo> implements ICourseInfoService {
 
-    private static Integer num = 10000;
+    private static Integer num = 10021;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -141,9 +141,10 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
         courseInfo.setExamType(ExamTypeConstant.INSTANCE.get(courseInfoAddReq.getExamType()));
         courseInfo.setLanguage(LanguageTypeConstant.INSTANCE.get(courseInfoAddReq.getLanguage()));
         courseInfo.setTeacher(courseInfoAddReq.getTeacher());
-        
-        String id = courseInfoAddReq.getCampus() + (courseInfoAddReq.getCollege().toString().length() == 1 ? "0" : "") + courseInfoAddReq.getCollege().toString() + courseInfoAddReq.getType().toString() + (courseInfoAddReq.getGeneralType() == null ? "0" : String.valueOf(courseInfoAddReq.getGeneralType()+1)) + (num++).toString();
-        System.out.println(id);
+        String courseNum = redisTemplate.opsForValue().get("course_num");
+        assert courseNum != null;
+        redisTemplate.opsForValue().set("courseNum", String.valueOf(Integer.parseInt(courseNum)+1));
+        String id = courseInfoAddReq.getCampus() + (courseInfoAddReq.getCollege().toString().length() == 1 ? "0" : "") + courseInfoAddReq.getCollege().toString() + courseInfoAddReq.getType().toString() + (courseInfoAddReq.getGeneralType() == null ? "0" : String.valueOf(courseInfoAddReq.getGeneralType()+1)) + courseNum;
         courseInfo.setId(id);
         return courseInfo;
     }
