@@ -54,7 +54,10 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         queryWrapper.lt(ChooseRound::getStartTime, now)
                 .gt(ChooseRound::getEndTime, now);
         ChooseRound chooseRound = chooseRoundMapper.selectOne(queryWrapper);
-        return Result.success(Objects.requireNonNullElse(chooseRound, "当前不在选课轮次内"));
+        if (chooseRound == null) {
+            return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
+        }
+        return Result.success(chooseRound);
     }
 
     @Override
