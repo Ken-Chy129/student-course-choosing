@@ -46,6 +46,7 @@ public class ChooseRoundController {
 
     @PutMapping("updateChooseRound")
     @ApiOperation("修改选课轮次信息")
+    @Deprecated
     public Result updateChooseRound(HttpServletRequest httpServletRequest, @Valid ChooseRound chooseRound) throws Exception {
         return chooseRoundService.updateChooseRound(httpServletRequest, chooseRound);
     }

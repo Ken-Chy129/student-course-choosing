@@ -29,7 +29,11 @@ public enum ErrorCodeEnums {
     CHOOSE_ROUND_TIME_REPEAT("30002", "轮次时间段重叠"),
     CHOOSE_ROUND_TIME_INVALID("30003", "轮次时间不合法"),
     
-    COURSE_DEPENDENCE_INVALID("40001", "依赖课程不合法");
+    CLASS_COURSE_ID_NULL("40001", "方案内课程主键为空"),
+    
+    COURSE_DEPENDENCE_INVALID("50001", "依赖课程不合法"),
+    
+    CLASS_NOT_EXISTS("60001", "班级不存在");
     ;
 
     private final String code;

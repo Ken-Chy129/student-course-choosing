@@ -3,9 +3,14 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
+import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
+import cn.ken.student.rubcourse.entity.Student;
+import cn.ken.student.rubcourse.entity.StudentCredits;
 import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
+import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
+import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,9 +18,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +40,12 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     
     @Autowired
     private ChooseRoundMapper chooseRoundMapper;
+    
+    @Autowired
+    private StudentCreditsMapper studentCreditsMapper;
+    
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Override
     public Result getPresentRound(HttpServletRequest httpServletRequest) {
@@ -61,6 +75,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     }
 
     @Override
+    @Transactional
     public Result addChooseRound(HttpServletRequest httpServletRequest, ChooseRound chooseRound) {
         if (chooseRound.getStartTime().isAfter(chooseRound.getEndTime())) {
             return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_INVALID);
@@ -69,12 +84,25 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         if (list.size() != 0) {
             return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_TIME_REPEAT);
         }
-        Integer id = Integer.valueOf(chooseRound.getYear().toString() + chooseRound.getSemester().toString() + chooseRound.getRoundNo().toString());
+        Integer id = Integer.valueOf(chooseRound.getSemester().toString() + chooseRound.getRoundNo().toString());
         chooseRound.setId(id);
         try {
             chooseRoundMapper.insert(chooseRound);
         } catch (Exception e) {
             return Result.fail(ErrorCodeEnums.CHOOSE_ROUND_INVALID);
+        }
+        // 新增学生学分
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.eq(Student::getStatus, 0);
+        List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+        for (Student student : students) {
+            StudentCredits studentCredits = new StudentCredits();
+            studentCredits.setId(SnowflakeUtil.nextId());
+            studentCredits.setStudentId(student.getId());
+            studentCredits.setSemester(chooseRound.getSemester());
+            studentCredits.setChooseSubjectCredit(BigDecimal.valueOf(0));
+            studentCredits.setMaxSubjectCredit(BigDecimal.valueOf(22));
+            studentCreditsMapper.insert(studentCredits);
         }
         return Result.success();
     }
@@ -102,11 +130,11 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
 
     @Override
     public Result removeChooseRound(HttpServletRequest httpServletRequest, Integer chooseRoundId) {
-        try {
-            chooseRoundMapper.deleteById(chooseRoundId);
-        } catch (Exception e) {
-            return Result.fail();
-        }
+        ChooseRound chooseRound = chooseRoundMapper.selectById(chooseRoundId);
+        LambdaQueryWrapper<StudentCredits> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StudentCredits::getSemester, chooseRound.getSemester());
+        studentCreditsMapper.delete(queryWrapper);
+        chooseRoundMapper.deleteById(chooseRoundId);
         return Result.success();
     }
 }

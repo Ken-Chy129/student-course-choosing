@@ -1,7 +1,10 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.StudentCredits;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentCreditsService extends IService<StudentCredits> {
 
+    Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester);
+
+    Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits);
 }

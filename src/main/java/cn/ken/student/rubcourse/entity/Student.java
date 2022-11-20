@@ -38,7 +38,7 @@ public class Student implements Serializable {
 
     @NotNull(message = "学号不得为空")
     @ApiModelProperty("学生学号")
-    private Integer id;
+    private Long id;
     
     @Length(min = 2, max = 50, message = "学生姓名长度必须大于2小于50")
     @ApiModelProperty("学生姓名")

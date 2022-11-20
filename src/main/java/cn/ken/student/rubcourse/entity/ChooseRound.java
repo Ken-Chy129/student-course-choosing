@@ -34,11 +34,7 @@ public class ChooseRound implements Serializable {
 
     @ApiModelProperty(value = "选课轮次")
     private Integer id;
-
-    @ApiModelProperty("年份")
-    private Integer year;
     
-    @ValueInIntegers(value = {1, 2}, message = "学期只能选择1或2")
     @ApiModelProperty("学期")
     private Integer semester;
     

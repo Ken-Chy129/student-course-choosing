@@ -112,6 +112,7 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
         updateWrapper1.in(CourseDependence::getCourseId, courseInfoIds)
                 .set(CourseDependence::getIsDeleted, true);
         courseDependenceMapper.update(null, updateWrapper1);
+        // todo:更新学生学分表以及删除学生选课表记录并发出通告
         return Result.success();
     }
 

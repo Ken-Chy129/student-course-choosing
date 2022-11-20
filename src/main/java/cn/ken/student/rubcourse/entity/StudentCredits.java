@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,19 +31,13 @@ public class StudentCredits implements Serializable {
     private Long studentId;
 
     @ApiModelProperty("学期")
-    private Integer grade;
+    private Integer semester;
 
     @ApiModelProperty("最高主修学分")
-    private Integer maxSubjectCredit;
+    private BigDecimal maxSubjectCredit;
 
     @ApiModelProperty("已选主修学分")
-    private Integer chooseSubjectCredit;
-
-    @ApiModelProperty("最高辅修学分")
-    private Integer maxMinorCredit;
-
-    @ApiModelProperty("已选辅修学分")
-    private Integer chooseMinorCredit;
+    private BigDecimal chooseSubjectCredit;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)

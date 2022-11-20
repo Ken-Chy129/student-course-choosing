@@ -1,8 +1,16 @@
 package cn.ken.student.rubcourse.controller;
 
+import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.entity.StudentCredits;
+import cn.ken.student.rubcourse.service.IStudentCreditsService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,7 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/rubcourse/studentCredits")
+@RequestMapping("/studentCredits")
 public class StudentCreditsController {
 
+    @Autowired
+    private IStudentCreditsService studentCreditsService;
+    
+    @GetMapping("getStudentCredits")
+    @ApiOperation("查看学生学分")
+    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
+        return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
+    }
+
+    @GetMapping("updateStudentCredits")
+    @ApiOperation("修改学生学分")
+    public Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits) {
+        return studentCreditsService.updateStudentCredits(httpServletRequest, studentCredits);
+    }
 }

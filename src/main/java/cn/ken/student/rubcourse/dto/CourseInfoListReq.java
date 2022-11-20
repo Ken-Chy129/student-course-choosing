@@ -27,7 +27,7 @@ public class CourseInfoListReq extends Page implements Serializable {
     @ApiModelProperty("排课单位")
     private String college;
     
-    @ApiModelProperty("通识课类型[基础必修,专业必修,基础选修,专业选修,通识选修]")
+    @ApiModelProperty("通识课类型[0-经管法类, 1-高级外语类, 2-创新创业类, 3-艺术素养类, 4-数学理工类, 5-生命科学类, 6-文史哲类]")
     private String generalType;
 
     @ApiModelProperty("学分")

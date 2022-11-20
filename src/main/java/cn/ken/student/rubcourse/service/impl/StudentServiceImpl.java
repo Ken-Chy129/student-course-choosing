@@ -1,28 +1,23 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.hutool.Hutool;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.crypto.digest.Digester;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
-import cn.ken.student.rubcourse.common.util.IpUtil;
-import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.StudentReq;
+import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
+import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IStudentService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import red.zyc.desensitization.Sensitive;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 /**
  * <p>
@@ -38,6 +33,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private StudentMapper studentMapper;
+    
+    @Autowired
+    private ClassMapper classMapper;
 
     @Override
     public Result addStudent(HttpServletRequest httpServletRequest, Student student) throws Exception {
@@ -45,7 +43,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         if (selectById != null) {
             throw new BusinessException(ErrorCodeEnums.STUDENT_EXISTS);
         }
-        // todo:查询班级是否存在
+        LambdaQueryWrapper<Class> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Class::getId, student.getClassId());
+        Class result = classMapper.selectOne(queryWrapper);
+        if (result != null) {
+            throw new BusinessException(ErrorCodeEnums.CLASS_NOT_EXISTS);
+        }
         String salt = IdUtil.simpleUUID();
         student.setSalt(salt);
         String md5Password = DigestUtil.md5Hex(student.getPassword() + salt);
