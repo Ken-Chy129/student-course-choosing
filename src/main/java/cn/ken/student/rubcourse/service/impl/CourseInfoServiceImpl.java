@@ -70,7 +70,7 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
             StringBuilder placeTime = new StringBuilder();
             List<CourseTimeplace> courseTimeplaceList = courseInfo.getCourseTimeplaceList();
             for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
-                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay())).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
+                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay()-1)).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
             }
             courseDetailResp.setPlaceTime(placeTime.toString());
             // 判断是否冲突
