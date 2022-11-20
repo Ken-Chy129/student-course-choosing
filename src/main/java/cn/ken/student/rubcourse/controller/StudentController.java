@@ -67,7 +67,5 @@ public class StudentController {
     public Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws Exception {
         return studentService.getCode(httpServletRequest, httpServletResponse, studentId);
     }
-    
-    
 
 }

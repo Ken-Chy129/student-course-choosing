@@ -1,5 +1,6 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
@@ -12,20 +13,24 @@ import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -46,9 +51,18 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     
     @Autowired
     private StudentMapper studentMapper;
+    
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public Result getPresentRound(HttpServletRequest httpServletRequest) {
+        // 从缓存中获取
+        ChooseRound chooseRound0 = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
+        if (chooseRound0 != null) {
+            return Result.success(chooseRound0);
+        }
+        // 缓存中不存在则查库
         LocalDateTime now = LocalDateTime.now();
         LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.lt(ChooseRound::getStartTime, now)
@@ -57,6 +71,8 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         if (chooseRound == null) {
             return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
         }
+        // 库中存在则同时存入缓存，有效时间为当前轮次结束时间
+        redisTemplate.opsForValue().set(RedisConstant.PRESENT_ROUND, JSON.toJSONString(chooseRound), Duration.between(chooseRound.getEndTime(), LocalDateTime.now()).toSeconds(), TimeUnit.SECONDS);
         return Result.success(chooseRound);
     }
 

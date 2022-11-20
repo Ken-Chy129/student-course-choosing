@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -37,5 +38,11 @@ public class StudentCreditsController {
     @ApiOperation("修改学生学分")
     public Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits) {
         return studentCreditsService.updateStudentCredits(httpServletRequest, studentCredits);
+    }
+
+    @GetMapping("/getCredit")
+    @ApiOperation("获取学分信息")
+    public Result getCredit(HttpServletRequest httpServletRequest) throws Exception {
+        return studentCreditsService.getCredit(httpServletRequest);
     }
 }
