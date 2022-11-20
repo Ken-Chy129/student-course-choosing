@@ -72,7 +72,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
             return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
         }
         // 库中存在则同时存入缓存，有效时间为当前轮次结束时间
-        redisTemplate.opsForValue().set(RedisConstant.PRESENT_ROUND, JSON.toJSONString(chooseRound), Duration.between(chooseRound.getEndTime(), LocalDateTime.now()).toSeconds(), TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(RedisConstant.PRESENT_ROUND, JSON.toJSONString(chooseRound), Duration.between(LocalDateTime.now(), chooseRound.getEndTime()).toSeconds(), TimeUnit.SECONDS);
         return Result.success(chooseRound);
     }
 

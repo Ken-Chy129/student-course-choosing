@@ -58,7 +58,7 @@ public class StudentCreditsServiceImpl extends ServiceImpl<StudentCreditsMapper,
             return Result.fail(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
         }
         
-        String id = hashMap.get("id");
+        Integer id = Integer.valueOf(hashMap.get("id"));
         ChooseRound chooseRound = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
         if (chooseRound == null) {
             return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);

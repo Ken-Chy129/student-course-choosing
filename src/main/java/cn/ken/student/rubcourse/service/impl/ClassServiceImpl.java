@@ -59,10 +59,5 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
         classMapper.insert(clazz);
         return Result.success(clazz);
     }
-
-    public static void main(String[] args) {
-        String format = String.format("%05d", 6);
-        System.out.println(format);
-    }
-
+    
 }
