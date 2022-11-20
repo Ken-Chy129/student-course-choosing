@@ -1,10 +1,16 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +22,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, StudentCourse> implements IStudentCourseService {
+    
+    @Autowired
+    private StudentCourseMapper studentCourseMapper;
 
+    @Override
+    public Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
+        LambdaQueryWrapper<StudentCourse> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StudentCourse::getStudentId, studentId)
+                .eq(semester != null, StudentCourse::getSemester, semester)
+                .eq(StudentCourse::getIsDeleted, !isChosen);
+        List<StudentCourse> studentCourses = studentCourseMapper.selectList(queryWrapper);
+        return Result.success(studentCourses);
+    }
+
+    @Override
+    public Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
+        // 查询
+        return null;
+    }
 }

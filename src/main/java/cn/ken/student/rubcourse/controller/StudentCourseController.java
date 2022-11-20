@@ -28,15 +28,15 @@ public class StudentCourseController {
     @Autowired
     private IStudentCourseService studentCourseService;
     
-    @GetMapping
-    @ApiOperation("")
-    public Result getStudentCourse(HttpServletRequest httpServletRequest) {
-        return null;
+    @GetMapping("getStudentChoose")
+    @ApiOperation("查询学生选课")
+    public Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
+        return studentCourseService.getStudentChoose(httpServletRequest, studentId, semester, isChosen);
     }
 
     @PostMapping("chooseCourse")
     @ApiOperation("学生选课")
-    public Result addStudentCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
-        return null;
+    public Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
+        return studentCourseService.chooseCourse(httpServletRequest, studentCourse);
     }
 }

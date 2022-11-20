@@ -48,6 +48,8 @@ public class CourseDetailResp implements Serializable {
     
     private String teacher;
     
+    private Boolean isConflict;
+    
     public CourseDetailResp() {}
     
     public CourseDetailResp(CourseInfo courseInfo) {

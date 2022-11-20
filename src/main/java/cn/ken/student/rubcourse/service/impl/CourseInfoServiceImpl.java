@@ -11,12 +11,14 @@ import cn.ken.student.rubcourse.dto.CourseNameListResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseInfoService;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,9 @@ import java.util.List;
 public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseInfo> implements ICourseInfoService {
 
     private static Integer num = 10000;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
     
     @Autowired
     private CourseInfoMapper courseInfoMapper;
@@ -60,6 +65,7 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
         List<CourseInfo> courseInfoList = courseInfoMapper.getCourseInfoPage(courseInfoListReq);
         List<CourseDetailResp> result = new ArrayList<>();
         for (CourseInfo courseInfo : courseInfoList) {
+            // 设置上课时间地点
             CourseDetailResp courseDetailResp = new CourseDetailResp(courseInfo);
             StringBuilder placeTime = new StringBuilder();
             List<CourseTimeplace> courseTimeplaceList = courseInfo.getCourseTimeplaceList();
@@ -67,6 +73,9 @@ public class CourseInfoServiceImpl extends ServiceImpl<CourseInfoMapper, CourseI
                 placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay())).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
             }
             courseDetailResp.setPlaceTime(placeTime.toString());
+            // 判断是否冲突
+            SysManager sysManager = JSON.parseObject(redisTemplate.opsForValue().get("10000"), SysManager.class);
+//            sysManager
             result.add(courseDetailResp);
         }
         IPage<CourseDetailResp> page = PageUtil.getPage(new Page<>(), courseInfoListReq.getPageNo(), courseInfoListReq.getPageSize(), result);

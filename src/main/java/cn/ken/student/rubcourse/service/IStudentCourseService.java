@@ -1,7 +1,10 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentCourseService extends IService<StudentCourse> {
 
+    Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen);
+
+    Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
 }

@@ -27,10 +27,13 @@ public class StudentCourse implements Serializable {
     private Long id;
 
     @ApiModelProperty("学生学号")
-    private Integer studentId;
+    private Long studentId;
 
     @ApiModelProperty("课程编号")
     private Integer courseId;
+
+    @ApiModelProperty("选择学期")
+    private Integer semester;
 
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;

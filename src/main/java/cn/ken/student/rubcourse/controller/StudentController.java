@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.controller;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
+import cn.ken.student.rubcourse.dto.StudentLogin;
 import cn.ken.student.rubcourse.dto.StudentReq;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.service.IStudentService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -24,7 +26,7 @@ import javax.validation.Valid;
  */
 @Api("学生管理")
 @RestController
-@RequestMapping("/rubcourse/student")
+@RequestMapping("/student")
 public class StudentController {
     
     @Autowired
@@ -53,5 +55,19 @@ public class StudentController {
     public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentReq studentReq) throws Exception {
         return studentService.getStudentOnCondition(httpServletRequest, studentReq);
     }
+
+    @PostMapping("/login")
+    @ApiOperation("登录")
+    public Result login(HttpServletRequest httpServletRequest, StudentLogin studentLogin) throws Exception {
+        return studentService.login(httpServletRequest, studentLogin);
+    }
+    
+    @GetMapping("/getCode")
+    @ApiOperation("获取验证码")
+    public Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws Exception {
+        return studentService.getCode(httpServletRequest, httpServletResponse, studentId);
+    }
+    
+    
 
 }
