@@ -109,7 +109,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         hashMap.put("id", selectById.getId().toString());
         hashMap.put("name", selectById.getName());
         hashMap.put("classId", selectById.getClassId().toString());
-        redisTemplate.opsForValue().set(token.toString(), JSON.toJSONString(hashMap));
+        redisTemplate.opsForValue().set(token.toString(), JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
         redisTemplate.delete("student_code:" + studentLogin.getId());
         hashMap.put("token", token.toString());
         return Result.success(hashMap);
