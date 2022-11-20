@@ -23,6 +23,9 @@ public enum ErrorCodeEnums {
     SYS_NO_PERMISSION("10001", "管理员权限不足"),
     
     STUDENT_EXISTS("20001", "该学生已存在"),
+    CODE_EXPIRED("20002", "验证码已过期"),
+    CODE_ERROR("20003", "验证码错误"),
+    ACCOUNT_PASSWORD_ERROR("20002", "用户不存在或密码错误"),
     
     
     CHOOSE_ROUND_INVALID("30001", "轮次信息不合法"),
