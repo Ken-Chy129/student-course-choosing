@@ -25,12 +25,14 @@ public enum ErrorCodeEnums {
     STUDENT_EXISTS("20001", "该学生已存在"),
     CODE_EXPIRED("20002", "验证码已过期"),
     CODE_ERROR("20003", "验证码错误"),
-    ACCOUNT_PASSWORD_ERROR("20002", "用户不存在或密码错误"),
+    ACCOUNT_PASSWORD_ERROR("20004", "用户不存在或密码错误"),
+    LOGIN_CREDENTIAL_EXPIRED("20005", "登录凭证已过期"),
     
     
     CHOOSE_ROUND_INVALID("30001", "轮次信息不合法"),
     CHOOSE_ROUND_TIME_REPEAT("30002", "轮次时间段重叠"),
     CHOOSE_ROUND_TIME_INVALID("30003", "轮次时间不合法"),
+    NO_ROUND_PRESENT("30004", "当前不在选课轮次内"),
     
     CLASS_COURSE_ID_NULL("40001", "方案内课程主键为空"),
     
