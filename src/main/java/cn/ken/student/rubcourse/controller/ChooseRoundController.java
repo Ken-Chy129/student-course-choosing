@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/round")
+@Api(tags = "选课轮次管理")
 public class ChooseRoundController {
 
     @Autowired

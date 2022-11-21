@@ -3,6 +3,7 @@ package cn.ken.student.rubcourse.controller;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.service.IDepartmentService;
 import cn.ken.student.rubcourse.service.ISubjectService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/subject")
+@Api(tags = "专业管理")
 public class SubjectController {
 
     @Autowired

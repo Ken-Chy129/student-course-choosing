@@ -1,5 +1,6 @@
 package cn.ken.student.rubcourse.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/rubcourse/courseEmergency")
+@RequestMapping("/courseEmergency")
+@Api(tags = "课程紧急设置")
 public class CourseEmergencyController {
 
 }

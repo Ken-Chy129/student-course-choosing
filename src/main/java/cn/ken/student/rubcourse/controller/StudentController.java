@@ -22,9 +22,9 @@ import javax.validation.Valid;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-@Api("学生管理")
 @RestController
 @RequestMapping("/student")
+@Api(tags = "学生管理")
 public class StudentController {
     
     @Autowired

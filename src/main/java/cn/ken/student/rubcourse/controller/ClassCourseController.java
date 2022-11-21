@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/classCourse")
-@Api(tags = "方案内课程")
+@Api(tags = "方案内课程管理")
 public class ClassCourseController {
 
     @Autowired

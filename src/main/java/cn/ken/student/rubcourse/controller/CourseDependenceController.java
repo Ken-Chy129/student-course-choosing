@@ -3,6 +3,7 @@ package cn.ken.student.rubcourse.controller;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.CourseDependencyAddReq;
 import cn.ken.student.rubcourse.service.ICourseDependenceService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/courseDependence")
+@Api(tags = "课程依赖管理")
 public class CourseDependenceController {
     
     @Autowired

@@ -3,6 +3,7 @@ package cn.ken.student.rubcourse.controller;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/studentCourse")
+@Api(tags = "学生选课")
 public class StudentCourseController {
 
     @Autowired

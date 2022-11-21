@@ -3,6 +3,7 @@ package cn.ken.student.rubcourse.controller;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.SysManager;
 import com.alibaba.fastjson.JSON;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/sysManager")
+@Api(tags = "管理员")
 public class SysManagerController {
     
     @Autowired

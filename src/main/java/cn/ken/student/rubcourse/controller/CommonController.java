@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.ConstantUtil;
 import cn.ken.student.rubcourse.common.util.JsonUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.LinkedList;
  */
 @RestController
 @RequestMapping("/common")
+@Api(tags = "通用下拉框选项")
 public class CommonController {
     
     @GetMapping("getCampusList")
