@@ -6,6 +6,7 @@ import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.ClassCourseListReq;
+import cn.ken.student.rubcourse.dto.ClassCourseRecommendedListReq;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.mapper.ClassCourseMapper;
 import cn.ken.student.rubcourse.service.IClassCourseService;
@@ -52,6 +53,7 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
                 .eq(isMust != null, ClassCourse::getIsMust, isMust)
                 .eq(ClassCourse::getIsDeleted, false);
         List<ClassCourse> classCourses = classCourseMapper.selectList(queryWrapper);
+        
         IPage<ClassCourse> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourses);
         return Result.success(page);
     }
@@ -73,6 +75,11 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         classCourseMapper.update(null, updateWrapper);
         return Result.success();
     }
-    
-    
+
+    @Override
+    public Result getRecommendedClassCourse(HttpServletRequest httpServletRequest, ClassCourseRecommendedListReq classCourseRecommendedListReq) {
+        return null;
+    }
+
+
 }

@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.ClassCourseListReq;
+import cn.ken.student.rubcourse.dto.ClassCourseRecommendedListReq;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -26,4 +27,5 @@ public interface IClassCourseService extends IService<ClassCourse> {
 
     Result removeClassCourse(HttpServletRequest httpServletRequest, List<Integer> ids);
 
+    Result getRecommendedClassCourse(HttpServletRequest httpServletRequest, ClassCourseRecommendedListReq classCourseRecommendedListReq);
 }

@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.controller;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.ClassCourseListReq;
+import cn.ken.student.rubcourse.dto.ClassCourseRecommendedListReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.service.IClassCourseService;
@@ -50,5 +51,11 @@ public class ClassCourseController {
     @ApiOperation("删除班级方案内课程")
     public Result removeClassCourse(HttpServletRequest httpServletRequest, @RequestParam List<Integer> ids) {
         return classCourseService.removeClassCourse(httpServletRequest, ids);
+    }
+
+    @GetMapping("/recommended/list")
+    @ApiOperation("查看班级方案内课程")
+    public Result getRecommendedClassCourse(HttpServletRequest httpServletRequest, ClassCourseRecommendedListReq classCourseRecommendedListReq) {
+        return classCourseService.getRecommendedClassCourse(httpServletRequest, classCourseRecommendedListReq);
     }
 }
