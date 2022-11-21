@@ -12,7 +12,7 @@
 <!--    </select>-->
 
     <select id="getClassCourseList" resultType="cn.ken.student.rubcourse.dto.resp.ClassCourseListResp">
-        select sc.*, commended_time, is_must
+        select sc.id course_id, course_name, class_num, type, is_must, college college_name, credit
         from student_course_choosing.scc_course sc
         left join student_course_choosing.scc_class_course scc
         on sc.id = scc.course_id

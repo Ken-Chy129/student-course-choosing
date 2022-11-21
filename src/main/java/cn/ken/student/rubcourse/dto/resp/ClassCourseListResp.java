@@ -29,6 +29,6 @@ public class ClassCourseListResp implements Serializable {
     
     private String collegeName;
     
-    private BigDecimal credits;
+    private BigDecimal credit;
     
 }
