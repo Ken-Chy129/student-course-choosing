@@ -1,9 +1,8 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.common.exception.BusinessException;
-import cn.ken.student.rubcourse.dto.StudentLogin;
-import cn.ken.student.rubcourse.dto.StudentReq;
+import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
+import cn.ken.student.rubcourse.dto.req.StudentReq;
 import cn.ken.student.rubcourse.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -29,7 +28,7 @@ public interface IStudentService extends IService<Student> {
 
     Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentReq studentReq) throws Exception;
     
-    Result login(HttpServletRequest httpServletRequest, StudentLogin studentLogin);
+    Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq);
 
     Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws IOException;
 

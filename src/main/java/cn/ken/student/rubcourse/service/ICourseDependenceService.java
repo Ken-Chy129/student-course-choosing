@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.CourseDependencyAddReq;
+import cn.ken.student.rubcourse.dto.req.CourseDependencyAddReq;
 import cn.ken.student.rubcourse.entity.CourseDependence;
 import com.baomidou.mybatisplus.extension.service.IService;
 

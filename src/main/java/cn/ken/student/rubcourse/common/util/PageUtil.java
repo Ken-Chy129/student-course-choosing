@@ -18,6 +18,7 @@ public class PageUtil {
     public static <T> IPage<T> getPage(Page<T> page, Integer currentPage, Integer pageSize, List<T> result) {
         page.setTotal(result.size());
         page.setCurrent(currentPage);
+        page.setSize(pageSize);
         page.setPages((result.size() / pageSize) + ((result.size() % pageSize == 0) ? 0 : 1));
         page.setRecords(result.subList(pageSize * (currentPage-1), Math.min(result.size(), pageSize * currentPage)));
         return page;

@@ -1,9 +1,10 @@
 package cn.ken.student.rubcourse.controller;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.ClassListReq;
+import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.service.IClassService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/class")
+@Api(tags = "班级管理")
 public class ClassController {
     
     @Autowired

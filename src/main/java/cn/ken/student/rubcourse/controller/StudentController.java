@@ -1,16 +1,14 @@
 package cn.ken.student.rubcourse.controller;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.common.exception.BusinessException;
-import cn.ken.student.rubcourse.dto.StudentLogin;
-import cn.ken.student.rubcourse.dto.StudentReq;
+import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
+import cn.ken.student.rubcourse.dto.req.StudentReq;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.service.IStudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,8 +56,8 @@ public class StudentController {
 
     @PostMapping("/login")
     @ApiOperation("登录")
-    public Result login(HttpServletRequest httpServletRequest, StudentLogin studentLogin) throws Exception {
-        return studentService.login(httpServletRequest, studentLogin);
+    public Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq) throws Exception {
+        return studentService.login(httpServletRequest, studentLoginReq);
     }
     
     @GetMapping("/getCode")

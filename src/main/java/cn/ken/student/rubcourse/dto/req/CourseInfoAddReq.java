@@ -1,6 +1,5 @@
-package cn.ken.student.rubcourse.dto;
+package cn.ken.student.rubcourse.dto.req;
 
-import cn.ken.student.rubcourse.entity.CourseInfo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -3,7 +3,7 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.dto.CourseDependencyAddReq;
+import cn.ken.student.rubcourse.dto.req.CourseDependencyAddReq;
 import cn.ken.student.rubcourse.entity.CourseDependence;
 import cn.ken.student.rubcourse.mapper.CourseDependenceMapper;
 import cn.ken.student.rubcourse.service.ICourseDependenceService;

@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.controller;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.ChooseRoundListReq;
+import cn.ken.student.rubcourse.dto.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
 import io.swagger.annotations.ApiOperation;

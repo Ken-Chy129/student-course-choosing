@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.dto;
+package cn.ken.student.rubcourse.dto.req;
 
 import cn.ken.student.rubcourse.common.entity.Page;
 import lombok.Data;

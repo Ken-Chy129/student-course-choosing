@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ken.student.rubcourse.mapper.CourseClassMapper">
+    
+    <resultMap type="cn.ken.student.rubcourse.dto.resp.AllCourseListResp" id="courseClassInfo">
+        <result property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="isMooc" column="is_mooc"/>
+        <result property="language" column="language"/>
+        <result property="choosingNum" column="choosing_num"/>
+        <result property="capacity" column="capacity"/>
+        <result property="teacher" column="teacher"/>
+        <result property="examType" column="exam_type"/>
+        <result property="examTime" column="exam_time"/>
+        <result property="courseName" column="course_name"/>
+        <result property="campus" column="campus"/>
+        <result property="college" column="college"/>
+        <result property="type" column="type"/>
+        <result property="generalType" column="general_type"/>
+        <result property="credit" column="credit"/>
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+            <result property="durationTime" column="duration_time"/>
+            <result property="weekDay" column="week_day"/>
+            <result property="dayNo" column="day_no"/>
+            <result property="place" column="place"/>
+        </collection>
+    </resultMap>
+    
+    <select id="getCourseInfoPage" resultMap="courseClassInfo">
+        select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
+        course_name, campus, college, sc.type type, general_type, credit,
+        duration_time, week_day, day_no, place
+        from student_course_choosing.scc_course_class scc
+        left join student_course_choosing.scc_course sc on scc.course_id = sc.id
+        left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
+        <where>
+        <if test="searchContent != null">
+            (course_id like concat("%",#{searchContent},"%")
+            or course_name like concat("%",#{searchContent},"%")
+            or teacher like concat("%",#{searchContent},"%"))
+        </if>
+        <if test="college != null">
+            and college = #{college}
+        </if>
+        <if test="generalType != null">
+            and general_type = #{generalType}
+        </if>
+        <if test="credit != null">
+            and credit = #{credit}
+        </if>
+        <if test="campus != null">
+            and campus = #{campus}
+        </if>
+        <if test="isMooc != null">
+            and is_mooc = #{isMooc}
+        </if>
+        <if test="weekDay != null">
+            and week_day = #{weekDay}
+        </if>
+        and scc.is_deleted = 0
+        and sct.is_deleted = 0
+        </where>
+    </select>
+    
+    
+</mapper>
+

@@ -4,6 +4,8 @@ import cn.ken.student.rubcourse.entity.StudentCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 学生选课表 Mapper 接口
@@ -14,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
+    
+    List<StudentCourse> getStudentCourse(Long id, Integer semester);
 
 }

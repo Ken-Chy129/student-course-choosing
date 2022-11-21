@@ -7,8 +7,8 @@ import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
-import cn.ken.student.rubcourse.dto.StudentLogin;
-import cn.ken.student.rubcourse.dto.StudentReq;
+import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
+import cn.ken.student.rubcourse.dto.req.StudentReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
@@ -88,19 +88,19 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public Result login(HttpServletRequest httpServletRequest, StudentLogin studentLogin) {
-        String code = redisTemplate.opsForValue().get("student_code:" + studentLogin.getId());
+    public Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq) {
+        String code = redisTemplate.opsForValue().get("student_code:" + studentLoginReq.getId());
         if (code == null) {
             return Result.fail(ErrorCodeEnums.CODE_EXPIRED);
-        } else if(!code.equals(studentLogin.getCode())) {
+        } else if(!code.equals(studentLoginReq.getCode())) {
             return Result.fail(ErrorCodeEnums.CODE_ERROR);
         }
-        Student selectById = studentMapper.selectById(studentLogin.getId());
+        Student selectById = studentMapper.selectById(studentLoginReq.getId());
         if (selectById == null || selectById.getStatus() == 1) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }
         String salt = selectById.getSalt();
-        String md5Password = DigestUtil.md5Hex(studentLogin.getPassword() + salt);
+        String md5Password = DigestUtil.md5Hex(studentLoginReq.getPassword() + salt);
         if (!md5Password.equals(selectById.getPassword())) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }
@@ -110,7 +110,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         hashMap.put("name", selectById.getName());
         hashMap.put("classId", selectById.getClassId().toString());
         redisTemplate.opsForValue().set(token.toString(), JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
-        redisTemplate.delete("student_code:" + studentLogin.getId());
+        redisTemplate.delete("student_code:" + studentLoginReq.getId());
         hashMap.put("token", token.toString());
         return Result.success(hashMap);
     }

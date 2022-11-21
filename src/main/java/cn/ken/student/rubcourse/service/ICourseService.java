@@ -1,13 +1,11 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.CourseInfoAddReq;
-import cn.ken.student.rubcourse.dto.CourseInfoListReq;
-import cn.ken.student.rubcourse.entity.CourseInfo;
+import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
+import cn.ken.student.rubcourse.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,11 +16,9 @@ import java.util.List;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-public interface ICourseInfoService extends IService<CourseInfo> {
+public interface ICourseService extends IService<Course> {
 
-    Result getCourseInfoList(HttpServletRequest httpServletRequest, String searchContent);
-
-    Result getCourseInfoPage(HttpServletRequest httpServletRequest, CourseInfoListReq courseInfoListReq);
+    Result getCourseNameList(HttpServletRequest httpServletRequest, String searchContent);
 
     Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq);
 

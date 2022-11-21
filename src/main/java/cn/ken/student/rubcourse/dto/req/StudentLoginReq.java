@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.dto;
+package cn.ken.student.rubcourse.dto.req;
 
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @date 2022/11/20 17:01
  */
 @Data
-public class StudentLogin implements Serializable {
+public class StudentLoginReq implements Serializable {
     
     private Long id;
     

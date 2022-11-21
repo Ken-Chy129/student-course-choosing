@@ -2,11 +2,10 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.dto.ClassListReq;
+import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Subject;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
-import cn.ken.student.rubcourse.mapper.CollegeMapper;
 import cn.ken.student.rubcourse.mapper.SubjectMapper;
 import cn.ken.student.rubcourse.service.IClassService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

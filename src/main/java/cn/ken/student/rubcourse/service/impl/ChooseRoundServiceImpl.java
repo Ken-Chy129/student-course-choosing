@@ -5,7 +5,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.dto.ChooseRoundListReq;
+import cn.ken.student.rubcourse.dto.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.entity.StudentCredits;
@@ -27,9 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**

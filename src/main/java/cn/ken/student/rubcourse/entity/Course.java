@@ -21,9 +21,9 @@ import lombok.Data;
  * @since 2022-11-16
  */
 @Data
-@TableName("scc_course_info")
-@ApiModel(value = "CourseInfo对象", description = "课程信息表")
-public class CourseInfo implements Serializable {
+@TableName("scc_course")
+@ApiModel(value = "Course对象", description = "课程表")
+public class Course implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,9 +36,6 @@ public class CourseInfo implements Serializable {
     @ApiModelProperty("所在校区")
     private String campus;
 
-    @ApiModelProperty("考试时间")
-    private String examTime;
-
     @ApiModelProperty("排课单位")
     private String college;
 
@@ -48,29 +45,8 @@ public class CourseInfo implements Serializable {
     @ApiModelProperty("通识课类别")
     private String generalType;
 
-    @ApiModelProperty("是否慕课")
-    private Boolean isMooc;
-
-    @ApiModelProperty("授课语言")
-    private String language;
-
-    @ApiModelProperty("已选人数")
-    private Integer choosingNum;
-
-    @ApiModelProperty("课程容量")
-    private Integer capacity;
-
     @ApiModelProperty("课程学分")
     private BigDecimal credit;
-
-    @ApiModelProperty("考试类型")
-    private String examType;
-
-    @ApiModelProperty("教师")
-    private String teacher;
-
-    @ApiModelProperty("课程状态")
-    private Short status;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)
@@ -79,9 +55,5 @@ public class CourseInfo implements Serializable {
     @ApiModelProperty(value = "修改时间", hidden = true)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-    
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private List<CourseTimeplace> courseTimeplaceList;
 
 }

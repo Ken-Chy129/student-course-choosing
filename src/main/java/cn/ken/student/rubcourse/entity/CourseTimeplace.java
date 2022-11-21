@@ -27,7 +27,7 @@ public class CourseTimeplace implements Serializable {
     private Long id;
 
     @ApiModelProperty("课程编号")
-    private String courseId;
+    private Long courseClassId;
 
     @ApiModelProperty("课程持续时间")
     private String durationTime;

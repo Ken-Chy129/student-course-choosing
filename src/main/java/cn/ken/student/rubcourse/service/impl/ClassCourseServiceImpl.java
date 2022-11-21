@@ -1,24 +1,31 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
-import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.dto.ClassCourseListReq;
-import cn.ken.student.rubcourse.dto.ClassCourseRecommendedListReq;
+import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
+import cn.ken.student.rubcourse.dto.resp.ClassCourseListResp;
+import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.ClassCourse;
+import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.ClassCourseMapper;
+import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
+import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IClassCourseService;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,27 +42,20 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     @Autowired
     private ClassCourseMapper classCourseMapper;
     
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+    
+    @Autowired
+    private StudentMapper studentMapper;
+    
+    @Autowired
+    private StudentCourseMapper studentCourseMapper;
+    
     @Override
     public Result addClassCourse(HttpServletRequest httpServletRequest, ClassCourse classCourse) {
         classCourse.setId(SnowflakeUtil.nextId());
         classCourseMapper.insert(classCourse);
         return Result.success();
-    }
-
-    @Override
-    public Result getClassCourse(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
-        LambdaQueryWrapper<ClassCourse> queryWrapper = new LambdaQueryWrapper<>();
-        Integer classId = classCourseListReq.getClassId();
-        Integer recommendedTime = classCourseListReq.getRecommendedTime();
-        Boolean isMust = classCourseListReq.getIsMust();
-        queryWrapper.eq(classId != null, ClassCourse::getClassId, classId)
-                .eq(recommendedTime != null, ClassCourse::getCommendedTime, recommendedTime)
-                .eq(isMust != null, ClassCourse::getIsMust, isMust)
-                .eq(ClassCourse::getIsDeleted, false);
-        List<ClassCourse> classCourses = classCourseMapper.selectList(queryWrapper);
-        
-        IPage<ClassCourse> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourses);
-        return Result.success(page);
     }
 
     @Override
@@ -77,9 +77,23 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     }
 
     @Override
-    public Result getRecommendedClassCourse(HttpServletRequest httpServletRequest, ClassCourseRecommendedListReq classCourseRecommendedListReq) {
+    public Result getRecommendedCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
         return null;
     }
 
+
+    @Override
+    public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+        // 获取轮次信息
+        ChooseRound chooseRound = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
+        if (chooseRound == null) {
+            return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
+        }
+        
+        // 根据条件获取推荐班课程
+        List<ClassCourseListResp> classCourseList = classCourseMapper.getClassCourseList(classCourseListReq);
+        IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourseList);
+        return Result.success(page);
+    }
 
 }
