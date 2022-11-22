@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.controller;
+package cn.ken.student.rubcourse.controller.system;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ManagerLoginReq;
@@ -26,24 +26,40 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/sysManager")
+@RequestMapping("/sys/manager")
 @Api(tags = "管理员")
 public class SysManagerController {
-    
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
     
     @Autowired
     private ISysManagerService sysManagerService;
     
     @PostMapping("login")
+    @ApiOperation("后台系统登入")
     public Result login(HttpServletRequest httpServletRequest, ManagerLoginReq managerLoginReq) {
         return sysManagerService.login(httpServletRequest, managerLoginReq);
     }
 
     @GetMapping("logout")
+    @ApiOperation("后台系统登出")
     public Result logout(HttpServletRequest httpServletRequest, Long token) {
         return sysManagerService.logout(httpServletRequest, token);
     }
 
+    @PostMapping("list")
+    @ApiOperation("管理员列表")
+    public Result getManagerList(HttpServletRequest httpServletRequest) {
+        return sysManagerService.getManagerList(httpServletRequest);
+    }
+
+    @PostMapping("add")
+    @ApiOperation("新增管理员")
+    public Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
+        return sysManagerService.addManager(httpServletRequest, sysManager);
+    }
+
+    @PostMapping("update")
+    @ApiOperation("修改管理员权限(状态)")
+    public Result updateManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
+        return sysManagerService.updateManager(httpServletRequest, sysManager);
+    }
 }

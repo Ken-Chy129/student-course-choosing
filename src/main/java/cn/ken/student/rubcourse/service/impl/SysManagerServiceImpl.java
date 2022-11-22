@@ -1,5 +1,7 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
@@ -13,14 +15,19 @@ import cn.ken.student.rubcourse.mapper.SysManagerMapper;
 import cn.ken.student.rubcourse.service.ISysManagerService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import red.zyc.desensitization.Sensitive;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -68,6 +75,47 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
     @Override
     public Result logout(HttpServletRequest httpServletRequest, Long token) {
         redisTemplate.delete(RedisConstant.SYSTEM_TOKEN_PREFIX + token.toString());
+        return Result.success();
+    }
+
+    @Override
+    public Result getManagerList(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("token");
+        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.SYSTEM_TOKEN_PREFIX + token), HashMap.class);
+        if (hashMap == null) {
+            return Result.fail(ErrorCodeEnums.SYS_UN_LOGIN);
+        }
+        String type = hashMap.get("type");
+        if (type.equals("0")) {
+            return Result.fail(ErrorCodeEnums.SYS_NO_PERMISSION);
+        }
+        LambdaQueryWrapper<SysManager> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysManager::getIsDeleted, false);
+        return Result.success(sysManagerMapper.selectList(queryWrapper));
+    }
+
+    @Override
+    public Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
+        String salt = IdUtil.simpleUUID();
+        String md5Password = DigestUtil.md5Hex(sysManager.getPassword() + salt);
+        sysManager.setPassword(md5Password);
+        sysManager.setSalt(salt);
+        sysManagerMapper.insert(sysManager);
+        return Result.success();
+    }
+
+    @Override
+    public Result updateManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
+        SysManager sysManager1 = sysManagerMapper.selectById(sysManager.getId());
+        String salt = sysManager1.getSalt();
+        LambdaUpdateWrapper<SysManager> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(SysManager::getId, sysManager.getId())
+                        .set(sysManager.getIsDeleted() != null, SysManager::getIsDeleted, sysManager.getIsDeleted())
+                        .set(sysManager.getType() != null, SysManager::getType, sysManager.getType())
+                        .set(StringUtils.isNotBlank(sysManager.getPassword()), SysManager::getPassword, DigestUtil.md5Hex(sysManager.getPassword() + salt))
+                        .set(StringUtils.isNotBlank(sysManager.getManagerName()), SysManager::getManagerName, sysManager.getManagerName())
+                        .set(StringUtils.isNotBlank(sysManager.getMobilePhone()), SysManager::getMobilePhone, sysManager.getMobilePhone());
+        sysManagerMapper.update(null, updateWrapper);
         return Result.success();
     }
 }

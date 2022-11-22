@@ -23,9 +23,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Config {
 
     @Bean
-    public Docket docket() {
+    public Docket backendDocket() {
         //指定使用Swagger2规范
-        Docket docket=new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         //描述字段支持Markdown语法
                         .description("# 后台管理")
@@ -37,10 +37,31 @@ public class Swagger2Config {
                 .groupName("后台管理")
                 .select()
                 //这里指定Controller扫描包路径
+                .apis(RequestHandlerSelectors.basePackage("cn.ken.student.rubcourse.controller.system"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    @Bean
+    public Docket frontendDocket() {
+        //指定使用Swagger2规范
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(new ApiInfoBuilder()
+                        //描述字段支持Markdown语法
+                        .description("# 前台管理")
+                        .termsOfServiceUrl("https://doc.xiaominfo.com/")
+                        .contact(new Contact("ken", "www.ken-chy129.cn", "1294967895@qq.com"))
+                        .version("1.0")
+                        .build())
+                //分组名称
+                .groupName("前台管理")
+                .select()
+                //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("cn.ken.student.rubcourse.controller"))
                 .paths(PathSelectors.any())
                 .build();
-        return docket;
     }
-
+    
+    
+    
 }

@@ -20,4 +20,10 @@ public interface ISysManagerService extends IService<SysManager> {
     Result login(HttpServletRequest httpServletRequest, ManagerLoginReq managerLoginReq);
 
     Result logout(HttpServletRequest httpServletRequest, Long token);
+
+    Result getManagerList(HttpServletRequest httpServletRequest);
+
+    Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager);
+
+    Result updateManager(HttpServletRequest httpServletRequest, SysManager sysManager);
 }
