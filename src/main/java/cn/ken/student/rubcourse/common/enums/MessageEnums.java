@@ -24,14 +24,9 @@ public enum MessageEnums {
     PERSON_NULL_GROUP_SEND(3, "发送用户未指定，进行群发"),
     
     /**
-     * "消息为空，不进行发送"
-     */
-    MSG_NULL_NOT_SEND(4, "消息为空，不进行发送"),
-    
-    /**
      * 发送的消息为空,不进行发送
      */
-    SEND_NULL(5, "发送的消息为空,不进行发送");
+    SEND_NULL(5, "消息为空,不进行发送");
 
     /**
      * 编码

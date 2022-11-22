@@ -1,7 +1,6 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.common.enums.MessageEnums;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.config.RabbitMQConfig;
 import cn.ken.student.rubcourse.dto.MessageDTO;
