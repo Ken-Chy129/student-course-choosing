@@ -13,6 +13,8 @@ public class RedisConstant {
     public static String CODE_PREFIX = "code:";
     
     public static String PRESENT_ROUND = "present_round";
+
+    public static String SYSTEM_TOKEN_PREFIX = "sys:";
     
     
 }
