@@ -9,17 +9,10 @@ import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Length;
-import red.zyc.desensitization.annotation.ChineseNameSensitive;
-import red.zyc.desensitization.annotation.EmailSensitive;
-import red.zyc.desensitization.annotation.IdCardNumberSensitive;
-import red.zyc.desensitization.annotation.PhoneNumberSensitive;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Pattern;
 
 /**
  * <p>
@@ -55,17 +48,14 @@ public class Student implements Serializable {
     @ApiModelProperty("学生状态(0-正常,1-毕业,2-其他)")
     private Integer status;
 
-    @EmailSensitive
     @Email(message = "请输入正确的邮箱")
     @ApiModelProperty("学生邮箱")
     private String email;
 
-    @PhoneNumberSensitive
     @Length(min = 11, max = 11, message = "请输入正确的手机号码")
     @ApiModelProperty("手机号码")
     private String phone;
 
-    @IdCardNumberSensitive
     @Length(min = 18, max = 18, message = "请输入正确的身份证号码")
     @ApiModelProperty("身份证")
     private String idCard;

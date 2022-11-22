@@ -51,6 +51,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--RabbitMQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!--WebSocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -80,11 +90,11 @@
             <version>5.8.8</version>
         </dependency>
 <!--        数据脱敏-->
-        <dependency>
-            <groupId>red.zyc.boot</groupId>
-            <artifactId>desensitization-spring-boot-starter</artifactId>
-            <version>1.0.8</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>red.zyc.boot</groupId>-->
+<!--            <artifactId>desensitization-spring-boot-starter</artifactId>-->
+<!--            <version>1.0.8</version>-->
+<!--        </dependency>-->
 <!--        api文档-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

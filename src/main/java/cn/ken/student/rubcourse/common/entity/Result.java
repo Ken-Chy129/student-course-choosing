@@ -1,11 +1,7 @@
 package cn.ken.student.rubcourse.common.entity;
 
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import red.zyc.desensitization.Sensitive;
 
 import java.io.Serializable;
 

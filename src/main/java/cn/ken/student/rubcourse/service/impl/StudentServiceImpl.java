@@ -7,6 +7,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentReq;
@@ -75,7 +76,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     
     @Override
     public Result getStudentById(HttpServletRequest httpServletRequest, Long id) {
-        return Result.success(studentMapper.selectById(id));
+        Student selectById = studentMapper.selectById(id);
+        selectById.setPhone(StringUtils.phoneDesensitization(selectById.getPhone()));
+        selectById.setName(StringUtils.nameDesensitization(selectById.getName()));
+        selectById.setIdCard(StringUtils.custNoDesensitization(selectById.getIdCard()));
+        return Result.success(selectById);
     }
 
     @Override

@@ -4,12 +4,13 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * <pre>{@code
- * }
+ * <pre>
  * <p></p>
  * </pre>
- * @author Schilings
-*/
+ *
+ * @author <a href="https://github.com/kil1ua">Ken-Chy129</a>
+ * @date 2022/11/17 16:42
+ */
 public class ValueInIntegersValidator implements ConstraintValidator<ValueInIntegers, Integer> {
     
     private int[] integerList;
