@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.aop;
 
 import cn.ken.student.rubcourse.common.util.IpUtil;
-import cn.ken.student.rubcourse.common.util.JsonUtil;
+import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.entity.SysLog;
 import cn.ken.student.rubcourse.mapper.SysLogMapper;
@@ -47,15 +47,15 @@ public class LogAop {
         // todo: 更改成通过header获取token到redis查询
         Integer studentId = Integer.valueOf(Objects.requireNonNull(redisTemplate.opsForValue().get("10001")));
         String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
-        SysLog sysLog = new SysLog(id, 0, ipAddr, studentId, methodName, JsonUtil.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
+        SysLog sysLog = new SysLog(id, 0, ipAddr, studentId, methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
         
         Object result = null;
         try{
             result = proceedingJoinPoint.proceed();
-            sysLog.setResponseBody(JsonUtil.toString(result));
+            sysLog.setResponseBody(StringUtils.toString(result));
         } catch (Throwable e) {
             log.error(e.getMessage());
-            sysLog.setResponseBody(JsonUtil.toString(e.getMessage()));
+            sysLog.setResponseBody(StringUtils.toString(e.getMessage()));
             sysLog.setType(1);
             sysRequestLogMapper.insert(sysLog);
             throw e;
