@@ -66,4 +66,9 @@ public class StudentController {
         return studentService.getCode(httpServletRequest, httpServletResponse, studentId);
     }
 
+    @GetMapping("logout")
+    public Result logout(HttpServletRequest httpServletRequest, Long token) {
+        return studentService.logout(httpServletRequest, token);
+    }
+
 }

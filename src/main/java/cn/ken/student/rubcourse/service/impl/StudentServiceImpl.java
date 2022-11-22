@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
@@ -109,8 +110,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         hashMap.put("id", selectById.getId().toString());
         hashMap.put("name", selectById.getName());
         hashMap.put("classId", selectById.getClassId().toString());
-        redisTemplate.opsForValue().set(token.toString(), JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
-        redisTemplate.delete("student_code:" + studentLoginReq.getId());
+        redisTemplate.opsForValue().set(RedisConstant.STUDENT_TOKEN_PREFIX + token.toString(), JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
+        redisTemplate.delete(RedisConstant.CHECK_CODE_PREFIX + studentLoginReq.getId());
         hashMap.put("token", token.toString());
         return Result.success(hashMap);
     }
@@ -122,9 +123,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             String rand = ValidateCodeUtil.getRandomString(new Random().nextInt(62));
             randomString.append(rand);
         }
-        redisTemplate.opsForValue().set(("student_code:" + studentId), randomString.toString(), 120, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set((RedisConstant.CHECK_CODE_PREFIX + studentId), randomString.toString(), 120, TimeUnit.SECONDS);
         BufferedImage image = ValidateCodeUtil.getRandomCodeImage(randomString.toString());
         ImageIO.write(image, "PNG", httpServletResponse.getOutputStream());
         return null;
     }
+
+    @Override
+    public Result logout(HttpServletRequest httpServletRequest, Long token) {
+        redisTemplate.delete(RedisConstant.STUDENT_TOKEN_PREFIX + token.toString());
+        return Result.success();
+    }
+
+
 }

@@ -10,11 +10,12 @@ package cn.ken.student.rubcourse.common.constant;
  */
 public class RedisConstant {
     
-    public static String CODE_PREFIX = "code:";
+    public static String CHECK_CODE_PREFIX = "code:";
     
     public static String PRESENT_ROUND = "present_round";
 
     public static String SYSTEM_TOKEN_PREFIX = "sys:";
     
+    public static String STUDENT_TOKEN_PREFIX = "student:";
     
 }

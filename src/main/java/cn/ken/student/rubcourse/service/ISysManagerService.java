@@ -18,4 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface ISysManagerService extends IService<SysManager> {
 
     Result login(HttpServletRequest httpServletRequest, ManagerLoginReq managerLoginReq);
+
+    Result logout(HttpServletRequest httpServletRequest, Long token);
 }

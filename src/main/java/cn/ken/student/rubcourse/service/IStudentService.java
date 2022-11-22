@@ -32,4 +32,5 @@ public interface IStudentService extends IService<Student> {
 
     Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws IOException;
 
+    Result logout(HttpServletRequest httpServletRequest, Long token);
 }

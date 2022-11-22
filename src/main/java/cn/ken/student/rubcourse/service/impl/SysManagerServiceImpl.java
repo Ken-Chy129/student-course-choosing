@@ -64,4 +64,10 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
         hashMap.put("token", token.toString());
         return Result.success(hashMap);
     }
+
+    @Override
+    public Result logout(HttpServletRequest httpServletRequest, Long token) {
+        redisTemplate.delete(RedisConstant.SYSTEM_TOKEN_PREFIX + token.toString());
+        return Result.success();
+    }
 }
