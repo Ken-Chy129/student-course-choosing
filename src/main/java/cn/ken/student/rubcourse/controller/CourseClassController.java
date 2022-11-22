@@ -28,9 +28,10 @@ public class CourseClassController {
     private CourseClassService courseClassService;
 
     @GetMapping("allCoursePage")
-    @ApiOperation("前台分页显示全校课程详细信息")
+    @ApiOperation("前台分页显示全校课程班详细信息")
     public Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, AllCourseListReq allCourseListReq) {
         return courseClassService.getAllCourseInfoPage(httpServletRequest, allCourseListReq);
     }
+    
 }
 

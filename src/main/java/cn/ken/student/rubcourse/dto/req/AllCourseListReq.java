@@ -23,6 +23,9 @@ public class AllCourseListReq extends Page implements Serializable {
     @ApiModelProperty("搜索内容(课程编号/课程名称/上课教师)")
     private String searchContent;
 
+    @ApiModelProperty("课程编号(用于查询某门课的所有课程班)")
+    private String courseId;
+
     @ApiModelProperty("排课单位")
     private String college;
     

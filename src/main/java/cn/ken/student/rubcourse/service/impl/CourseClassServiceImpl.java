@@ -8,6 +8,7 @@ import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.resp.AllCourseListResp;
 import cn.ken.student.rubcourse.dto.req.AllCourseListReq;
 import cn.ken.student.rubcourse.entity.*;
+import cn.ken.student.rubcourse.mapper.CourseMapper;
 import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.service.CourseClassService;
@@ -42,6 +43,9 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
     
     @Autowired
     private CourseTimeplaceMapper courseTimeplaceMapper;
+    
+    @Autowired
+    private CourseMapper courseMapper;
     
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -105,6 +109,6 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
         
         return Result.success(page);
     }
-     
+
 }
 

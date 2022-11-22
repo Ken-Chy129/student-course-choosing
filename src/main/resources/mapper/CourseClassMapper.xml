@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseClassMapper">
     
-    <resultMap type="cn.ken.student.rubcourse.dto.resp.AllCourseListResp" id="courseClassInfo">
+    <resultMap type="cn.ken.student.rubcourse.dto.resp.AllCourseListResp" id="allCourseDetails">
         <result property="id" column="id"/>
         <result property="courseId" column="course_id"/>
         <result property="isMooc" column="is_mooc"/>
@@ -26,7 +26,7 @@
         </collection>
     </resultMap>
     
-    <select id="getCourseInfoPage" resultMap="courseClassInfo">
+    <select id="getCourseInfoPage" resultMap="allCourseDetails">
         select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
         course_name, campus, college, sc.type type, general_type, credit,
         duration_time, week_day, day_no, place
@@ -35,9 +35,12 @@
         left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
         <where>
         <if test="searchContent != null">
-            (course_id like concat("%",#{searchContent},"%")
-            or course_name like concat("%",#{searchContent},"%")
-            or teacher like concat("%",#{searchContent},"%"))
+            (course_id like concat('%',#{searchContent},'%')
+            or course_name like concat('%',#{searchContent},'%')
+            or teacher like concat('%',#{searchContent},'%'))
+        </if>
+        <if test="courseId != null and courseId != ''">
+            and course_id = #{courseId}
         </if>
         <if test="college != null">
             and college = #{college}
@@ -61,7 +64,5 @@
         and sct.is_deleted = 0
         </where>
     </select>
-    
-    
 </mapper>
 

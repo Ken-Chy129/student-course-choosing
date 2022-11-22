@@ -78,6 +78,7 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
 
     @Override
     public Result getRecommendedCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+        
         return null;
     }
 
@@ -90,7 +91,7 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
             return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
         }
         
-        // 根据条件获取推荐班课程
+        // 根据条件获取方案内课程
         List<ClassCourseListResp> classCourseList = classCourseMapper.getClassCourseList(classCourseListReq);
         IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourseList);
         return Result.success(page);

@@ -28,7 +28,6 @@ public class CourseClass implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "选课轮次")
     private Long id;
     
     @ApiModelProperty(value = "课程id")
@@ -66,9 +65,9 @@ public class CourseClass implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private Course course;
+//    @ApiModelProperty(hidden = true)
+//    @TableField(exist = false)
+//    private Course course;
 
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)

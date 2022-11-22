@@ -19,6 +19,6 @@ import cn.ken.student.rubcourse.entity.CourseClass;
 public interface CourseClassMapper extends BaseMapper<CourseClass> {
 
     List<AllCourseListResp> getCourseInfoPage(AllCourseListReq allCourseListReq);
-
+    
 }
 
