@@ -23,17 +23,16 @@ public class SysNotice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
+    
+    @ApiModelProperty("接收方id,-1表示发送给全体")
+    private Long studentId;
 
     @ApiModelProperty("消息体")
     private String message;
 
-    @ApiModelProperty("发布时间")
-    private LocalDateTime releaseTime;
-
-    @ApiModelProperty("逻辑删除")
-    private Boolean isDeleted;
+    @ApiModelProperty("状态")
+    private Short status;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)
