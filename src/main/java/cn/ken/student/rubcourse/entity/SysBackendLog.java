@@ -3,11 +3,12 @@ package cn.ken.student.rubcourse.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,9 +19,9 @@ import lombok.Data;
  * @since 2022-11-16
  */
 @Data
-@TableName("scc_sys_log")
-@ApiModel(value = "SysLog对象", description = "系统日志表")
-public class SysLog implements Serializable {
+@TableName("scc_sys_backend_log")
+@ApiModel(value = "SysBackendLog对象", description = "后台日志表")
+public class SysBackendLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +49,7 @@ public class SysLog implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    public SysLog(Long id, Integer type, String requestIp, Integer studentId, String requestApi, String requestBody, String responseBody) {
+    public SysBackendLog(Long id, Integer type, String requestIp, Integer studentId, String requestApi, String requestBody, String responseBody) {
         this.id = id;
         this.type = type;
         this.requestIp = requestIp;

@@ -3,7 +3,6 @@ package cn.ken.student.rubcourse.controller.system;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.MessageDTO;
 import cn.ken.student.rubcourse.dto.req.SysNoticePageReq;
-import cn.ken.student.rubcourse.entity.SysNotice;
 import cn.ken.student.rubcourse.service.ISysNoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +42,9 @@ public class SysNoticeController {
         return sysNoticeService.sendAnnouncement(httpServletRequest, announcement);
     }
     
-    @GetMapping("list")
+    @GetMapping("page")
     @ApiOperation("查看已发送的通知")
-    public Result getNoticeList(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq) {
-        return sysNoticeService.getNoticeList(httpServletRequest, sysNoticePageReq);
+    public Result getNoticePage(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq) {
+        return sysNoticeService.getNoticePage(httpServletRequest, sysNoticePageReq);
     }
 }

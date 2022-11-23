@@ -79,7 +79,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
     }
 
     @Override
-    public Result getNoticeList(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq) {
+    public Result getNoticePage(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq) {
         LambdaQueryWrapper<SysNotice> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(sysNoticePageReq.getStudentId() != null, SysNotice::getStudentId, sysNoticePageReq.getStudentId());
         List<SysNotice> sysNotices = sysNoticeMapper.selectList(queryWrapper);
