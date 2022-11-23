@@ -1,15 +1,8 @@
 package cn.ken.student.rubcourse.websocket;
 
-import cn.ken.student.rubcourse.config.RabbitMQConfig;
-import cn.ken.student.rubcourse.dto.MessageDTO;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -35,16 +28,13 @@ public class WebSocketServer {
      */
     private static final Map<Long, Session> SESSION_MAP = new ConcurrentHashMap<>();
 
-    @Autowired
-    private AmqpTemplate amqpTemplate;
-
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
     private Session session;
     
     private Long key;
-
+    
     public static Map<Long, Session> getSessionMap(){
         return SESSION_MAP;
     }
@@ -57,7 +47,8 @@ public class WebSocketServer {
         this.session = session;
         this.key = studentId;
         log.info("有新的客户端上线: {}", studentId);
-        SESSION_MAP.put(studentId, session);
+        SESSION_MAP.put(studentId, this.session);
+        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
     }
 
     /**
@@ -67,6 +58,7 @@ public class WebSocketServer {
     public void onClose() {
         log.info("有客户端离线: {}", this.key);
         SESSION_MAP.remove(this.key);
+        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
     }
 
     /**
@@ -99,6 +91,7 @@ public class WebSocketServer {
             SESSION_MAP.remove(Long.valueOf(sessionId));
         }
         log.error("发生异常：",error);
+        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
     }
 
     /**
