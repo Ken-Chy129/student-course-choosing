@@ -1,7 +1,11 @@
 package cn.ken.student.rubcourse.service;
 
+import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
 import cn.ken.student.rubcourse.entity.SysFrontendLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysFrontendLogService extends IService<SysFrontendLog> {
 
+    Result getFrontendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq);
 }

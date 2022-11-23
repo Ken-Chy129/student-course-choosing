@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.system;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
 import cn.ken.student.rubcourse.service.ISysFrontendLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,11 +27,11 @@ public class SysLogFrontendController {
     
     @Autowired
     private ISysFrontendLogService sysFrontendLogService;
-    
+
     @GetMapping("page")
-    @ApiOperation("查看系统日志")
-    public Result getLogPage(HttpServletRequest httpServletRequest) {
-        return null;
+    @ApiOperation("查看前台日志")
+    public Result getFrontendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq) {
+        return sysFrontendLogService.getFrontendLogPage(httpServletRequest, sysLogPageReq);
     }
     
 

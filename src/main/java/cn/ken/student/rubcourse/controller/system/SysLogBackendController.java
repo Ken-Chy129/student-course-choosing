@@ -1,7 +1,8 @@
 package cn.ken.student.rubcourse.controller.system;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.service.ISysFrontendLogService;
+import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
+import cn.ken.student.rubcourse.service.ISysBackendLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 public class SysLogBackendController {
     
     @Autowired
-    private ISysFrontendLogService sysLogService;
+    private ISysBackendLogService sysBackendLogService;
     
     @GetMapping("page")
-    @ApiOperation("查看系统日志")
-    public Result getLogPage(HttpServletRequest httpServletRequest) {
-        return null;
+    @ApiOperation("查看后台日志")
+    public Result getBackendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq) {
+        return sysBackendLogService.getBackendLogPage(httpServletRequest, sysLogPageReq);
     }
     
 

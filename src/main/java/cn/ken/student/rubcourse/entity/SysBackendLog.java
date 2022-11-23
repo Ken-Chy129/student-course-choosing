@@ -30,11 +30,11 @@ public class SysBackendLog implements Serializable {
     @ApiModelProperty("请求类型(0-正常,1-异常)")
     private Integer type;
     
-    @ApiModelProperty("请求ip")
+    @ApiModelProperty("请求方ip")
     private String requestIp;
 
-    @ApiModelProperty("学生学号")
-    private Integer studentId;
+    @ApiModelProperty("管理员id")
+    private Integer managerId;
 
     @ApiModelProperty("请求接口")
     private String requestApi;
@@ -49,11 +49,11 @@ public class SysBackendLog implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    public SysBackendLog(Long id, Integer type, String requestIp, Integer studentId, String requestApi, String requestBody, String responseBody) {
+    public SysBackendLog(Long id, Integer type, String requestIp, Integer managerId, String requestApi, String requestBody, String responseBody) {
         this.id = id;
         this.type = type;
         this.requestIp = requestIp;
-        this.studentId = studentId;
+        this.managerId = managerId;
         this.requestApi = requestApi;
         this.requestBody = requestBody;
         this.responseBody = responseBody;
