@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.MessageDTO;
+import cn.ken.student.rubcourse.dto.req.SysNoticePageReq;
 import cn.ken.student.rubcourse.entity.SysNotice;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,4 +21,6 @@ public interface ISysNoticeService extends IService<SysNotice> {
     Result sendMessage(HttpServletRequest httpServletRequest, MessageDTO messageDTO);
     
     Result sendAnnouncement(HttpServletRequest httpServletRequest, String announcement);
+
+    Result getNoticeList(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq);
 }
