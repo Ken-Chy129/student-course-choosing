@@ -4,6 +4,8 @@ import cn.ken.student.rubcourse.entity.CourseDependence;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程依赖表 Mapper 接口
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CourseDependenceMapper extends BaseMapper<CourseDependence> {
 
+    List<CourseDependence> selectCourseDependence(Long courseId);
 }

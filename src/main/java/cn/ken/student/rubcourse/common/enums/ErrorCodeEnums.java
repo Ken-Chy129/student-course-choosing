@@ -38,7 +38,11 @@ public enum ErrorCodeEnums {
     
     COURSE_DEPENDENCE_INVALID("50001", "依赖课程不合法"),
     
-    CLASS_NOT_EXISTS("60001", "班级不存在");
+    CLASS_NOT_EXISTS("60001", "班级不存在"),
+    
+    CREDITS_NOT_ENOUGH("70001", "学分不足"),
+    PRECOURSE_NOT_CHOOSE("70002", "尚未修得先修课程"),
+    CONDITION_NOT_SATISFIED("70003", "不满足选择条件")
     ;
 
     private final String code;

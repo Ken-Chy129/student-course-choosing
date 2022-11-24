@@ -88,7 +88,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
             for (StudentCourse studentCourse : studentCourses) {
                 // 获取已选课程的上课时间
                 LambdaQueryWrapper<CourseTimeplace> queryWrapper1 = new LambdaQueryWrapper<>();
-                queryWrapper1.eq(CourseTimeplace::getCourseClassId, studentCourse.getCourseId())
+                queryWrapper1.eq(CourseTimeplace::getCourseClassId, studentCourse.getCourseClassId())
                         .eq(CourseTimeplace::getIsDeleted, false);
                 List<CourseTimeplace> chooseCourseTimePlaces = courseTimeplaceMapper.selectList(queryWrapper1);
                 // 遍历已选课程的上课时间

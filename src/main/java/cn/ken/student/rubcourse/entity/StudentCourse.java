@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,10 +31,13 @@ public class StudentCourse implements Serializable {
     private Long studentId;
 
     @ApiModelProperty("课程编号")
-    private Integer courseId;
+    private Long courseClassId;
 
     @ApiModelProperty("选择学期")
     private Integer semester;
+
+    @ApiModelProperty("课程学分")
+    private BigDecimal credits;
 
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;

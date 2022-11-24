@@ -58,5 +58,5 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
         classMapper.insert(clazz);
         return Result.success(clazz);
     }
-    
+
 }

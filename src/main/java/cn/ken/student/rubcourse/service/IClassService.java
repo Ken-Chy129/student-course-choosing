@@ -20,4 +20,5 @@ public interface IClassService extends IService<Class> {
     Result getClassList(HttpServletRequest httpServletRequest, ClassListReq classListReq);
 
     Result addClass(HttpServletRequest httpServletRequest, Class clazz);
+
 }

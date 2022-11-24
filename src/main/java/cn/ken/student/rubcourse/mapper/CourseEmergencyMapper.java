@@ -4,6 +4,8 @@ import cn.ken.student.rubcourse.entity.CourseEmergency;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程应急设置 Mapper 接口
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CourseEmergencyMapper extends BaseMapper<CourseEmergency> {
 
+    List<CourseEmergency> selectByCourseId(Long courseId);
 }

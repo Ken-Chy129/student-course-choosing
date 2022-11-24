@@ -27,22 +27,13 @@ public class CourseEmergency implements Serializable {
     private Integer id;
 
     @ApiModelProperty("课程编号")
-    private Integer courseId;
+    private String courseId;
 
     @ApiModelProperty("仅开放给班级")
     private Integer onlyToClass;
 
     @ApiModelProperty("只开放给年级")
     private Integer onlyToGrade;
-
-    @ApiModelProperty("禁止选择")
-    private Boolean isBanned;
-
-    @ApiModelProperty("被禁止选择的班级")
-    private Integer bannedClass;
-
-    @ApiModelProperty("被禁止选择的学生")
-    private Integer bannedStudent;
 
     @ApiModelProperty("逻辑删除")
     private Boolean isDeleted;
