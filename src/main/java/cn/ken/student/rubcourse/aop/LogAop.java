@@ -1,5 +1,8 @@
 package cn.ken.student.rubcourse.aop;
 
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
+import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.IpUtil;
 import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
@@ -7,6 +10,7 @@ import cn.ken.student.rubcourse.entity.SysBackendLog;
 import cn.ken.student.rubcourse.entity.SysFrontendLog;
 import cn.ken.student.rubcourse.mapper.SysBackendLogMapper;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -32,31 +37,35 @@ import java.util.Objects;
 @Aspect
 @Component
 public class LogAop {
-    
+
     @Autowired
     private SysFrontendLogMapper sysFrontendLogMapper;
-    
+
     @Autowired
     private SysBackendLogMapper sysBackendLogMapper;
-    
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    
+
     @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..))")
     public void backendCut() {}
 
     @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..))")
     public void frontendCut() {}
-    
+
     @Around(value = "backendCut()")
     public Object backendAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long id = SnowflakeUtil.nextId();
         String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
-        // todo: 更改成通过header获取token到redis查询
-        Integer studentId = Integer.valueOf(Objects.requireNonNull(redisTemplate.opsForValue().get("10001")));
+        HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
+        String token = httpServletRequest.getHeader("token");
+        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        if (hashMap == null) {
+            throw new BusinessException(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
+        }
         String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
-        SysBackendLog sysBackendLog = new SysBackendLog(id, 0, ipAddr, studentId, methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
-        Object result = null;
+        SysBackendLog sysBackendLog = new SysBackendLog(id, 0, ipAddr, Integer.valueOf(hashMap.get("id")), methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
+        Object result;
         try{
             result = proceedingJoinPoint.proceed();
             sysBackendLog.setResponseBody(StringUtils.toString(result));
@@ -75,11 +84,15 @@ public class LogAop {
     public Object frontendAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long id = SnowflakeUtil.nextId();
         String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
-        // todo: 更改成通过header获取token到redis查询
-        Integer studentId = Integer.valueOf(Objects.requireNonNull(redisTemplate.opsForValue().get("10001")));
-        String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
-        SysFrontendLog sysFrontendLog = new SysFrontendLog(id, 0, ipAddr, studentId, methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
-        Object result = null;
+        HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
+        String token = httpServletRequest.getHeader("token");
+        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        if (hashMap == null) {
+            throw new BusinessException(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
+        }
+        String ipAddr = IpUtil.getIpAddr(httpServletRequest);
+        SysFrontendLog sysFrontendLog = new SysFrontendLog(id, 0, ipAddr, Integer.valueOf(hashMap.get("id")), methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
+        Object result;
         try{
             result = proceedingJoinPoint.proceed();
             sysFrontendLog.setResponseBody(StringUtils.toString(result));
