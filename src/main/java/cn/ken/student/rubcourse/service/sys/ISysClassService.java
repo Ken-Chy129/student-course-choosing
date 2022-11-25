@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-public interface IClassService extends IService<Class> {
+public interface ISysClassService extends IService<Class> {
 
     Result getClassList(HttpServletRequest httpServletRequest, ClassListReq classListReq);
 

@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.service;
+package cn.ken.student.rubcourse.service.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.College;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-public interface ICollegeService extends IService<College> {
+public interface ISysCollegeService extends IService<College> {
 
     Result getCollegeList(HttpServletRequest httpServletRequest);
 

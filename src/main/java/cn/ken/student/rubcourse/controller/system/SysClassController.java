@@ -3,7 +3,7 @@ package cn.ken.student.rubcourse.controller.system;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
-import cn.ken.student.rubcourse.service.sys.IClassService;
+import cn.ken.student.rubcourse.service.sys.ISysClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +25,18 @@ import javax.servlet.http.HttpServletRequest;
 public class SysClassController {
     
     @Autowired
-    private IClassService classService;
+    private ISysClassService sysClassService;
     
     @GetMapping("list")
     @ApiOperation("获取班级列表")
     public Result getClassList(HttpServletRequest httpServletRequest, ClassListReq classListReq) {
-        return classService.getClassList(httpServletRequest, classListReq);
+        return sysClassService.getClassList(httpServletRequest, classListReq);
     }
 
     @PostMapping("add")
     @ApiOperation("添加班级")
     public Result addClass(HttpServletRequest httpServletRequest, @RequestBody Class clazz) {
-        return classService.addClass(httpServletRequest, clazz);
+        return sysClassService.addClass(httpServletRequest, clazz);
     }
 
 }

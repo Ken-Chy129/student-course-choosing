@@ -1,9 +1,9 @@
-package cn.ken.student.rubcourse.service.impl;
+package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.Department;
 import cn.ken.student.rubcourse.mapper.DepartmentMapper;
-import cn.ken.student.rubcourse.service.IDepartmentService;
+import cn.ken.student.rubcourse.service.sys.ISysDepartmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2022-11-16
  */
 @Service
-public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Department> implements IDepartmentService {
+public class SysDepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Department> implements ISysDepartmentService {
 
     @Autowired
     private DepartmentMapper departmentMapper;
