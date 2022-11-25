@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.service;
+package cn.ken.student.rubcourse.service.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.MessageDTO;

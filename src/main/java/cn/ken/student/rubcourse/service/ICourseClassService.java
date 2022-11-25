@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author <a href="https://github.com/kil1ua">Ken-Chy129</a>
  * @date  ${DATE} ${TIME}
  */
-public interface CourseClassService extends IService<CourseClass> {
+public interface ICourseClassService extends IService<CourseClass> {
 
     Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, AllCourseListReq allCourseListReq);
 }

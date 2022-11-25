@@ -47,7 +47,7 @@ public class LogAop {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..))")
+    @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.sys.impl.SysManagerServiceImpl.login(..))")
     public void backendCut() {}
 
     @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..))")
@@ -59,9 +59,9 @@ public class LogAop {
         String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
         HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
         String token = httpServletRequest.getHeader("token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.SYSTEM_TOKEN_PREFIX + token), HashMap.class);
         if (hashMap == null) {
-            throw new BusinessException(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
+            throw new BusinessException(ErrorCodeEnums.SYS_UN_LOGIN);
         }
         String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
         SysBackendLog sysBackendLog = new SysBackendLog(id, 0, ipAddr, Integer.valueOf(hashMap.get("id")), methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);

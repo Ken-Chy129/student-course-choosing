@@ -3,16 +3,13 @@ package cn.ken.student.rubcourse.controller.system;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ManagerLoginReq;
 import cn.ken.student.rubcourse.entity.SysManager;
-import cn.ken.student.rubcourse.service.ISysManagerService;
-import com.alibaba.fastjson.JSON;
+import cn.ken.student.rubcourse.service.sys.ISysManagerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;

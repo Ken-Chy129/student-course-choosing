@@ -11,7 +11,7 @@ import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.CourseMapper;
 import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
-import cn.ken.student.rubcourse.service.CourseClassService;
+import cn.ken.student.rubcourse.service.ICourseClassService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,7 +33,7 @@ import java.util.List;
  * @date  ${DATE} ${TIME}
  */
 @Service
-public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, CourseClass> implements CourseClassService {
+public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, CourseClass> implements ICourseClassService {
 
     @Autowired
     private CourseClassMapper courseClassMapper;

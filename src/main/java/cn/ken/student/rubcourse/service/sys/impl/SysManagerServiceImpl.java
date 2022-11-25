@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.service.impl;
+package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -10,7 +10,7 @@ import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.req.ManagerLoginReq;
 import cn.ken.student.rubcourse.entity.SysManager;
 import cn.ken.student.rubcourse.mapper.SysManagerMapper;
-import cn.ken.student.rubcourse.service.ISysManagerService;
+import cn.ken.student.rubcourse.service.sys.ISysManagerService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;

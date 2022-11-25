@@ -1,11 +1,12 @@
-package cn.ken.student.rubcourse.service.impl;
+package cn.ken.student.rubcourse.service.sys.impl;
 
+import cn.ken.student.rubcourse.annotation.Administrator;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
 import cn.ken.student.rubcourse.entity.SysBackendLog;
 import cn.ken.student.rubcourse.mapper.SysBackendLogMapper;
-import cn.ken.student.rubcourse.service.ISysBackendLogService;
+import cn.ken.student.rubcourse.service.sys.ISysBackendLogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,8 +32,8 @@ public class SysBackendLogServiceImpl extends ServiceImpl<SysBackendLogMapper, S
     private SysBackendLogMapper sysBackendLogMapper;
 
     @Override
+    @Administrator
     public Result getBackendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq) {
-        // todo: 加上管理员鉴权
         LambdaQueryWrapper<SysBackendLog> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(sysLogPageReq.getUserId() != null, SysBackendLog::getManagerId, sysLogPageReq.getUserId())
                 .eq(sysLogPageReq.getType() != null, SysBackendLog::getType, sysLogPageReq.getType())

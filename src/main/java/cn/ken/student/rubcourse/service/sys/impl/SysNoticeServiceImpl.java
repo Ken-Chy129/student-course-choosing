@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.service.impl;
+package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
@@ -8,7 +8,7 @@ import cn.ken.student.rubcourse.dto.MessageDTO;
 import cn.ken.student.rubcourse.dto.req.SysNoticePageReq;
 import cn.ken.student.rubcourse.entity.SysNotice;
 import cn.ken.student.rubcourse.mapper.SysNoticeMapper;
-import cn.ken.student.rubcourse.service.ISysNoticeService;
+import cn.ken.student.rubcourse.service.sys.ISysNoticeService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
