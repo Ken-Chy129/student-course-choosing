@@ -1,16 +1,13 @@
-package cn.ken.student.rubcourse.controller;
+package cn.ken.student.rubcourse.controller.system;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
-import cn.ken.student.rubcourse.service.IClassService;
+import cn.ken.student.rubcourse.service.sys.IClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,9 +20,9 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/class")
+@RequestMapping("/sys/class")
 @Api(tags = "班级管理")
-public class ClassController {
+public class SysClassController {
     
     @Autowired
     private IClassService classService;
@@ -36,9 +33,9 @@ public class ClassController {
         return classService.getClassList(httpServletRequest, classListReq);
     }
 
-    @PostMapping("addClass")
+    @PostMapping("add")
     @ApiOperation("添加班级")
-    public Result addClass(HttpServletRequest httpServletRequest, Class clazz) {
+    public Result addClass(HttpServletRequest httpServletRequest, @RequestBody Class clazz) {
         return classService.addClass(httpServletRequest, clazz);
     }
 

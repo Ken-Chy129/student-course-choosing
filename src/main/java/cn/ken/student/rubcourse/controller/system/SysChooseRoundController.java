@@ -28,32 +28,32 @@ public class SysChooseRoundController {
     @Autowired
     private IChooseRoundService chooseRoundService;
     
-    @GetMapping("/presentRound")
+    @GetMapping("present")
     @ApiOperation("通过当前时间自动获取当前选课轮次")
     public Result getPresentRound(HttpServletRequest httpServletRequest) throws Exception {
         return chooseRoundService.getPresentRound(httpServletRequest);
     }
 
-    @GetMapping("/roundList")
+    @GetMapping("list")
     @ApiOperation("获取选课轮次列表")
     public Result getRoundList(HttpServletRequest httpServletRequest, ChooseRoundListReq chooseRoundListReq) throws Exception {
         return chooseRoundService.getRoundList(httpServletRequest, chooseRoundListReq);
     }
     
-    @PostMapping("addChooseRound")
+    @PostMapping("add")
     @ApiOperation("添加选课轮次，时间段不可重复")
     public Result addChooseRound(HttpServletRequest httpServletRequest, @RequestBody @Valid ChooseRound chooseRound) throws Exception {
         return chooseRoundService.addChooseRound(httpServletRequest, chooseRound);
     }
 
-    @PutMapping("updateChooseRound")
+    @PutMapping("update")
     @ApiOperation("修改选课轮次信息")
     @Deprecated
     public Result updateChooseRound(HttpServletRequest httpServletRequest, @RequestBody @Valid ChooseRound chooseRound) throws Exception {
         return chooseRoundService.updateChooseRound(httpServletRequest, chooseRound);
     }
     
-    @DeleteMapping("removeChooseRound")
+    @DeleteMapping("remove")
     @ApiOperation("删除选课轮次")
     public Result removeChooseRound(HttpServletRequest httpServletRequest, Integer chooseRoundId) throws Exception {
         return chooseRoundService.removeChooseRound(httpServletRequest, chooseRoundId);
