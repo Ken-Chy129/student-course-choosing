@@ -37,7 +37,7 @@ public class Swagger2Config {
                 .groupName("后台管理")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("cn.ken.student.rubcourse.controller.system"))
+                .apis(RequestHandlerSelectors.basePackage("cn.ken.student.rubcourse.controller.sys"))
                 .paths(PathSelectors.any())
                 .build();
     }
