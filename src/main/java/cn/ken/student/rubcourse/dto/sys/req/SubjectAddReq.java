@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.dto.req;
+package cn.ken.student.rubcourse.dto.sys.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </pre>
  *
  * @author <a href="https://github.com/kil1ua">Ken-Chy129</a>
- * @date 2022/11/22 11:00
+ * @date 2022/11/25 20:34
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ManagerLoginReq implements Serializable {
+public class SubjectAddReq implements Serializable {
+
+    private Integer departmentId;
     
-    private String username;
-    
-    private String password;
+    private String subjectName;
 }

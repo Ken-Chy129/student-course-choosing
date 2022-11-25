@@ -6,7 +6,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.resp.AllCourseListResp;
-import cn.ken.student.rubcourse.dto.req.AllCourseListReq;
+import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.CourseMapper;
 import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
@@ -51,7 +51,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
     private RedisTemplate<String, String> redisTemplate;
     
     @Override
-    public Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, AllCourseListReq allCourseListReq) {
+    public Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, CourseClassListReq courseClassListReq) {
         // 获取学生信息，todo:后续取消注释，当前直接写死
 //        String token = httpServletRequest.getHeader("token");
 //        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(token), HashMap.class);
@@ -71,7 +71,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
         List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(id, chooseRound.getSemester());
 
         // 获取课程表
-        List<AllCourseListResp> courseInfoPage = courseClassMapper.getCourseInfoPage(allCourseListReq);
+        List<AllCourseListResp> courseInfoPage = courseClassMapper.getCourseInfoPage(courseClassListReq);
         for (AllCourseListResp allCourseListResp : courseInfoPage) {
             // 设置上课时间地点
             StringBuilder placeTime = new StringBuilder();
@@ -105,7 +105,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
             }
             allCourseListResp.setIsConflict(isConflict);
         }
-        IPage<AllCourseListResp> page = PageUtil.getPage(new Page<>(), allCourseListReq.getPageNo(), allCourseListReq.getPageSize(), courseInfoPage);
+        IPage<AllCourseListResp> page = PageUtil.getPage(new Page<>(), courseClassListReq.getPageNo(), courseClassListReq.getPageSize(), courseInfoPage);
         
         return Result.success(page);
     }

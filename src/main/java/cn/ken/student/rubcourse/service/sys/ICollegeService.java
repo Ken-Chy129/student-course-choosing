@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-public interface ISysCollegeService extends IService<College> {
+public interface ICollegeService extends IService<College> {
 
     Result getCollegeList(HttpServletRequest httpServletRequest);
 

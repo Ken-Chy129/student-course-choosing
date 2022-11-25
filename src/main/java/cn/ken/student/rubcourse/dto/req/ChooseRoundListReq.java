@@ -2,7 +2,9 @@ package cn.ken.student.rubcourse.dto.req;
 
 import cn.ken.student.rubcourse.common.entity.Page;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -17,6 +19,8 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChooseRoundListReq extends Page implements Serializable {
 
     @ApiModelProperty("当前选课轮次Id")

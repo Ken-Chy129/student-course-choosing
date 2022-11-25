@@ -32,7 +32,7 @@ public class StudentController {
     
     @PostMapping("add")
     @ApiOperation("新增学生")
-    public Result addStudent(HttpServletRequest httpServletRequest, @Valid Student student) throws Exception {
+    public Result addStudent(HttpServletRequest httpServletRequest, @RequestBody @Valid Student student) throws Exception {
         return studentService.addStudent(httpServletRequest, student);
     }
     
@@ -56,7 +56,7 @@ public class StudentController {
 
     @PostMapping("/login")
     @ApiOperation("登录")
-    public Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq) throws Exception {
+    public Result login(HttpServletRequest httpServletRequest, @RequestBody StudentLoginReq studentLoginReq) throws Exception {
         return studentService.login(httpServletRequest, studentLoginReq);
     }
     

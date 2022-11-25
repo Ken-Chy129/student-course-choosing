@@ -1,7 +1,8 @@
-package cn.ken.student.rubcourse.controller.system;
+package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.service.sys.ISysDepartmentService;
+import cn.ken.student.rubcourse.dto.sys.req.DepartmentAddReq;
+import cn.ken.student.rubcourse.service.sys.IDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/sys/department")
 @Api(tags = "系管理")
-public class SysDepartmentController {
+public class DepartmentController {
 
     @Autowired
-    private ISysDepartmentService sysDepartmentService;
+    private IDepartmentService departmentService;
     
     @PostMapping("list")
     @ApiOperation("查看所有系")
     public Result getDepartmentList(HttpServletRequest httpServletRequest, Integer collegeId) {
-        return sysDepartmentService.getDepartmentList(httpServletRequest, collegeId);
+        return departmentService.getDepartmentList(httpServletRequest, collegeId);
     }
 
     @PostMapping("addDepartment")
     @ApiOperation("增加系")
-    public Result addDepartment(HttpServletRequest httpServletRequest, Integer collegeId, String departmentName) {
-        return sysDepartmentService.addDepartment(httpServletRequest, collegeId, departmentName);
+    public Result addDepartment(HttpServletRequest httpServletRequest, DepartmentAddReq departmentAddReq) {
+        return departmentService.addDepartment(httpServletRequest, departmentAddReq);
     }
 }

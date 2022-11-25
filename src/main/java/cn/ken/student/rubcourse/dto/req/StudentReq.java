@@ -1,7 +1,9 @@
 package cn.ken.student.rubcourse.dto.req;
 
 import cn.ken.student.rubcourse.common.entity.Page;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -16,6 +18,8 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentReq extends Page implements Serializable {
     
     Integer id;

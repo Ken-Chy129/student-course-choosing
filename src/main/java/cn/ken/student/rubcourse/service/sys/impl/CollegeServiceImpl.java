@@ -3,7 +3,7 @@ package cn.ken.student.rubcourse.service.sys.impl;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.College;
 import cn.ken.student.rubcourse.mapper.CollegeMapper;
-import cn.ken.student.rubcourse.service.sys.ISysCollegeService;
+import cn.ken.student.rubcourse.service.sys.ICollegeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2022-11-16
  */
 @Service
-public class SysCollegeServiceImpl extends ServiceImpl<CollegeMapper, College> implements ISysCollegeService {
+public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> implements ICollegeService {
 
     @Autowired
     private CollegeMapper collegeMapper;

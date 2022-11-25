@@ -1,9 +1,10 @@
-package cn.ken.student.rubcourse.service.impl;
+package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.sys.req.SubjectAddReq;
 import cn.ken.student.rubcourse.entity.Subject;
 import cn.ken.student.rubcourse.mapper.SubjectMapper;
-import cn.ken.student.rubcourse.service.ISubjectService;
+import cn.ken.student.rubcourse.service.sys.ISubjectService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
     }
 
     @Override
-    public Result addSubject(HttpServletRequest httpServletRequest, Integer departmentId, String subjectName) {
+    public Result addSubject(HttpServletRequest httpServletRequest, SubjectAddReq subjectAddReq) {
         Subject subject = new Subject();
-        subject.setDepartmentId(departmentId);
-        subject.setSubjectName(subjectName);
+        subject.setDepartmentId(subjectAddReq.getDepartmentId());
+        subject.setSubjectName(subjectAddReq.getSubjectName());
         subjectMapper.insert(subject);
         return Result.success(subject);
     }

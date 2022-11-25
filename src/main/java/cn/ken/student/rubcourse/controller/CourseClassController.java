@@ -3,7 +3,7 @@ package cn.ken.student.rubcourse.controller;
 
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.AllCourseListReq;
+import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
 import cn.ken.student.rubcourse.service.ICourseClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +27,10 @@ public class CourseClassController {
     @Autowired
     private ICourseClassService courseClassService;
 
-    @GetMapping("allCoursePage")
+    @GetMapping("courseClassPage")
     @ApiOperation("前台分页显示全校课程班详细信息")
-    public Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, AllCourseListReq allCourseListReq) {
-        return courseClassService.getAllCourseInfoPage(httpServletRequest, allCourseListReq);
+    public Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, CourseClassListReq courseClassListReq) {
+        return courseClassService.getAllCourseInfoPage(httpServletRequest, courseClassListReq);
     }
     
 }

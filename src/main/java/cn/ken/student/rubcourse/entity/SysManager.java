@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -18,6 +20,8 @@ import lombok.Data;
  */
 @Data
 @TableName("scc_sys_manager")
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(value = "SysManager对象", description = "系统管理员表")
 public class SysManager implements Serializable {
 

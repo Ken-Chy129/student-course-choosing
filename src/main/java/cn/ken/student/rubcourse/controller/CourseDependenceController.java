@@ -6,10 +6,7 @@ import cn.ken.student.rubcourse.service.ICourseDependenceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,9 +32,9 @@ public class CourseDependenceController {
         return courseDependenceService.getCourseDependence(httpServletRequest, courseId);
     }
     
-    @PostMapping("addCourseDependence")
+    @PostMapping("add")
     @ApiOperation("新增课程依赖")
-    public Result addCourseDependence(HttpServletRequest httpServletRequest, CourseDependencyAddReq courseDependencyAddReq) {
+    public Result addCourseDependence(HttpServletRequest httpServletRequest, @RequestBody CourseDependencyAddReq courseDependencyAddReq) {
         return courseDependenceService.addCourseDependence(httpServletRequest, courseDependencyAddReq);
     }
 

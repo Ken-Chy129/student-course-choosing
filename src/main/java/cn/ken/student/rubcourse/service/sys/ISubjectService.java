@@ -1,6 +1,7 @@
-package cn.ken.student.rubcourse.service;
+package cn.ken.student.rubcourse.service.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.sys.req.SubjectAddReq;
 import cn.ken.student.rubcourse.entity.Subject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,5 +19,5 @@ public interface ISubjectService extends IService<Subject> {
 
     Result getSubjectList(HttpServletRequest httpServletRequest, Integer departmentId);
 
-    Result addSubject(HttpServletRequest httpServletRequest, Integer departmentId, String subjectName);
+    Result addSubject(HttpServletRequest httpServletRequest, SubjectAddReq subjectAddReq);
 }

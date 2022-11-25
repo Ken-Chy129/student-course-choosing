@@ -1,9 +1,10 @@
 package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.sys.req.DepartmentAddReq;
 import cn.ken.student.rubcourse.entity.Department;
 import cn.ken.student.rubcourse.mapper.DepartmentMapper;
-import cn.ken.student.rubcourse.service.sys.ISysDepartmentService;
+import cn.ken.student.rubcourse.service.sys.IDepartmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
  * @since 2022-11-16
  */
 @Service
-public class SysDepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Department> implements ISysDepartmentService {
+public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Department> implements IDepartmentService {
 
     @Autowired
     private DepartmentMapper departmentMapper;
@@ -35,10 +36,10 @@ public class SysDepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Depa
     }
 
     @Override
-    public Result addDepartment(HttpServletRequest httpServletRequest, Integer collegeId, String departmentName) {
+    public Result addDepartment(HttpServletRequest httpServletRequest, DepartmentAddReq departmentAddReq) {
         Department department = new Department();
-        department.setCollegeId(collegeId);
-        department.setDepartmentName(departmentName);
+        department.setCollegeId(departmentAddReq.getCollegeId());
+        department.setDepartmentName(departmentAddReq.getDepartmentName());
         departmentMapper.insert(department);
         return Result.success();
     }

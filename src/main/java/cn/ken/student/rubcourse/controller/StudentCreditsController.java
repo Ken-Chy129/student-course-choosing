@@ -6,10 +6,8 @@ import cn.ken.student.rubcourse.service.IStudentCreditsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,9 +34,9 @@ public class StudentCreditsController {
         return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
     }
 
-    @GetMapping("updateStudentCredits")
+    @PostMapping("updateStudentCredits")
     @ApiOperation("修改学生学分")
-    public Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits) {
+    public Result updateStudentCredits(HttpServletRequest httpServletRequest, @RequestBody StudentCredits studentCredits) {
         return studentCreditsService.updateStudentCredits(httpServletRequest, studentCredits);
     }
 

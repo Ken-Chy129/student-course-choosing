@@ -33,9 +33,9 @@ public class CourseController {
         return courseService.getCourseNameList(httpServletRequest, searchContent);
     }
     
-    @PostMapping("addCourseInfo")
+    @PostMapping("add")
     @ApiOperation("添加课程信息")
-    public Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq) {
+    public Result addCourseInfo(HttpServletRequest httpServletRequest, @RequestBody CourseInfoAddReq courseInfoAddReq) {
         return courseService.addCourseInfo(httpServletRequest, courseInfoAddReq);
     }
 

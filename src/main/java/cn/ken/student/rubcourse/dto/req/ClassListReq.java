@@ -1,9 +1,7 @@
 package cn.ken.student.rubcourse.dto.req;
 
 import cn.ken.student.rubcourse.common.entity.Page;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -17,6 +15,8 @@ import java.io.Serializable;
  */
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClassListReq extends Page implements Serializable {
     
     private String collegeName;

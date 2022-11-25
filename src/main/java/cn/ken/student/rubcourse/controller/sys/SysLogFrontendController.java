@@ -1,8 +1,8 @@
-package cn.ken.student.rubcourse.controller.system;
+package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
-import cn.ken.student.rubcourse.service.sys.ISysBackendLogService;
+import cn.ken.student.rubcourse.service.sys.ISysFrontendLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +14,24 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- * 后台日志表 前端控制器
+ * 前台日志表 前端控制器
  * </p>
  *
  * @author Ken-Chy129
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/sys/backendLog")
-@Api(tags = "后台日志管理")
-public class SysLogBackendController {
+@RequestMapping("/sys/frontendLog")
+@Api(tags = "前台日志管理")
+public class SysLogFrontendController {
     
     @Autowired
-    private ISysBackendLogService sysBackendLogService;
-    
+    private ISysFrontendLogService sysFrontendLogService;
+
     @GetMapping("page")
-    @ApiOperation("查看后台日志")
-    public Result getBackendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq) {
-        return sysBackendLogService.getBackendLogPage(httpServletRequest, sysLogPageReq);
+    @ApiOperation("查看前台日志")
+    public Result getFrontendLogPage(HttpServletRequest httpServletRequest, SysLogPageReq sysLogPageReq) {
+        return sysFrontendLogService.getFrontendLogPage(httpServletRequest, sysLogPageReq);
     }
     
 

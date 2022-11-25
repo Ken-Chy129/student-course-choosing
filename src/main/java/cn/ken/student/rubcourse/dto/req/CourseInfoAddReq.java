@@ -1,7 +1,9 @@
 package cn.ken.student.rubcourse.dto.req;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ import java.util.List;
  * @date 2022/11/18 22:14
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CourseInfoAddReq implements Serializable {
 
     @ApiModelProperty("课程名称")

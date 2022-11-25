@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -24,6 +26,8 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @TableName("scc_student")
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(value = "Student对象", description = "学生表")
 public class Student implements Serializable {
 

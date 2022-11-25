@@ -1,6 +1,8 @@
 package cn.ken.student.rubcourse.dto.req;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -13,6 +15,8 @@ import java.io.Serializable;
  * @date 2022/11/20 17:01
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentLoginReq implements Serializable {
     
     private Long id;

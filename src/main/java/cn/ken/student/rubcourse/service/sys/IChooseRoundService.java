@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-public interface ISysChooseRoundService extends IService<ChooseRound> {
+public interface IChooseRoundService extends IService<ChooseRound> {
 
     Result getPresentRound(HttpServletRequest httpServletRequest);
 

@@ -7,7 +7,7 @@ import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Subject;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.mapper.SubjectMapper;
-import cn.ken.student.rubcourse.service.sys.ISysClassService;
+import cn.ken.student.rubcourse.service.sys.IClassService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,7 +27,7 @@ import java.util.List;
  * @since 2022-11-16
  */
 @Service
-public class SysClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements ISysClassService {
+public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements IClassService {
 
     @Autowired
     private ClassMapper classMapper;

@@ -28,19 +28,19 @@ public class ClassCourseController {
     @Autowired
     private IClassCourseService classCourseService;
 
-    @PostMapping("addClassCourse")
+    @PostMapping("add")
     @ApiOperation("添加班级方案内课程")
-    public Result addClassCourse(HttpServletRequest httpServletRequest, ClassCourse classCourse) {
+    public Result addClassCourse(HttpServletRequest httpServletRequest, @RequestBody ClassCourse classCourse) {
         return classCourseService.addClassCourse(httpServletRequest, classCourse);
     }
     
-    @PutMapping("updateClassCourse")
+    @PutMapping("update")
     @ApiOperation("修改班级方案内课程")
-    public Result updateClassCourse(HttpServletRequest httpServletRequest, ClassCourse classCourse) {
+    public Result updateClassCourse(HttpServletRequest httpServletRequest, @RequestBody ClassCourse classCourse) {
         return classCourseService.updateClassCourse(httpServletRequest, classCourse);
     }
 
-    @DeleteMapping("removeClassCourse")
+    @DeleteMapping("remove")
     @ApiOperation("删除班级方案内课程")
     public Result removeClassCourse(HttpServletRequest httpServletRequest, @RequestParam List<Integer> ids) {
         return classCourseService.removeClassCourse(httpServletRequest, ids);

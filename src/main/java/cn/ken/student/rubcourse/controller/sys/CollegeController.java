@@ -1,7 +1,7 @@
-package cn.ken.student.rubcourse.controller.system;
+package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.service.sys.ISysCollegeService;
+import cn.ken.student.rubcourse.service.sys.ICollegeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/sys/college")
 @Api(tags = "学院管理")
-public class SysCollegeController {
+public class CollegeController {
 
     @Autowired
-    private ISysCollegeService sysCollegeService;
+    private ICollegeService collegeService;
     
     @GetMapping("list")
     @ApiOperation("获取学院表")
     public Result getCollegeList(HttpServletRequest httpServletRequest) {
-        return sysCollegeService.getCollegeList(httpServletRequest);
+        return collegeService.getCollegeList(httpServletRequest);
     }
 
     @PostMapping("add")
     @ApiOperation("新增学院")
     public Result addCollege(HttpServletRequest httpServletRequest, String collegeName) {
-        return sysCollegeService.addCollege(httpServletRequest, collegeName);
+        return collegeService.addCollege(httpServletRequest, collegeName);
     }
 }
