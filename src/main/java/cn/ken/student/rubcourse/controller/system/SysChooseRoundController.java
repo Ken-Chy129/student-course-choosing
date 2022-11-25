@@ -21,9 +21,9 @@ import javax.validation.Valid;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/round")
+@RequestMapping("/sys/round")
 @Api(tags = "选课轮次管理")
-public class ChooseRoundController {
+public class SysChooseRoundController {
 
     @Autowired
     private IChooseRoundService chooseRoundService;
