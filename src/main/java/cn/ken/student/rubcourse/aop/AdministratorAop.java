@@ -3,6 +3,12 @@ package cn.ken.student.rubcourse.aop;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
+import cn.ken.student.rubcourse.common.util.IpUtil;
+import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.common.util.StringUtils;
+import cn.ken.student.rubcourse.entity.SysBackendLog;
+import cn.ken.student.rubcourse.entity.SysFrontendLog;
+import cn.ken.student.rubcourse.mapper.SysBackendLogMapper;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -16,6 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -33,6 +40,9 @@ public class AdministratorAop {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    
+    @Autowired
+    private SysBackendLogMapper sysBackendLogMapper;
 
     @Pointcut("@annotation(cn.ken.student.rubcourse.annotation.Administrator)")
     public void administratorCut() {}
@@ -47,6 +57,9 @@ public class AdministratorAop {
         }
         String type = hashMap.get("type");
         if (type.equals("0")) {
+            String ipAddr = IpUtil.getIpAddr(httpServletRequest);
+            SysBackendLog sysBackendLog = new SysBackendLog(SnowflakeUtil.nextId(), 1, ipAddr, Integer.valueOf(hashMap.get("id")), joinPoint.getSignature().getName(), StringUtils.toString(Arrays.toString(joinPoint.getArgs())), ErrorCodeEnums.SYS_NO_PERMISSION.getDesc());
+            sysBackendLogMapper.insert(sysBackendLog);
             throw new BusinessException(ErrorCodeEnums.SYS_NO_PERMISSION);
         }
     }
