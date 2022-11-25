@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import javax.validation.ConstraintViolationException;
  */
 @Slf4j
 @ControllerAdvice
+@Order(Integer.MIN_VALUE)
 public class ControllerExceptionHandle {
     
 
@@ -106,15 +108,6 @@ public class ControllerExceptionHandle {
     @ExceptionHandler(BusinessException.class)
     public Result handleBusinessException(BusinessException e) {
         log.error("接口出现逻辑错误:{}", e.getDesc());
-        return Result.fail(e.getCode(), e.getMessage());
+        return Result.fail(e.getCode(), e.getDesc());
     }
-    
-    @ResponseBody
-    @ExceptionHandler(Throwable.class)
-    public Result handleShiroException(Exception e) {
-        e.printStackTrace();
-        log.error("接口出现内部异常:{}", e.getMessage());
-        return Result.fail("接口出现内部异常:" + e.getMessage());
-    }
-    
 }

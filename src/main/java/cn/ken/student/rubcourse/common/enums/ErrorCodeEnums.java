@@ -20,7 +20,7 @@ public enum ErrorCodeEnums {
     REQUEST_PARAM_ERROR("415", "请求参数异常"),
     
     SYS_UN_LOGIN("10001", "管理员未登录"),
-    SYS_NO_PERMISSION("10001", "管理员权限不足"),
+    SYS_NO_PERMISSION("10002", "管理员权限不足"),
     
     STUDENT_EXISTS("20001", "该学生已存在"),
     CODE_EXPIRED("20002", "验证码已过期"),
