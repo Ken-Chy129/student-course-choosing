@@ -46,19 +46,19 @@ public class SysManagerController {
     }
 
     @PostMapping("list")
-    @ApiOperation("管理员列表")
+    @ApiOperation("管理员列表-需要超管权限")
     public Result getManagerList(HttpServletRequest httpServletRequest) {
         return sysManagerService.getManagerList(httpServletRequest);
     }
 
     @PostMapping("add")
-    @ApiOperation("新增管理员")
-    public Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
+    @ApiOperation("新增管理员-需要超管权限")
+    public Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager) throws Exception {
         return sysManagerService.addManager(httpServletRequest, sysManager);
     }
 
     @PostMapping("update")
-    @ApiOperation("修改管理员权限(状态)")
+    @ApiOperation("修改管理员权限(状态)-需要超管权限")
     public Result updateManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
         return sysManagerService.updateManager(httpServletRequest, sysManager);
     }

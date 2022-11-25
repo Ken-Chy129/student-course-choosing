@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.ken.student.rubcourse.annotation.Administrator;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
@@ -47,16 +48,19 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
         queryWrapper.eq(SysManager::getManagerName, managerLoginReq.getUsername())
                 .eq(SysManager::getIsDeleted, false);
         SysManager sysManager = sysManagerMapper.selectOne(queryWrapper);
+        System.out.println(sysManager);
         if (sysManager == null) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }
         String md5Password = DigestUtil.md5Hex(managerLoginReq.getPassword() + sysManager.getSalt());
+        System.out.println(md5Password);
         if (!md5Password.equals(sysManager.getPassword())) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }
         Long token = SnowflakeUtil.nextId();
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("type", sysManager.getType().toString());
+        hashMap.put("id", String.valueOf(sysManager.getId()));
         redisTemplate.opsForValue().set(RedisConstant.SYSTEM_TOKEN_PREFIX + token.toString(), JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
         SysManager sysManager1 = new SysManager();
         sysManager1.setId(sysManager.getId());
@@ -73,6 +77,7 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
     }
 
     @Override
+    @Administrator
     public Result getManagerList(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.SYSTEM_TOKEN_PREFIX + token), HashMap.class);
@@ -89,6 +94,7 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
     }
 
     @Override
+    @Administrator
     public Result addManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
         String salt = IdUtil.simpleUUID();
         String md5Password = DigestUtil.md5Hex(sysManager.getPassword() + salt);
@@ -99,6 +105,7 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
     }
 
     @Override
+    @Administrator
     public Result updateManager(HttpServletRequest httpServletRequest, SysManager sysManager) {
         SysManager sysManager1 = sysManagerMapper.selectById(sysManager.getId());
         String salt = sysManager1.getSalt();
