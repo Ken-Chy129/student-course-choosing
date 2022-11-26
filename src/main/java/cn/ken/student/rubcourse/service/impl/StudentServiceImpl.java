@@ -95,12 +95,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq) {
-        String code = redisTemplate.opsForValue().get("student_code:" + studentLoginReq.getId());
-        if (code == null) {
-            return Result.fail(ErrorCodeEnums.CODE_EXPIRED);
-        } else if(!code.equals(studentLoginReq.getCode())) {
-            return Result.fail(ErrorCodeEnums.CODE_ERROR);
-        }
         Student selectById = studentMapper.selectById(studentLoginReq.getId());
         if (selectById == null || selectById.getStatus() == 1) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);

@@ -23,5 +23,4 @@ public class StudentLoginReq implements Serializable {
     
     private String password;
     
-    private String code;
 }

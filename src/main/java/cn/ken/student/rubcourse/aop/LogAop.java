@@ -50,7 +50,7 @@ public class LogAop {
     @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.sys.impl.SysManagerServiceImpl.login(..))")
     public void backendCut() {}
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..))")
+    @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.impl.StudentServiceImpl.login(..))")
     public void frontendCut() {}
 
     @Around(value = "backendCut()")
