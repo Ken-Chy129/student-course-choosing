@@ -2,11 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.StudentCourseMapper">
     
+    <resultMap id="logs" type="cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp">
+        <result property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="teacher" column="teacher"/>
+        <result property="credits" column="credits"/>
+        <result property="type" column="type"/>
+        <result property="language" column="language"/>
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+            <result property="durationTime" column="duration_time"/>
+            <result property="weekDay" column="week_day"/>
+            <result property="dayNo" column="day_no"/>
+            <result property="place" column="place"/>
+        </collection>
+    </resultMap>
+    
     <select id="getStudentCourse" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
         select *
         from student_course_choosing.scc_student_course
         where student_id = #{param1}
         and semester = #{param2}
         and is_deleted = 0
+    </select>
+    
+    <select id="getStudentChooseLogs" resultType="cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp">
+        select scc.course_id course_id, course_name, teacher, credits, type, language,
+        duration_time, week_day, day_no, place
+        from student_course_choosing.scc_student_course ssc
+        left join student_course_choosing.scc_course_class scc on scc.id = ssc.course_class_id
+        left join student_course_choosing.scc_course sc on sc.id = scc.course_id
+        left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
+        where ssc.student_id = #{param1}
+        and ssc.semester = #{param2}
+        and sct.is_deleted = false
+        and ssc.is_deleted = #{param3}
     </select>
 </mapper>

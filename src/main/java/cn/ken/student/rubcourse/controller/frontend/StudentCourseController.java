@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -27,10 +28,10 @@ public class StudentCourseController {
     @Autowired
     private IStudentCourseService studentCourseService;
     
-    @GetMapping("getStudentChoose")
-    @ApiOperation("查询学生选课")
-    public Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
-        return studentCourseService.getStudentChoose(httpServletRequest, studentId, semester, isChosen);
+    @GetMapping("getStudentChooseLog")
+    @ApiOperation("查询学生选课日志")
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, @NotNull Long studentId, @NotNull Integer semester, @NotNull Boolean isChosen) {
+        return studentCourseService.getStudentChooseLog(httpServletRequest, studentId, semester, isChosen);
     }
 
     @PostMapping("chooseCourse")
@@ -38,4 +39,5 @@ public class StudentCourseController {
     public Result chooseCourse(HttpServletRequest httpServletRequest, @RequestBody StudentCourse studentCourse) {
         return studentCourseService.chooseCourse(httpServletRequest, studentCourse);
     }
+    
 }

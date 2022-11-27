@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.mapper.*;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,13 +55,9 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
-        LambdaQueryWrapper<StudentCourse> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StudentCourse::getStudentId, studentId)
-                .eq(semester != null, StudentCourse::getSemester, semester)
-                .eq(StudentCourse::getIsDeleted, !isChosen);
-        List<StudentCourse> studentCourses = studentCourseMapper.selectList(queryWrapper);
-        return Result.success(studentCourses);
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
+        List<StudentChooseLogResp> studentCourse = studentCourseMapper.getStudentChooseLogs(studentId, semester, isChosen);
+        return Result.success(studentCourse);
     }
 
     @Override

@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IStudentCourseService extends IService<StudentCourse> {
 
-    Result getStudentChoose(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen);
+    Result getStudentChooseLog(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen);
 
     Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
+
 }

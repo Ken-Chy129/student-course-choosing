@@ -34,7 +34,7 @@ public class StudentCourse implements Serializable {
     @ApiModelProperty("学生学号")
     private Long studentId;
 
-    @ApiModelProperty("课程编号")
+    @ApiModelProperty("课程班编号")
     private Long courseClassId;
 
     @ApiModelProperty("选择学期")
