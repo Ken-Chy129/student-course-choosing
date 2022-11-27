@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.controller;
+package cn.ken.student.rubcourse.controller.frontend;
 
 
 
