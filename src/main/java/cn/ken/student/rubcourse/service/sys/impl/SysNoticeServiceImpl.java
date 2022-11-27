@@ -5,7 +5,7 @@ import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.config.RabbitMQConfig;
 import cn.ken.student.rubcourse.dto.MessageDTO;
-import cn.ken.student.rubcourse.dto.req.SysNoticePageReq;
+import cn.ken.student.rubcourse.dto.sys.req.SysNoticePageReq;
 import cn.ken.student.rubcourse.entity.SysNotice;
 import cn.ken.student.rubcourse.mapper.SysNoticeMapper;
 import cn.ken.student.rubcourse.service.sys.ISysNoticeService;

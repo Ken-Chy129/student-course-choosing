@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.dto.req;
+package cn.ken.student.rubcourse.dto.sys.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

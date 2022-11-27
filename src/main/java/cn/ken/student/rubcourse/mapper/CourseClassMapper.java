@@ -23,6 +23,6 @@ public interface CourseClassMapper extends BaseMapper<CourseClass> {
     List<CourseClassInfoResp> getCourseInfoPage(CourseClassListReq courseClassListReq);
     
     List<ClassCourseListResp> getCourseClassInfoList(ClassCourseListReq classCourseListReq);
-    
+
 }
 

@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
+import cn.ken.student.rubcourse.dto.sys.req.SysLogPageReq;
 import cn.ken.student.rubcourse.service.sys.ISysBackendLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

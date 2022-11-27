@@ -2,7 +2,7 @@ package cn.ken.student.rubcourse.service.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.MessageDTO;
-import cn.ken.student.rubcourse.dto.req.SysNoticePageReq;
+import cn.ken.student.rubcourse.dto.sys.req.SysNoticePageReq;
 import cn.ken.student.rubcourse.entity.SysNotice;
 import com.baomidou.mybatisplus.extension.service.IService;
 

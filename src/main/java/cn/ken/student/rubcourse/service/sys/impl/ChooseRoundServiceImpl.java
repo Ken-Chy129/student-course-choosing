@@ -5,7 +5,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.dto.req.ChooseRoundListReq;
+import cn.ken.student.rubcourse.dto.sys.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.entity.StudentCredits;

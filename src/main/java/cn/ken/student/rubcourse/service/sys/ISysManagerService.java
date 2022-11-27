@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.service.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.ManagerLoginReq;
+import cn.ken.student.rubcourse.dto.sys.req.ManagerLoginReq;
 import cn.ken.student.rubcourse.entity.SysManager;
 import com.baomidou.mybatisplus.extension.service.IService;
 

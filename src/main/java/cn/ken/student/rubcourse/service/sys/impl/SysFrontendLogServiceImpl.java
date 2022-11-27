@@ -2,7 +2,7 @@ package cn.ken.student.rubcourse.service.sys.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.dto.req.SysLogPageReq;
+import cn.ken.student.rubcourse.dto.sys.req.SysLogPageReq;
 import cn.ken.student.rubcourse.entity.SysFrontendLog;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
 import cn.ken.student.rubcourse.service.sys.ISysFrontendLogService;

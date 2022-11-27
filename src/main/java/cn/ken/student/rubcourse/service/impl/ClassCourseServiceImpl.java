@@ -12,10 +12,7 @@ import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.entity.StudentCourse;
-import cn.ken.student.rubcourse.mapper.ClassCourseMapper;
-import cn.ken.student.rubcourse.mapper.CourseClassMapper;
-import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
-import cn.ken.student.rubcourse.mapper.StudentMapper;
+import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.IClassCourseService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -50,12 +47,6 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     private CourseUtil courseUtil;
     
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    
-    @Autowired
-    private StudentMapper studentMapper;
-    
-    @Autowired
     private StudentCourseMapper studentCourseMapper;
     
     @Override
@@ -85,8 +76,8 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
 
     @Override
     public Result getRecommendedCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
-        
-        return null;
+        classCourseListReq.setRecommendedTime(classCourseListReq.getSemester());
+        return getClassCoursePage(httpServletRequest, classCourseListReq);
     }
 
 

@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.controller.frontend;
+package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
