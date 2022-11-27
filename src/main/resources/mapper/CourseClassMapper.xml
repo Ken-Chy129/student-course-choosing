@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseClassMapper">
     
-    <resultMap type="cn.ken.student.rubcourse.dto.resp.AllCourseListResp" id="allCourseDetails">
+    <resultMap type="cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp" id="courseClassInfoResp">
         <result property="id" column="id"/>
         <result property="courseId" column="course_id"/>
         <result property="isMooc" column="is_mooc"/>
@@ -25,8 +25,41 @@
             <result property="place" column="place"/>
         </collection>
     </resultMap>
+
+    <resultMap type="cn.ken.student.rubcourse.dto.resp.ClassCourseListResp" id="classCourseListResp">
+        <result property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="classNum" column="class_num"/>
+        <result property="type" column="type"/>
+        <result property="isMust" column="is_must"/>
+        <result property="collegeName" column="college"/>
+        <result property="credit" column="credit"/>
+        <collection property="courseClassInfoResps" ofType="cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp" javaType="list">
+            <result property="id" column="id"/>
+            <result property="courseId" column="course_id"/>
+            <result property="isMooc" column="is_mooc"/>
+            <result property="language" column="language"/>
+            <result property="choosingNum" column="choosing_num"/>
+            <result property="capacity" column="capacity"/>
+            <result property="teacher" column="teacher"/>
+            <result property="examType" column="exam_type"/>
+            <result property="examTime" column="exam_time"/>
+            <result property="courseName" column="course_name"/>
+            <result property="campus" column="campus"/>
+            <result property="college" column="college"/>
+            <result property="type" column="type"/>
+            <result property="generalType" column="general_type"/>
+            <result property="credit" column="credit"/>
+            <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+                <result property="durationTime" column="duration_time"/>
+                <result property="weekDay" column="week_day"/>
+                <result property="dayNo" column="day_no"/>
+                <result property="place" column="place"/>
+            </collection>
+        </collection>
+    </resultMap>
     
-    <select id="getCourseInfoPage" resultMap="allCourseDetails">
+    <select id="getCourseInfoPage" resultMap="courseClassInfoResp">
         select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
         course_name, campus, college, sc.type type, general_type, credit,
         duration_time, week_day, day_no, place
@@ -62,6 +95,31 @@
         </if>
         and scc.is_deleted = 0
         and sct.is_deleted = 0
+        </where>
+    </select>
+    
+    <select id="getCourseClassInfoList" resultMap="classCourseListResp">
+        select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
+               course_name, campus, college, sc.type type, general_type, credit, class_num, scc2.is_must is_must,
+               duration_time, week_day, day_no, place
+        from student_course_choosing.scc_course_class scc
+        left join student_course_choosing.scc_course sc on scc.course_id = sc.id
+        left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
+        left join student_course_choosing.scc_class_course scc2 on sc.id = scc2.course_id
+        <where>
+            scc2.class_id = #{classId}
+            <if test="recommendedTime != null">
+                and commended_time = #{recommendedTime}
+            </if>
+            <if test="isMust != null ">
+                and is_must = #{isMust}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            and scc.is_deleted = 0
+            and sct.is_deleted = 0
+            and scc2.is_deleted = 0
         </where>
     </select>
 </mapper>

@@ -50,6 +50,8 @@ public class DateFormatConfig {
         objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         // 日期类型字符串处理
         objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_PATTERN));
+        
+//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
         // Java8日期日期处理
         JavaTimeModule javaTimeModule = new JavaTimeModule();

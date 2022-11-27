@@ -3,10 +3,12 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.dto.resp.ClassCourseListResp;
+import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
 import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.entity.StudentCourse;
@@ -16,7 +18,6 @@ import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IClassCourseService;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,7 +27,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,6 +45,9 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     
     @Autowired
     private CourseClassMapper courseClassMapper;
+    
+    @Autowired
+    private CourseUtil courseUtil;
     
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -89,18 +92,19 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
 
     @Override
     public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
-        // 获取轮次信息
-        ChooseRound chooseRound = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
-        if (chooseRound == null) {
-            return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
-        }
+
+        // 获取学生已选课程表
+        List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(classCourseListReq.getStudentId(), classCourseListReq.getSemester());
         
-        // 根据条件获取方案内课程
-        List<ClassCourseListResp> classCourseList = classCourseMapper.getClassCourseList(classCourseListReq);
-        for (ClassCourseListResp classCourseListResp : classCourseList) {
-            
+        // 获取方案内课程的开课班信息
+        List<ClassCourseListResp> courseClassInfoRespList = courseClassMapper.getCourseClassInfoList(classCourseListReq);
+
+        for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
+            courseUtil.setPlaceTimeAndIsConflict(classCourseListResp.getCourseClassInfoResps(), studentCourses);
         }
-        IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourseList);
+
+        IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), courseClassInfoRespList);
+        
         return Result.success(page);
     }
 

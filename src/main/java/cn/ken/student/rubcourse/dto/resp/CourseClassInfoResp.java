@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.dto.resp;
 
 import cn.ken.student.rubcourse.entity.CourseTimeplace;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.List;
  * @date 2022/11/19 21:09
  */
 @Data
-public class AllCourseListResp implements Serializable {
+public class CourseClassInfoResp implements Serializable {
     
     private Long id;
     
@@ -52,6 +53,7 @@ public class AllCourseListResp implements Serializable {
     
     private Boolean isConflict;
     
+    @ApiModelProperty(hidden = true)
     private List<CourseTimeplace> courseTimeplaceList;
     
 }

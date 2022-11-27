@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.mapper;
 
 import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
-import cn.ken.student.rubcourse.dto.resp.ClassCourseListResp;
+import cn.ken.student.rubcourse.dto.ClassInfoDTO;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,6 +21,6 @@ public interface ClassCourseMapper extends BaseMapper<ClassCourse> {
     
 //    List<ClassCourse> getClassCourseListByClassId(Integer classId);
 
-    List<ClassCourseListResp> getClassCourseList(ClassCourseListReq classCourseListReq);
+    List<ClassInfoDTO> getClassCourseList(ClassCourseListReq classCourseListReq);
 
 }

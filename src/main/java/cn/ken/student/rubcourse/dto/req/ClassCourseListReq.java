@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassCourseListReq extends Page implements Serializable {
+
+    @NotNull
+    private Long studentId;
+
+    @NotNull
+    private Integer semester;
     
     @ApiModelProperty("班级id")
     private Integer classId;

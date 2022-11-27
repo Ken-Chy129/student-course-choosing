@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -23,6 +24,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseClassListReq extends Page implements Serializable {
+    
+    @NotNull
+    private Long studentId;
+    
+    @NotNull
+    private Integer semester;
     
     @ApiModelProperty("搜索内容(课程编号/课程名称/上课教师)")
     private String searchContent;
