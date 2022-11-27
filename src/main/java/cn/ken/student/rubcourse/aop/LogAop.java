@@ -47,10 +47,16 @@ public class LogAop {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.sys.impl.SysManagerServiceImpl.login(..))")
+//    @Pointcut("execution(* cn.ken.student.rubcourse.service.sys.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.sys.impl.SysManagerServiceImpl.login(..))")
+//    public void backendCut() {}
+//
+//    @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.impl.StudentServiceImpl.login(..))")
+//    public void frontendCut() {}
+
+    @Pointcut("execution(* cn.ken.student.rubcourse.controller.sys.*.*(..))")
     public void backendCut() {}
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.impl.StudentServiceImpl.login(..))")
+    @Pointcut("execution(* cn.ken.student.rubcourse.controller.frontend.*.*(..)) && !execution(* cn.ken.student.rubcourse.controller.frontend.CommonController.*(..))")
     public void frontendCut() {}
 
     @Around(value = "backendCut()")

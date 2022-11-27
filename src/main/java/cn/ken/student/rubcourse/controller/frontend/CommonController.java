@@ -47,30 +47,31 @@ public class CommonController {
     }
     
     @GetMapping("getCampusList")
-    @ApiModelProperty("获取校区列表")
+    @ApiOperation("获取校区列表")
     public Result getCampusList() {
         return Result.success(ConstantUtil.getHashMap(CampusConstant.INSTANCE));
     }
     
     @GetMapping("getCourseTypeList")
-    @ApiModelProperty("获取课程类别表")
+    @ApiOperation("获取课程类别表")
     public Result getCourseTypeList() {
         return Result.success(ConstantUtil.getHashMap(CourseTypeConstant.INSTANCE));
     }
 
     @GetMapping("getExamTypeList")
-    @ApiModelProperty("获取考试类型列表")
+    @ApiOperation("获取考试类型列表")
     public Result getExamTypeList() {
         return Result.success(ConstantUtil.getHashMap(ExamTypeConstant.INSTANCE));
     }
+    
     @GetMapping("getGeneralTypeList")
-    @ApiModelProperty("获取通识课类别表")
+    @ApiOperation("获取通识课类别表")
     public Result getGeneralTypeList() {
         return Result.success(ConstantUtil.getHashMap(GeneralTypeConstant.INSTANCE));
     }
 
     @GetMapping("getLanguageTypeList")
-    @ApiModelProperty("获取授课语言类型列表")
+    @ApiOperation("获取授课语言类型列表")
     public Result getLanguageTypeList() {
         return Result.success(ConstantUtil.getHashMap(LanguageTypeConstant.INSTANCE));
     }
