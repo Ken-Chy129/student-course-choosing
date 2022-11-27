@@ -3,6 +3,8 @@ package cn.ken.student.rubcourse.controller.sys;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
+import cn.ken.student.rubcourse.entity.ClassCourse;
+import cn.ken.student.rubcourse.service.IClassCourseService;
 import cn.ken.student.rubcourse.service.sys.IClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -26,6 +29,9 @@ public class ClassController {
     
     @Autowired
     private IClassService classService;
+
+    @Autowired
+    private IClassCourseService classCourseService;
     
     @GetMapping("list")
     @ApiOperation("获取班级列表")
@@ -39,4 +45,16 @@ public class ClassController {
         return classService.addClass(httpServletRequest, clazz);
     }
 
+    @PostMapping("addClassCourse")
+    @ApiOperation("添加班级方案内课程")
+    public Result addClassCourse(HttpServletRequest httpServletRequest, @RequestBody ClassCourse classCourse) {
+        return classCourseService.addClassCourse(httpServletRequest, classCourse);
+    }
+    
+    @DeleteMapping("remove")
+    @ApiOperation("删除班级方案内课程")
+    public Result removeClassCourse(HttpServletRequest httpServletRequest, @RequestParam List<Integer> ids) {
+        return classCourseService.removeClassCourse(httpServletRequest, ids);
+    }
+    
 }

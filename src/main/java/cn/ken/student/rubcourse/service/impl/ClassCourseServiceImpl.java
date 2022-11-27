@@ -11,6 +11,7 @@ import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.ClassCourseMapper;
+import cn.ken.student.rubcourse.mapper.CourseClassMapper;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IClassCourseService;
@@ -41,6 +42,9 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
 
     @Autowired
     private ClassCourseMapper classCourseMapper;
+    
+    @Autowired
+    private CourseClassMapper courseClassMapper;
     
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -93,6 +97,9 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         
         // 根据条件获取方案内课程
         List<ClassCourseListResp> classCourseList = classCourseMapper.getClassCourseList(classCourseListReq);
+        for (ClassCourseListResp classCourseListResp : classCourseList) {
+            
+        }
         IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), classCourseList);
         return Result.success(page);
     }

@@ -53,10 +53,10 @@ public class LogAop {
 //    @Pointcut("execution(* cn.ken.student.rubcourse.service.impl.*.*(..)) && !execution(* cn.ken.student.rubcourse.service.impl.StudentServiceImpl.login(..))")
 //    public void frontendCut() {}
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.controller.sys.*.*(..))")
+    @Pointcut("execution(* cn.ken.student.rubcourse.controller.sys.*.*(..)) && !execution(* cn.ken.student.rubcourse.controller.sys.SysManagerController.login(..))")
     public void backendCut() {}
 
-    @Pointcut("execution(* cn.ken.student.rubcourse.controller.frontend.*.*(..)) && !execution(* cn.ken.student.rubcourse.controller.frontend.CommonController.*(..))")
+    @Pointcut("execution(* cn.ken.student.rubcourse.controller.frontend.*.*(..)) && !execution(* cn.ken.student.rubcourse.controller.frontend.CommonController.*(..)) && !execution(* cn.ken.student.rubcourse.controller.frontend.StudentController.login(..))")
     public void frontendCut() {}
 
     @Around(value = "backendCut()")
