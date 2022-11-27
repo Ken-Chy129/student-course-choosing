@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.StudentMapper">
-
+    
+    <select id="selectByCondition" resultType="cn.ken.student.rubcourse.entity.Student">
+        select *
+        from student_course_choosing.scc_student
+        <where>
+            <if test="name != null and name != ''">
+                name = #{name}
+            </if>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectByClassId" resultType="cn.ken.student.rubcourse.entity.Student">
+        select *
+        from student_course_choosing.scc_student
+        where class_id = #{param1}
+    </select>
 </mapper>

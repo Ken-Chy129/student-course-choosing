@@ -6,11 +6,13 @@ import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
+import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
-import cn.ken.student.rubcourse.dto.req.StudentReq;
+import cn.ken.student.rubcourse.dto.req.StudentOnClassReq;
+import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
@@ -18,6 +20,8 @@ import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IStudentService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -84,13 +89,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public Result getStudentByClassId(HttpServletRequest httpServletRequest, Long classId, Integer pageNo, Integer pageSize) {
-        return null;
+    public Result getStudentByClassId(HttpServletRequest httpServletRequest, StudentOnClassReq studentOnClassReq) {
+        List<Student> studentList = studentMapper.selectByClassId(studentOnClassReq.getClassId());
+        IPage<Student> page = PageUtil.getPage(new Page<>(), studentOnClassReq.getPageNo(), studentOnClassReq.getPageSize(), studentList);
+        return Result.success(page);
     }
 
     @Override
-    public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentReq studentReq) {
-        return null;
+    public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) {
+        List<Student> studentList = studentMapper.selectByCondition(studentOnConditionReq);
+        IPage<Student> page = PageUtil.getPage(new Page<>(), studentOnConditionReq.getPageNo(), studentOnConditionReq.getPageSize(), studentList);
+        return Result.success(page);
     }
 
     @Override
@@ -133,6 +142,5 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         redisTemplate.delete(RedisConstant.STUDENT_TOKEN_PREFIX + token.toString());
         return Result.success();
     }
-
-
+    
 }

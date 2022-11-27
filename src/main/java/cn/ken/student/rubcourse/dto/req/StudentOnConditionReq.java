@@ -20,7 +20,9 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentReq extends Page implements Serializable {
+public class StudentOnConditionReq extends Page implements Serializable {
+    
+    String name;
     
     Integer id;
     
