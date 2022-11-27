@@ -3,11 +3,17 @@ package cn.ken.student.rubcourse.controller.frontend;
 import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.ConstantUtil;
+import cn.ken.student.rubcourse.service.sys.IChooseRoundService;
+import cn.ken.student.rubcourse.service.sys.ICollegeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <pre>
@@ -21,6 +27,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/common")
 @Api(tags = "通用下拉框选项")
 public class CommonController {
+
+    @Autowired
+    private ICollegeService collegeService;
+
+    @Autowired
+    private IChooseRoundService chooseRoundService;
+
+    @GetMapping("list")
+    @ApiOperation("获取学院表")
+    public Result getCollegeList(HttpServletRequest httpServletRequest) {
+        return collegeService.getCollegeList(httpServletRequest);
+    }
+
+    @GetMapping("present")
+    @ApiOperation("通过当前时间自动获取当前选课轮次")
+    public Result getPresentRound(HttpServletRequest httpServletRequest) throws Exception {
+        return chooseRoundService.getPresentRound(httpServletRequest);
+    }
     
     @GetMapping("getCampusList")
     @ApiModelProperty("获取校区列表")
