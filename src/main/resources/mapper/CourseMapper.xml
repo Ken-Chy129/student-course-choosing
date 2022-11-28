@@ -2,5 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseMapper">
     
+    <select id="getCourseList" resultType="cn.ken.student.rubcourse.dto.resp.CourseNameListResp">
+        select *
+        from student_course_choosing.scc_course
+        <where>
+            <if test="searchContent != null and searchContent != ''">
+                id = #{param1} or course_name = #{param1}
+            </if>
+        </where>
+    </select>
     
+    <select id="getCoursePage" resultType="cn.ken.student.rubcourse.entity.Course">
+        select *
+        from student_course_choosing.scc_course
+        <where>
+            <if test="searchContent != null and searchContent != ''">
+                id = #{searchContent} or course_name = #{searchContent}
+            </if>
+            <if test="campus != null and campus != ''">
+                and campus = #{campus}
+            </if>
+            <if test="college != null and college != ''">
+                and college = #{college}
+            </if>
+            <if test="credit != null">
+                and credit = #{credit}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -1,11 +1,15 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
 import cn.ken.student.rubcourse.dto.resp.CourseNameListResp;
+import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,10 +49,16 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private StudentCourseMapper studentCourseMapper;
 
     @Override
-    public Result getCourseNameList(HttpServletRequest httpServletRequest, String searchContent) {
-//        List<CourseNameListResp> courseNameList = courseMapper.getCourseNameList(searchContent);
-//        return Result.success(courseNameList);
-        return null;
+    public Result getCourseList(HttpServletRequest httpServletRequest, String searchContent) {
+        List<CourseNameListResp> courseList = courseMapper.getCourseList(searchContent);
+        return Result.success(courseList);
+    }
+
+    @Override
+    public Result getCoursePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq) {
+        List<Course> courseNameList = courseMapper.getCoursePage(coursePageReq);
+        IPage<Course> page = PageUtil.getPage(new Page<>(), coursePageReq.getPageNo(), coursePageReq.getPageSize(), courseNameList);
+        return Result.success(page);
     }
 
     @Override

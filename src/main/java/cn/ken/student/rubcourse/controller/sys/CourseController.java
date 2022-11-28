@@ -2,6 +2,7 @@ package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
+import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.service.ICourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,17 +21,23 @@ import java.util.List;
  * @since 2022-11-16
  */
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/sys/course")
 @Api(tags = "课程管理")
 public class CourseController {
     
     @Autowired
     private ICourseService courseService;
 
-    @GetMapping("nameList")
-    @ApiOperation("下拉框课程名(输入id或课程名)")
+    @GetMapping("list")
+    @ApiOperation("下拉框课程列表")
     public Result getCourseNameList(HttpServletRequest httpServletRequest, String searchContent) {
-        return courseService.getCourseNameList(httpServletRequest, searchContent);
+        return courseService.getCourseList(httpServletRequest, searchContent);
+    }
+
+    @GetMapping("page")
+    @ApiOperation("课程分页显示")
+    public Result getCourseNamePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq) {
+        return courseService.getCoursePage(httpServletRequest, coursePageReq);
     }
     
     @PostMapping("add")

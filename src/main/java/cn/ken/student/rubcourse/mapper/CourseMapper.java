@@ -1,8 +1,14 @@
 package cn.ken.student.rubcourse.mapper;
 
+import cn.ken.student.rubcourse.common.entity.Page;
+import cn.ken.student.rubcourse.dto.resp.CourseNameListResp;
+import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.Course;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +20,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CourseMapper extends BaseMapper<Course> {
-    
+
+    List<CourseNameListResp> getCourseList(@Param("searchContent") String searchContent);
+
+    List<Course> getCoursePage(CoursePageReq coursePageReq);
 }
