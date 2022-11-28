@@ -4,6 +4,9 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.StudentOnClassReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Student;
+import cn.ken.student.rubcourse.entity.StudentCredits;
+import cn.ken.student.rubcourse.service.IStudentCourseService;
+import cn.ken.student.rubcourse.service.IStudentCreditsService;
 import cn.ken.student.rubcourse.service.IStudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -28,6 +32,12 @@ public class StudentController {
     
     @Autowired
     private IStudentService studentService;
+    
+    @Autowired
+    private IStudentCreditsService studentCreditsService;
+
+    @Autowired
+    private IStudentCourseService studentCourseService;
     
     @PostMapping("add")
     @ApiOperation("新增学生")
@@ -52,6 +62,24 @@ public class StudentController {
     @ApiOperation("具体条件查询")
     public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) throws Exception {
         return studentService.getStudentOnCondition(httpServletRequest, studentOnConditionReq);
+    }
+
+    @GetMapping("getStudentCredits")
+    @ApiOperation("查看学生学分")
+    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
+        return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
+    }
+
+    @PostMapping("updateStudentCredits")
+    @ApiOperation("修改学生学分")
+    public Result updateStudentCredits(HttpServletRequest httpServletRequest, @RequestBody StudentCredits studentCredits) {
+        return studentCreditsService.updateStudentCredits(httpServletRequest, studentCredits);
+    }
+
+    @GetMapping("getStudentChooseLog")
+    @ApiOperation("查询学生选课日志")
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, @NotNull Long studentId, @NotNull Integer semester, @NotNull Boolean isChosen) {
+        return studentCourseService.getStudentChooseLog(httpServletRequest, studentId, semester, isChosen);
     }
 
 }

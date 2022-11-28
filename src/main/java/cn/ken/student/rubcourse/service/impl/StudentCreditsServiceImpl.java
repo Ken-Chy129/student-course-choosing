@@ -50,27 +50,4 @@ public class StudentCreditsServiceImpl extends ServiceImpl<StudentCreditsMapper,
         return Result.success(studentCreditsMapper.updateById(studentCredits));
     }
 
-    @Override
-    public Result getCredit(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(token), HashMap.class);
-        if (hashMap == null) {
-            return Result.fail(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
-        }
-        
-        Integer id = Integer.valueOf(hashMap.get("id"));
-        ChooseRound chooseRound = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
-        if (chooseRound == null) {
-            return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
-        }
-        
-        Integer semester = chooseRound.getSemester();
-        LambdaQueryWrapper<StudentCredits> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StudentCredits::getStudentId, id)
-                .eq(StudentCredits::getSemester, semester);
-        StudentCredits studentCredits = studentCreditsMapper.selectOne(queryWrapper);
-        return Result.success(studentCredits);
-    }
-
-
 }

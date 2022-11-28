@@ -28,21 +28,10 @@ public class StudentCreditsController {
     @Autowired
     private IStudentCreditsService studentCreditsService;
     
-    @GetMapping("getStudentCredits")
+    @GetMapping("get")
     @ApiOperation("查看学生学分")
     public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
         return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
     }
-
-    @PostMapping("updateStudentCredits")
-    @ApiOperation("修改学生学分")
-    public Result updateStudentCredits(HttpServletRequest httpServletRequest, @RequestBody StudentCredits studentCredits) {
-        return studentCreditsService.updateStudentCredits(httpServletRequest, studentCredits);
-    }
-
-    @GetMapping("/getCredit")
-    @ApiOperation("获取学分信息")
-    public Result getCredit(HttpServletRequest httpServletRequest) throws Exception {
-        return studentCreditsService.getCredit(httpServletRequest);
-    }
+    
 }

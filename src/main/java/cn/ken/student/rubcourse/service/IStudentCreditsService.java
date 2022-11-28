@@ -19,6 +19,4 @@ public interface IStudentCreditsService extends IService<StudentCredits> {
     Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester);
 
     Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits);
-
-    Result getCredit(HttpServletRequest httpServletRequest);
 }
