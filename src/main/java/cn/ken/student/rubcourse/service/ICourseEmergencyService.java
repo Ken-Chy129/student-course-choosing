@@ -17,4 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface ICourseEmergencyService extends IService<CourseEmergency> {
 
     Result addCourseEmergency(HttpServletRequest httpServletRequest, CourseEmergency courseEmergency);
+
+    Result deleteCourseEmergency(HttpServletRequest httpServletRequest, Long id);
 }

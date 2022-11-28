@@ -31,4 +31,12 @@ public class CourseEmergencyServiceImpl extends ServiceImpl<CourseEmergencyMappe
         courseEmergencyMapper.insert(courseEmergency);
         return Result.success();
     }
+
+    @Override
+    public Result deleteCourseEmergency(HttpServletRequest httpServletRequest, Long id) {
+        CourseEmergency courseEmergency = courseEmergencyMapper.selectById(id);
+        courseEmergency.setIsDeleted(true);
+        courseEmergencyMapper.updateById(courseEmergency);
+        return Result.success();
+    }
 }
