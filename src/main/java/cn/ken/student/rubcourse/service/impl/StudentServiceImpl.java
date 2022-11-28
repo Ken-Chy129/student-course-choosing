@@ -68,7 +68,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         LambdaQueryWrapper<Class> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Class::getId, student.getClassId());
         Class result = classMapper.selectOne(queryWrapper);
-        if (result != null) {
+        if (result == null) {
             throw new BusinessException(ErrorCodeEnums.CLASS_NOT_EXISTS);
         }
         String salt = IdUtil.simpleUUID();
