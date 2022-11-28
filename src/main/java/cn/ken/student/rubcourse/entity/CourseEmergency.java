@@ -24,7 +24,7 @@ public class CourseEmergency implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("课程编号")
     private String courseId;
