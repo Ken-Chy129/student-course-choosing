@@ -18,6 +18,9 @@
             <if test="status != null">
                 and status = #{status}
             </if>
+            <if test="classId != null">
+                and class_id = #{classId}
+            </if>
         </where>
     </select>
     

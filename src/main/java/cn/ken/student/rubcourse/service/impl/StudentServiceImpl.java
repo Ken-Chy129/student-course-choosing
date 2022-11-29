@@ -93,22 +93,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public Result getStudentByClassId(HttpServletRequest httpServletRequest, StudentOnClassReq studentOnClassReq) {
-        List<Student> studentList = studentMapper.selectByClassId(studentOnClassReq.getClassId());
-        List<StudentResp> studentRespList = new ArrayList<>();
-        for (Student student : studentList) {
-            StudentResp studentResp = new StudentResp(student);
-            studentResp.setPhone(StringUtils.phoneDesensitization(studentResp.getPhone()));
-            studentResp.setName(StringUtils.nameDesensitization(studentResp.getName()));
-            studentResp.setIdCard(StringUtils.custNoDesensitization(studentResp.getIdCard()));
-            studentResp.setClassName(classMapper.selectById(student.getClassId()).getClassName());
-            studentRespList.add(studentResp);
-        }
-        IPage<StudentResp> page = PageUtil.getPage(new Page<>(), studentOnClassReq.getPageNo(), studentOnClassReq.getPageSize(), studentRespList);
-        return Result.success(page);
-    }
-
-    @Override
     public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) {
         List<Student> studentList = studentMapper.selectByCondition(studentOnConditionReq);
         List<StudentResp> studentRespList = new ArrayList<>();

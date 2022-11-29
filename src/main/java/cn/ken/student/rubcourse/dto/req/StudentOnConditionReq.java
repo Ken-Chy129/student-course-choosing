@@ -30,4 +30,6 @@ public class StudentOnConditionReq extends Page implements Serializable {
     
     Integer status;
     
+    Long classId;
+    
 }

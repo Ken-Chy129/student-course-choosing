@@ -52,12 +52,6 @@ public class StudentController {
         return studentService.getStudentById(httpServletRequest, id);
     }
 
-    @GetMapping("class")
-    @ApiOperation("查询班级所有学生")
-    public Result getStudentByClassId(HttpServletRequest httpServletRequest, StudentOnClassReq studentOnClassReq) throws Exception {
-        return studentService.getStudentByClassId(httpServletRequest, studentOnClassReq);
-    }
-
     @GetMapping("condition")
     @ApiOperation("具体条件查询")
     public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) throws Exception {
