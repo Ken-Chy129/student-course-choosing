@@ -25,8 +25,6 @@ public interface IStudentService extends IService<Student> {
 
     Result getStudentById(HttpServletRequest httpServletRequest, Long id) throws Exception;
 
-    Result getStudentByClassId(HttpServletRequest httpServletRequest, StudentOnClassReq studentOnClassReq) throws Exception;
-
     Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) throws Exception;
     
     Result login(HttpServletRequest httpServletRequest, StudentLoginReq studentLoginReq);
