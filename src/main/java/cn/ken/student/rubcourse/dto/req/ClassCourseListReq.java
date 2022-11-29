@@ -23,11 +23,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassCourseListReq extends Page implements Serializable {
-
-    @NotNull
+    
     private Long studentId;
-
-    @NotNull
+    
     private Integer semester;
     
     @ApiModelProperty("班级id")
