@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.frontend;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
 import io.swagger.annotations.Api;
@@ -30,8 +31,8 @@ public class StudentCourseController {
     
     @GetMapping("getStudentChooseLog")
     @ApiOperation("查询学生选课日志")
-    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, @NotNull Long studentId, @NotNull Integer semester, @NotNull Boolean isChosen) {
-        return studentCourseService.getStudentChooseLog(httpServletRequest, studentId, semester, isChosen);
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
+        return studentCourseService.getStudentChooseLog(httpServletRequest, studentChooseLogReq);
     }
 
     @PostMapping("chooseCourse")

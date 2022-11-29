@@ -1,5 +1,6 @@
 package cn.ken.student.rubcourse.mapper;
 
+import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -20,6 +21,6 @@ public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
     
     List<StudentCourse> getStudentCourse(Long id, Integer semester);
 
-    List<StudentChooseLogResp> getStudentChooseLogs(Long id, Integer semester, Boolean isChosen);
+    List<StudentChooseLogResp> getStudentChooseLogs(StudentChooseLogReq studentChooseLogReq);
     
 }

@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnClassReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Student;
@@ -72,8 +73,8 @@ public class StudentController {
 
     @GetMapping("getStudentChooseLog")
     @ApiOperation("查询学生选课日志")
-    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, @NotNull Long studentId, @NotNull Integer semester, @NotNull Boolean isChosen) {
-        return studentCourseService.getStudentChooseLog(httpServletRequest, studentId, semester, isChosen);
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
+        return studentCourseService.getStudentChooseLog(httpServletRequest, studentChooseLogReq);
     }
 
 }

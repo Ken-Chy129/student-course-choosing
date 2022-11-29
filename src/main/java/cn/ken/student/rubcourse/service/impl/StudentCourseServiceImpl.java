@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.entity.Class;
@@ -55,8 +56,8 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, Long studentId, Integer semester, Boolean isChosen) {
-        List<StudentChooseLogResp> studentCourse = studentCourseMapper.getStudentChooseLogs(studentId, semester, isChosen);
+    public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
+        List<StudentChooseLogResp> studentCourse = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
         return Result.success(studentCourse);
     }
 
