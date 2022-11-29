@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.ClassCourse;
@@ -43,6 +44,12 @@ public class ClassController {
     @ApiOperation("添加班级")
     public Result addClass(HttpServletRequest httpServletRequest, @RequestBody Class clazz) {
         return classService.addClass(httpServletRequest, clazz);
+    }
+
+    @GetMapping("/classCoursePage")
+    @ApiOperation("查看班级方案内课程")
+    public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+        return classCourseService.getClassCoursePage(httpServletRequest, classCourseListReq);
     }
 
     @PostMapping("addClassCourse")
