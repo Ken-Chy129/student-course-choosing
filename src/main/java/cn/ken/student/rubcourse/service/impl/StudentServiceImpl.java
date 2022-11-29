@@ -13,6 +13,7 @@ import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnClassReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
+import cn.ken.student.rubcourse.dto.sys.resp.StudentResp;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -85,20 +87,40 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         selectById.setPhone(StringUtils.phoneDesensitization(selectById.getPhone()));
         selectById.setName(StringUtils.nameDesensitization(selectById.getName()));
         selectById.setIdCard(StringUtils.custNoDesensitization(selectById.getIdCard()));
-        return Result.success(selectById);
+        StudentResp studentResp = new StudentResp(selectById);
+        studentResp.setClassName(classMapper.selectById(selectById.getClassId()).getClassName());
+        return Result.success(studentResp);
     }
 
     @Override
     public Result getStudentByClassId(HttpServletRequest httpServletRequest, StudentOnClassReq studentOnClassReq) {
         List<Student> studentList = studentMapper.selectByClassId(studentOnClassReq.getClassId());
-        IPage<Student> page = PageUtil.getPage(new Page<>(), studentOnClassReq.getPageNo(), studentOnClassReq.getPageSize(), studentList);
+        List<StudentResp> studentRespList = new ArrayList<>();
+        for (Student student : studentList) {
+            StudentResp studentResp = new StudentResp(student);
+            studentResp.setPhone(StringUtils.phoneDesensitization(studentResp.getPhone()));
+            studentResp.setName(StringUtils.nameDesensitization(studentResp.getName()));
+            studentResp.setIdCard(StringUtils.custNoDesensitization(studentResp.getIdCard()));
+            studentResp.setClassName(classMapper.selectById(student.getClassId()).getClassName());
+            studentRespList.add(studentResp);
+        }
+        IPage<StudentResp> page = PageUtil.getPage(new Page<>(), studentOnClassReq.getPageNo(), studentOnClassReq.getPageSize(), studentRespList);
         return Result.success(page);
     }
 
     @Override
     public Result getStudentOnCondition(HttpServletRequest httpServletRequest, StudentOnConditionReq studentOnConditionReq) {
         List<Student> studentList = studentMapper.selectByCondition(studentOnConditionReq);
-        IPage<Student> page = PageUtil.getPage(new Page<>(), studentOnConditionReq.getPageNo(), studentOnConditionReq.getPageSize(), studentList);
+        List<StudentResp> studentRespList = new ArrayList<>();
+        for (Student student : studentList) {
+            StudentResp studentResp = new StudentResp(student);
+            studentResp.setPhone(StringUtils.phoneDesensitization(studentResp.getPhone()));
+            studentResp.setName(StringUtils.nameDesensitization(studentResp.getName()));
+            studentResp.setIdCard(StringUtils.custNoDesensitization(studentResp.getIdCard()));
+            studentResp.setClassName(classMapper.selectById(student.getClassId()).getClassName());
+            studentRespList.add(studentResp);
+        }
+        IPage<StudentResp> page = PageUtil.getPage(new Page<>(), studentOnConditionReq.getPageNo(), studentOnConditionReq.getPageSize(), studentRespList);
         return Result.success(page);
     }
 
