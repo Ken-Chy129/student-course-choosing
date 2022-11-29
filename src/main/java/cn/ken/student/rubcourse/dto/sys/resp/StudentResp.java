@@ -54,6 +54,7 @@ public class StudentResp implements Serializable {
     
     public StudentResp(Student student) {
         this.id = student.getId();
+        this.name = student.getName();
         this.className = student.getName();
         this.gender = student.getGender();
         this.status = student.getStatus();
