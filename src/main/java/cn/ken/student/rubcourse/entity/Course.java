@@ -47,6 +47,9 @@ public class Course implements Serializable {
 
     @ApiModelProperty("课程学分")
     private BigDecimal credit;
+    
+    @ApiModelProperty(value = "可选班级数", hidden = true)
+    private Integer classNum;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)

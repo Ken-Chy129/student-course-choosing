@@ -1,9 +1,15 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.constant.DayNoConstant;
+import cn.ken.student.rubcourse.common.constant.ExamTypeConstant;
+import cn.ken.student.rubcourse.common.constant.LanguageTypeConstant;
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
+import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.dto.req.CourseClassAddReq;
 import cn.ken.student.rubcourse.dto.resp.CourseNameListResp;
+import cn.ken.student.rubcourse.dto.sys.req.CourseAddReq;
 import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
@@ -43,6 +49,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CollegeMapper collegeMapper;
     
     @Autowired
+    private CourseClassMapper courseClassMapper;
+    
+    @Autowired
     private CourseDependenceMapper courseDependenceMapper;
     
     @Autowired
@@ -63,27 +72,42 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Override
     @Transactional
-    public Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq) {
-//        CourseClass courseClass = getCourseInfo(courseInfoAddReq);
-//        for (int i=0; i<courseInfoAddReq.getDurationList().size(); i++) {
-//            CourseTimeplace courseTimeplace = new CourseTimeplace();
-//            courseTimeplace.setId(SnowflakeUtil.nextId());
-//            courseTimeplace.setCourseClassId(courseClass.getId());
-//            courseTimeplace.setDurationTime(courseInfoAddReq.getDurationList().get(i));
-//            courseTimeplace.setPlace(courseInfoAddReq.getPlaceList().get(i));
-//            courseTimeplace.setWeekDay(courseInfoAddReq.getWeekDayList().get(i));
-//            courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseInfoAddReq.getDayNoList().get(i)));
-//            courseTimeplaceMapper.insert(courseTimeplace);
-//        }
-//        for (String preCourseId : courseInfoAddReq.getPreCourseIdList()) {
-//            CourseDependence courseDependence = new CourseDependence();
-//            courseDependence.setId(SnowflakeUtil.nextId());
-//            courseDependence.setCourseId(courseClass.getId());
-//            courseDependence.setPreCourseId(preCourseId);
-//            courseDependenceMapper.insert(courseDependence);
-//        }
-//        courseMapper.insert(courseClass);
+    public Result addCourse(HttpServletRequest httpServletRequest, CourseAddReq courseAddReq) {
+        String courseNum = redisTemplate.opsForValue().get("course_num");
+        assert courseNum != null;
+        redisTemplate.opsForValue().set(RedisConstant.COURSE_NUM, String.valueOf(Integer.parseInt(courseNum)+1));
+        Course course = courseAddReq.getCourse();
+        String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + (course.getGeneralType() == null ? "0" : course.getGeneralType()+1) + courseNum;
+        course.setId(id);
+        courseMapper.insert(course);
+
+        for (String preCourseId : courseAddReq.getPreCourseIdList()) {
+            CourseDependence courseDependence = new CourseDependence();
+            courseDependence.setId(SnowflakeUtil.nextId());
+            courseDependence.setCourseId(course.getId());
+            courseDependence.setPreCourseId(preCourseId);
+            courseDependenceMapper.insert(courseDependence);
+        }
         return Result.success();
+    }
+
+    @Override
+    @Transactional
+    public Result addCourseClass(HttpServletRequest httpServletRequest, CourseClassAddReq courseClassAddReq) {
+        CourseClass courseClass = getCourseInfo(courseClassAddReq);
+        for (int i = 0; i< courseClassAddReq.getDurationList().size(); i++) {
+            CourseTimeplace courseTimeplace = new CourseTimeplace();
+            courseTimeplace.setId(SnowflakeUtil.nextId());
+            courseTimeplace.setCourseClassId(courseClass.getId());
+            courseTimeplace.setDurationTime(courseClassAddReq.getDurationList().get(i));
+            courseTimeplace.setPlace(courseClassAddReq.getPlaceList().get(i));
+            courseTimeplace.setWeekDay(courseClassAddReq.getWeekDayList().get(i));
+            courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNoList().get(i)));
+            courseTimeplaceMapper.insert(courseTimeplace);
+        }
+        
+        courseClassMapper.insert(courseClass);
+        return null;
     }
 
     @Override
@@ -104,28 +128,17 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return Result.success();
     }
 
-    private CourseClass getCourseInfo(CourseInfoAddReq courseInfoAddReq) {
-//        CourseClass courseClass = new CourseClass();
-//        courseClass.setCourseName(courseInfoAddReq.getCourseName());
-//        courseClass.setType(CourseTypeConstant.INSTANCE.get(courseInfoAddReq.getType()));
-//        courseClass.setCampus(CampusConstant.INSTANCE.get(courseInfoAddReq.getCampus()));
-//        courseClass.setCapacity(courseInfoAddReq.getCapacity());
-//        courseClass.setCredit(courseInfoAddReq.getCredit());
-//        courseClass.setCollege(collegeMapper.selectById(courseInfoAddReq.getCollege()).getCollegeName());
-//        if (courseInfoAddReq.getGeneralType() != null) {
-//            courseClass.setGeneralType(GeneralTypeConstant.INSTANCE.get(courseInfoAddReq.getGeneralType()));
-//        }
-//        courseClass.setIsMooc(courseInfoAddReq.getIsMooc());
-//        courseClass.setExamTime(courseInfoAddReq.getExamTime());
-//        courseClass.setExamType(ExamTypeConstant.INSTANCE.get(courseInfoAddReq.getExamType()));
-//        courseClass.setLanguage(LanguageTypeConstant.INSTANCE.get(courseInfoAddReq.getLanguage()));
-//        courseClass.setTeacher(courseInfoAddReq.getTeacher());
-//        String courseNum = redisTemplate.opsForValue().get("course_num");
-//        assert courseNum != null;
-//        redisTemplate.opsForValue().set("courseNum", String.valueOf(Integer.parseInt(courseNum)+1));
-//        String id = courseInfoAddReq.getCampus() + (courseInfoAddReq.getCollege().toString().length() == 1 ? "0" : "") + courseInfoAddReq.getCollege().toString() + courseInfoAddReq.getType().toString() + (courseInfoAddReq.getGeneralType() == null ? "0" : String.valueOf(courseInfoAddReq.getGeneralType()+1)) + courseNum;
-//        courseClass.setId(id);
-//        return courseClass;
-        return null;
+    private CourseClass getCourseInfo(CourseClassAddReq courseClassAddReq) {
+        CourseClass courseClass = new CourseClass();
+        courseClass.setId(SnowflakeUtil.nextId());
+        courseClass.setCourseId(courseClassAddReq.getCourseId());
+        courseClass.setIsMooc(courseClassAddReq.getIsMooc());
+        courseClass.setLanguage(LanguageTypeConstant.INSTANCE.get(courseClassAddReq.getLanguage()));
+        courseClass.setChoosingNum(0);
+        courseClass.setCapacity(courseClassAddReq.getCapacity());
+        courseClass.setExamType(ExamTypeConstant.INSTANCE.get(courseClassAddReq.getExamType()));
+        courseClass.setExamTime(courseClassAddReq.getExamTime());
+        courseClass.setTeacher(courseClassAddReq.getTeacher());
+        return courseClass;
     }
 }

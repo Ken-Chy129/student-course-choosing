@@ -18,4 +18,6 @@ public class RedisConstant {
     
     public static String STUDENT_TOKEN_PREFIX = "student:";
     
+    public static String COURSE_NUM = "course_num";
+    
 }

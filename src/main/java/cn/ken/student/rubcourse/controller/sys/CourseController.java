@@ -1,8 +1,10 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
+import cn.ken.student.rubcourse.dto.req.CourseClassAddReq;
+import cn.ken.student.rubcourse.dto.sys.req.CourseAddReq;
 import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
+import cn.ken.student.rubcourse.entity.Course;
 import cn.ken.student.rubcourse.service.ICourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,16 +42,23 @@ public class CourseController {
         return courseService.getCoursePage(httpServletRequest, coursePageReq);
     }
     
-    @PostMapping("add")
-    @ApiOperation("添加课程信息")
-    public Result addCourseInfo(HttpServletRequest httpServletRequest, @RequestBody CourseInfoAddReq courseInfoAddReq) {
-        return courseService.addCourseInfo(httpServletRequest, courseInfoAddReq);
+    @PostMapping("addCourse")
+    @ApiOperation("添加课程")
+    public Result addCourse(HttpServletRequest httpServletRequest, @RequestBody CourseAddReq courseAddReq) {
+        return courseService.addCourse(httpServletRequest, courseAddReq);
     }
 
-    @PostMapping("removeCourseInfo")
-    @ApiOperation("删除课程信息")
+    @PostMapping("addCourseClass")
+    @ApiOperation("添加课程班")
+    public Result addCourseClass(HttpServletRequest httpServletRequest, @RequestBody CourseClassAddReq courseClassAddReq) {
+        return courseService.addCourseClass(httpServletRequest, courseClassAddReq);
+    }
+
+    @PostMapping("removeCourse")
+    @ApiOperation("删除课程")
     public Result removeCourseInfo(HttpServletRequest httpServletRequest, @RequestParam List<String> courseInfoIds) {
         return courseService.removeCourseInfo(httpServletRequest, courseInfoIds);
     }
+    
 
 }

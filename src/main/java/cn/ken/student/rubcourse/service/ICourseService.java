@@ -1,7 +1,8 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.CourseInfoAddReq;
+import cn.ken.student.rubcourse.dto.req.CourseClassAddReq;
+import cn.ken.student.rubcourse.dto.sys.req.CourseAddReq;
 import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -23,8 +24,10 @@ public interface ICourseService extends IService<Course> {
 
     Result getCoursePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq);
     
-    Result addCourseInfo(HttpServletRequest httpServletRequest, CourseInfoAddReq courseInfoAddReq);
+    Result addCourse(HttpServletRequest httpServletRequest, CourseAddReq courseAddReq);
 
+    Result addCourseClass(HttpServletRequest httpServletRequest, CourseClassAddReq courseClassAddReq);
+    
     Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds);
 
 }
