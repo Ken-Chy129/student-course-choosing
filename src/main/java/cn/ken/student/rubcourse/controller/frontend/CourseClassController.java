@@ -3,7 +3,9 @@ package cn.ken.student.rubcourse.controller.frontend;
 
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
+import cn.ken.student.rubcourse.service.IClassCourseService;
 import cn.ken.student.rubcourse.service.ICourseClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,21 @@ public class CourseClassController {
     
     @Autowired
     private ICourseClassService courseClassService;
+
+    @Autowired
+    private IClassCourseService classCourseService;
+
+    @GetMapping("/recommendedCoursePage")
+    @ApiOperation("查看推荐班课程")
+    public Result getRecommendedCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+        return classCourseService.getRecommendedCoursePage(httpServletRequest, classCourseListReq);
+    }
+
+    @GetMapping("/classCoursePage")
+    @ApiOperation("查看班级方案内课程")
+    public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+        return classCourseService.getClassCoursePage(httpServletRequest, classCourseListReq);
+    }
 
     @GetMapping("courseClassPage")
     @ApiOperation("前台分页显示全校课程班详细信息")
