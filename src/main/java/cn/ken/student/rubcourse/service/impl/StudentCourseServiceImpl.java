@@ -65,9 +65,9 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     @Transactional
     public Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
         // 只有已经确定了学分充足，没有冲突的时候才可以进入选课
-        String token = httpServletRequest.getHeader(RedisConstant.STUDENT_TOKEN_PREFIX + "token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(token), HashMap.class);
-        Long studentId = Long.valueOf(hashMap.get("id"));
+        String token = httpServletRequest.getHeader("token");
+        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        Long studentId = studentCourse.getStudentId();
         Integer classId = Integer.valueOf(hashMap.get("classId"));
         Integer semester = studentCourse.getSemester();
 
@@ -110,5 +110,21 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         studentCourse.setId(SnowflakeUtil.nextId());
         studentCourseMapper.insert(studentCourse);
         return Result.success(studentCourse);
+    }
+
+    @Override
+    public Result unChooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
+        // 查询到选择的记录
+        StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
+        
+        // 查看该门课程是否是其他已选课程的先修课
+        
+        
+        // 设置退选
+        
+        // 恢复课程容量
+        
+        // 恢复学分
+        return null;
     }
 }

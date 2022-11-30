@@ -21,4 +21,5 @@ public interface IStudentCourseService extends IService<StudentCourse> {
 
     Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
 
+    Result unChooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
 }

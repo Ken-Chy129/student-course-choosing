@@ -40,5 +40,11 @@ public class StudentCourseController {
     public Result chooseCourse(HttpServletRequest httpServletRequest, @RequestBody StudentCourse studentCourse) {
         return studentCourseService.chooseCourse(httpServletRequest, studentCourse);
     }
+
+    @PostMapping("unChooseCourse")
+    @ApiOperation("学生退选-尚未完成")
+    public Result unChooseCourse(HttpServletRequest httpServletRequest, @RequestBody StudentCourse studentCourse) {
+        return studentCourseService.unChooseCourse(httpServletRequest, studentCourse);
+    }
     
 }

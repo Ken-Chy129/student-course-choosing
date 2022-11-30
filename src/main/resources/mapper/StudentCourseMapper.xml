@@ -47,4 +47,13 @@
         (select course_class_id from student_course_choosing.scc_student_course
             where student_id = #{param2} and semester = #{param3} and is_deleted = false)
     </select>
+    
+    <select id="selectByStudentAndSemesterAndCourseClass" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+        select *
+        from student_course_choosing.scc_student_course
+        where student_id = #{param1}
+        and semester = #{param2}
+        and course_class_id = #{param3}
+        and is_deleted = false
+    </select>
 </mapper>
