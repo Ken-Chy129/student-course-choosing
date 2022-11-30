@@ -38,4 +38,13 @@
         and ssc.is_deleted = !#{isChosen}
         and sc.type = #{type}
     </select>
+    
+    <select id="getIsCourseChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+        select *
+        from student_course_choosing.scc_class_course scc
+        where course_id = #{param1}
+        and scc.id in
+        (select course_class_id from student_course_choosing.scc_student_course
+            where student_id = #{param2} and semester = #{param3} and is_deleted = false)
+    </select>
 </mapper>

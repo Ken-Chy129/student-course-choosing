@@ -15,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StudentCreditsMapper extends BaseMapper<StudentCredits> {
 
-    StudentCredits selectByStudentAndSemester(String studentId, Integer semester);
+    StudentCredits selectByStudentAndSemester(Long studentId, Integer semester);
 }

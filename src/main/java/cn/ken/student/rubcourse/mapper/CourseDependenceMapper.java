@@ -17,5 +17,5 @@ import java.util.List;
 @Mapper
 public interface CourseDependenceMapper extends BaseMapper<CourseDependence> {
 
-    List<CourseDependence> selectCourseDependence(Long courseId);
+    List<CourseDependence> selectCourseDependence(String courseId);
 }

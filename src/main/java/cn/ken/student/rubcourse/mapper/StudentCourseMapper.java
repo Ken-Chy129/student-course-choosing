@@ -23,4 +23,6 @@ public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
 
     List<StudentChooseLogResp> getStudentChooseLogs(StudentChooseLogReq studentChooseLogReq);
     
+    StudentCourse getIsCourseChoose(String courseId, Long studentId, Integer semester);
+    
 }

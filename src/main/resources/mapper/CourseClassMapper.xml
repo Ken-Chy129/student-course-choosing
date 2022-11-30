@@ -65,10 +65,12 @@
         duration_time, week_day, day_no, place
         from student_course_choosing.scc_course_class scc
         left join student_course_choosing.scc_course sc on scc.course_id = sc.id
-        left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
+        left join student_course_choosing.scc_course_timeplace sct on sct.course_class_id = scc.id
         <where>
+            scc.is_deleted = 0
+            and sct.is_deleted = 0
         <if test="searchContent != null">
-            (course_id like concat('%',#{searchContent},'%')
+            and (course_id like concat('%',#{searchContent},'%')
             or course_name like concat('%',#{searchContent},'%')
             or teacher like concat('%',#{searchContent},'%'))
         </if>
@@ -93,15 +95,13 @@
         <if test="weekDay != null">
             and week_day = #{weekDay}
         </if>
-        and scc.is_deleted = 0
-        and sct.is_deleted = 0
         </where>
     </select>
     
     <select id="getCourseClassInfoList" resultMap="classCourseListResp">
         select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
                course_name, campus, college, sc.type type, general_type, credit, class_num, scc2.is_must is_must,
-               duration_time, week_day, day_no, place, 
+               duration_time, week_day, day_no, place
         from student_course_choosing.scc_course_class scc
         left join student_course_choosing.scc_course sc on scc.course_id = sc.id
         left join student_course_choosing.scc_course_timeplace sct on scc.id = sct.course_class_id
