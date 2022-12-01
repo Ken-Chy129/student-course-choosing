@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <pre>
@@ -66,6 +67,7 @@ public class LogAop {
         HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
         String token = httpServletRequest.getHeader("token");
         HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.SYSTEM_TOKEN_PREFIX + token), HashMap.class);
+        redisTemplate.opsForValue().set(RedisConstant.SYSTEM_TOKEN_PREFIX + token, JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
         if (hashMap == null) {
             throw new BusinessException(ErrorCodeEnums.SYS_UN_LOGIN);
         }
@@ -93,6 +95,7 @@ public class LogAop {
         HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
         String token = httpServletRequest.getHeader("token");
         HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        redisTemplate.opsForValue().set(RedisConstant.STUDENT_TOKEN_PREFIX + token, JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
         if (hashMap == null) {
             throw new BusinessException(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
         }
