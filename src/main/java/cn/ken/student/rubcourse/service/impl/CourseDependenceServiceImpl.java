@@ -8,6 +8,7 @@ import cn.ken.student.rubcourse.entity.CourseDependence;
 import cn.ken.student.rubcourse.mapper.CourseDependenceMapper;
 import cn.ken.student.rubcourse.service.ICourseDependenceService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,16 @@ public class CourseDependenceServiceImpl extends ServiceImpl<CourseDependenceMap
         }
         return Result.success();
     }
-    
+
+    @Override
+    public Result removeCourseDependence(HttpServletRequest httpServletRequest, Long id) {
+        LambdaUpdateWrapper<CourseDependence> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(CourseDependence::getId, id)
+                .set(CourseDependence::getIsDeleted, true);
+        courseDependenceMapper.update(null, updateWrapper);
+        return null;
+    }
+
     private List<CourseDependence> getCourseDependence(String courseId) {
         LambdaQueryWrapper<CourseDependence> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(CourseDependence::getCourseId, courseId)

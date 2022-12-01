@@ -16,6 +16,8 @@ import java.util.List;
  */
 @Data
 public class ClassCourseListResp {
+    
+    private Long id;
 
     private String courseId;
 

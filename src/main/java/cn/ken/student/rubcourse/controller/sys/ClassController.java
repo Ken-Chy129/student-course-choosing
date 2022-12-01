@@ -58,13 +58,13 @@ public class ClassController {
         return classCourseService.addClassCourse(httpServletRequest, classCourse);
     }
 
-    @PutMapping("update")
+    @PutMapping("updateClassCourse")
     @ApiOperation("修改班级方案内课程")
     public Result updateClassCourse(HttpServletRequest httpServletRequest, @RequestBody ClassCourse classCourse) {
         return classCourseService.updateClassCourse(httpServletRequest, classCourse);
     }
 
-    @DeleteMapping("remove")
+    @DeleteMapping("removeClassCourse")
     @ApiOperation("删除班级方案内课程")
     public Result removeClassCourse(HttpServletRequest httpServletRequest, @RequestParam List<Integer> ids) {
         return classCourseService.removeClassCourse(httpServletRequest, ids);

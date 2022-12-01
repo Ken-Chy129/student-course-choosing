@@ -111,7 +111,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds) {
+    public Result removeCourse(HttpServletRequest httpServletRequest, String id) {
 //        LambdaUpdateWrapper<CourseClass> updateWrapper0 = new LambdaUpdateWrapper<>();
 //        updateWrapper0.in(CourseClass::getId, courseInfoIds)
 //                .set(CourseClass::getStatus, 1);
@@ -126,6 +126,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 //        courseDependenceMapper.update(null, updateWrapper1);
 //        // todo:更新学生学分表以及删除学生选课表记录并发出通告
         return Result.success();
+    }
+
+    @Override
+    public Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id) {
+        return null;
     }
 
     private CourseClass getCourseInfo(CourseClassAddReq courseClassAddReq) {

@@ -1,6 +1,5 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.CourseUtil;
@@ -8,19 +7,15 @@ import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.dto.resp.ClassCourseListResp;
-import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
-import cn.ken.student.rubcourse.entity.ChooseRound;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.IClassCourseService;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,8 +65,8 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         LambdaUpdateWrapper<ClassCourse> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(ClassCourse::getId, ids)
                 .set(ClassCourse::getIsDeleted, true);
-        classCourseMapper.update(null, updateWrapper);
-        return Result.success();
+        int update = classCourseMapper.update(null, updateWrapper);
+        return Result.success("成功删除" + update + "条数据");
     }
 
     @Override
@@ -79,7 +74,6 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         classCourseListReq.setRecommendedTime(classCourseListReq.getSemester());
         return getClassCoursePage(httpServletRequest, classCourseListReq);
     }
-
 
     @Override
     public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {

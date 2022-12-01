@@ -20,5 +20,6 @@ public interface ICourseDependenceService extends IService<CourseDependence> {
     Result getCourseDependence(HttpServletRequest httpServletRequest, String courseId);
     
     Result addCourseDependence(HttpServletRequest httpServletRequest, CourseDependencyAddReq courseDependencyAddReq);
-    
+
+    Result removeCourseDependence(HttpServletRequest httpServletRequest, Long id);
 }

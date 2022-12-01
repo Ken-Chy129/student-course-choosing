@@ -28,6 +28,7 @@ public interface ICourseService extends IService<Course> {
 
     Result addCourseClass(HttpServletRequest httpServletRequest, CourseClassAddReq courseClassAddReq);
     
-    Result removeCourseInfo(HttpServletRequest httpServletRequest, List<String> courseInfoIds);
+    Result removeCourse(HttpServletRequest httpServletRequest, String id);
 
+    Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id);
 }

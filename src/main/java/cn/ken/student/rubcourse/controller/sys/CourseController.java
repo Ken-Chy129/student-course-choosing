@@ -65,18 +65,29 @@ public class CourseController {
     public Result addCourseClass(HttpServletRequest httpServletRequest, @RequestBody CourseClassAddReq courseClassAddReq) {
         return courseService.addCourseClass(httpServletRequest, courseClassAddReq);
     }
+    
+    @DeleteMapping("removeCourseClass")
+    @ApiOperation("删除课程班")
+    public Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id) {
+        return courseService.removeCourseClass(httpServletRequest, id);
+    }
 
-    @PostMapping("add")
+    @PostMapping("addCourseDependence")
     @ApiOperation("新增课程依赖")
     public Result addCourseDependence(HttpServletRequest httpServletRequest, @RequestBody CourseDependencyAddReq courseDependencyAddReq) {
         return courseDependenceService.addCourseDependence(httpServletRequest, courseDependencyAddReq);
     }
 
-//    @PostMapping("removeCourse")
-//    @ApiOperation("删除课程")
-//    public Result removeCourseInfo(HttpServletRequest httpServletRequest, @RequestParam List<String> courseInfoIds) {
-//        return courseService.removeCourseInfo(httpServletRequest, courseInfoIds);
-//    }
-//    
+    @DeleteMapping("removeCourseDependence")
+    @ApiOperation("删除课程依赖")
+    public Result removeCourseDependence(HttpServletRequest httpServletRequest, Long id) {
+        return courseDependenceService.removeCourseDependence(httpServletRequest, id);
+    }
+    
+    @PostMapping("removeCourse")
+    @ApiOperation("删除课程")
+    public Result removeCourseInfo(HttpServletRequest httpServletRequest, String id) {
+        return courseService.removeCourse(httpServletRequest, id);
+    }
 
 }
