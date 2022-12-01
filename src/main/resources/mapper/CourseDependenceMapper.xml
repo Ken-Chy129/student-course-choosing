@@ -9,4 +9,12 @@
         and is_deleted = false;
     </select>
     
+    <select id="selectAfterCourse" resultType="cn.ken.student.rubcourse.entity.CourseDependence">
+        select *
+        from student_course_choosing.scc_course_dependence
+        where is_deleted = false
+        and pre_course_id = 
+        (select scc.course_id from student_course_choosing.scc_course_class scc
+        where scc.id = #{courseClassId} and scc.is_deleted = false)
+    </select>
 </mapper>

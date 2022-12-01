@@ -18,4 +18,6 @@ import java.util.List;
 public interface CourseDependenceMapper extends BaseMapper<CourseDependence> {
 
     List<CourseDependence> selectCourseDependence(String courseId);
+
+    List<CourseDependence> selectAfterCourse(Long courseClassId);
 }

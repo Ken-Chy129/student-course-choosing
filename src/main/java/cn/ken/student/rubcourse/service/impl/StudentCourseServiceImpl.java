@@ -89,7 +89,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         CourseClass courseClass = courseClassMapper.selectById(studentCourse.getCourseClassId());
         // 通过课程id查询依赖课程
         List<CourseDependence> courseDependenceList = courseDependenceMapper.selectCourseDependence(courseClass.getCourseId());
-        // 遍历判断是否已经选择了依赖课程
+        // 遍历判断是否已经选择了(之前学期就已选择)依赖课程
         for (CourseDependence courseDependence : courseDependenceList) {
             StudentCourse isCourseChoose = studentCourseMapper.getIsCourseChoose(courseDependence.getPreCourseId(), studentId, semester);
             if (isCourseChoose == null) {
@@ -107,24 +107,38 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         courseClassMapper.updateById(courseClass);
         
         // 新增选课
-        studentCourse.setId(SnowflakeUtil.nextId());
-        studentCourseMapper.insert(studentCourse);
-        return Result.success(studentCourse);
+        StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
+        if (chooseCourse == null) {
+            // 第一次选择
+            studentCourse.setId(SnowflakeUtil.nextId());
+            studentCourseMapper.insert(studentCourse);
+            return Result.success(studentCourse);
+        }
+        // 已选择过该课
+        chooseCourse.setIsDeleted(true);
+        studentCourseMapper.updateById(chooseCourse);
+        return Result.success(chooseCourse);
     }
 
     @Override
+    @Transactional
     public Result unChooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
+        
         // 查询到选择的记录
         StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
         
-        // 查看该门课程是否是其他已选课程的先修课
-        
-        
         // 设置退选
+        chooseCourse.setIsDeleted(true);
+        studentCourseMapper.updateById(chooseCourse);
         
         // 恢复课程容量
-        
+        CourseClass courseClass = courseClassMapper.selectById(studentCourse.getCourseClassId());
+        courseClass.setChoosingNum(courseClass.getChoosingNum() - 1);
+
         // 恢复学分
-        return null;
+        StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentCourse.getStudentId(), studentCourse.getSemester());
+        studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().subtract(studentCourse.getCredits()));
+        
+        return Result.success();
     }
 }
