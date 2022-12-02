@@ -1,18 +1,16 @@
-package cn.ken.student.rubcourse.service.sys.impl;
+package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.sys.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.entity.ChooseRound;
-import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.entity.StudentCredits;
 import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
-import cn.ken.student.rubcourse.service.sys.IChooseRoundService;
+import cn.ken.student.rubcourse.service.IChooseRoundService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.service.sys.impl;
+package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
@@ -7,7 +7,7 @@ import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Subject;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.mapper.SubjectMapper;
-import cn.ken.student.rubcourse.service.sys.IClassService;
+import cn.ken.student.rubcourse.service.IClassService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

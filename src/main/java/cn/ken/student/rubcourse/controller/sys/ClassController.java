@@ -6,14 +6,13 @@ import cn.ken.student.rubcourse.dto.req.ClassListReq;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.service.IClassCourseService;
-import cn.ken.student.rubcourse.service.sys.IClassService;
+import cn.ken.student.rubcourse.service.IClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * <p>

@@ -1,9 +1,9 @@
-package cn.ken.student.rubcourse.service.sys.impl;
+package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.entity.College;
 import cn.ken.student.rubcourse.mapper.CollegeMapper;
-import cn.ken.student.rubcourse.service.sys.ICollegeService;
+import cn.ken.student.rubcourse.service.ICollegeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

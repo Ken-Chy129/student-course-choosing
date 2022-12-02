@@ -2,7 +2,7 @@ package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.sys.req.SubjectAddReq;
-import cn.ken.student.rubcourse.service.sys.ISubjectService;
+import cn.ken.student.rubcourse.service.ISubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

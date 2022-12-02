@@ -1,10 +1,10 @@
-package cn.ken.student.rubcourse.service.sys.impl;
+package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.sys.req.DepartmentAddReq;
 import cn.ken.student.rubcourse.entity.Department;
 import cn.ken.student.rubcourse.mapper.DepartmentMapper;
-import cn.ken.student.rubcourse.service.sys.IDepartmentService;
+import cn.ken.student.rubcourse.service.IDepartmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

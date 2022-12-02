@@ -1,11 +1,11 @@
-package cn.ken.student.rubcourse.service.sys.impl;
+package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.sys.req.SysLogPageReq;
 import cn.ken.student.rubcourse.entity.SysFrontendLog;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
-import cn.ken.student.rubcourse.service.sys.ISysFrontendLogService;
+import cn.ken.student.rubcourse.service.ISysFrontendLogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
