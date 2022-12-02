@@ -16,7 +16,10 @@ import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.dto.sys.resp.StudentResp;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
+import cn.ken.student.rubcourse.entity.StudentCourse;
+import cn.ken.student.rubcourse.entity.StudentCredits;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
+import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IStudentService;
 import com.alibaba.fastjson.JSON;
@@ -28,12 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,11 +62,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     
     @Autowired
     private ClassMapper classMapper;
+    
+    @Autowired
+    private StudentCreditsMapper studentCreditsMapper;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
+    @Transactional
     public Result addStudent(HttpServletRequest httpServletRequest, Student student) throws Exception {
         Student selectById = studentMapper.selectById(student.getId());
         if (selectById != null) {
@@ -78,6 +87,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         String md5Password = DigestUtil.md5Hex(student.getPassword() + salt);
         student.setPassword(md5Password);
         studentMapper.insert(student);
+        // 插入各个学期的学分
+        String substring = student.getId().toString().substring(0, 4);
+        for (int i=0; i<=3; i++) {
+            int integer = Integer.parseInt(substring) + i;
+            for (int j=1; j<=2; j++) {
+                Integer semester = Integer.valueOf(integer + String.valueOf(j));
+                StudentCredits studentCredits = new StudentCredits(SnowflakeUtil.nextId(), student.getId(), semester, BigDecimal.valueOf(22),  BigDecimal.ZERO);
+                studentCreditsMapper.insert(studentCredits);
+            }
+        }
         return Result.success(student);
     }
     

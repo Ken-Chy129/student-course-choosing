@@ -51,4 +51,11 @@ public class StudentCredits implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    public StudentCredits(Long id, Long studentId, Integer semester, BigDecimal maxSubjectCredit, BigDecimal chooseSubjectCredit) {
+        this.id = id;
+        this.studentId = studentId;
+        this.semester = semester;
+        this.maxSubjectCredit = maxSubjectCredit;
+        this.chooseSubjectCredit = chooseSubjectCredit;
+    }
 }

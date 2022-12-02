@@ -104,24 +104,25 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         Integer id = Integer.valueOf(chooseRound.getSemester().toString() + chooseRound.getRoundNo().toString());
         chooseRound.setId(id);
         
-        // 如果是当前学期第一次创建则同时创建学生学分表
-        LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ChooseRound::getSemester, chooseRound.getSemester());
-        Long count = chooseRoundMapper.selectCount(queryWrapper);
-        if (count == 0) {
-            LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            studentLambdaQueryWrapper.eq(Student::getStatus, 0);
-            List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
-            for (Student student : students) {
-                StudentCredits studentCredits = new StudentCredits();
-                studentCredits.setId(SnowflakeUtil.nextId());
-                studentCredits.setStudentId(student.getId());
-                studentCredits.setSemester(chooseRound.getSemester());
-                studentCredits.setChooseSubjectCredit(BigDecimal.valueOf(0));
-                studentCredits.setMaxSubjectCredit(BigDecimal.valueOf(22));
-                studentCreditsMapper.insert(studentCredits);
-            }
-        }
+//        // 如果是当前学期第一次创建则同时创建学生学分表
+//        LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
+//        queryWrapper.eq(ChooseRound::getSemester, chooseRound.getSemester());
+//        Long count = chooseRoundMapper.selectCount(queryWrapper);
+//        if (count == 0) {
+//            LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+//            studentLambdaQueryWrapper.eq(Student::getStatus, 0);
+//            List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+//            for (Student student : students) {
+//                StudentCredits studentCredits = new StudentCredits();
+//                studentCredits.setId(SnowflakeUtil.nextId());
+//                studentCredits.setStudentId(student.getId());
+//                studentCredits.setSemester(chooseRound.getSemester());
+//                studentCredits.setChooseSubjectCredit(BigDecimal.valueOf(0));
+//                studentCredits.setMaxSubjectCredit(BigDecimal.valueOf(22));
+//                studentCreditsMapper.insert(studentCredits);
+//            }
+//        }
+        
         chooseRoundMapper.insert(chooseRound);
        
         return Result.success();
