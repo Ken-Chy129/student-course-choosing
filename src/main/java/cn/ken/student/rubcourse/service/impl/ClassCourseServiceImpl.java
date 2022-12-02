@@ -61,12 +61,11 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     }
 
     @Override
-    public Result removeClassCourse(HttpServletRequest httpServletRequest, List<Integer> ids) {
+    public Result removeClassCourse(HttpServletRequest httpServletRequest, Integer id) {
         LambdaUpdateWrapper<ClassCourse> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.in(ClassCourse::getId, ids)
+        updateWrapper.eq(ClassCourse::getId, id)
                 .set(ClassCourse::getIsDeleted, true);
-        int update = classCourseMapper.update(null, updateWrapper);
-        return Result.success("成功删除" + update + "条数据");
+        return classCourseMapper.update(null, updateWrapper) > 0 ? Result.success("删除成功") : Result.fail("删除失败");
     }
 
     @Override
