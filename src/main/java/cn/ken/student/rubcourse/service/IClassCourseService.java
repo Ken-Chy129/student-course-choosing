@@ -22,7 +22,7 @@ public interface IClassCourseService extends IService<ClassCourse> {
     
     Result updateClassCourse(HttpServletRequest httpServletRequest, ClassCourse classCourse);
 
-    Result removeClassCourse(HttpServletRequest httpServletRequest, Integer id);
+    Result removeClassCourse(HttpServletRequest httpServletRequest, Long id);
 
     Result getRecommendedCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq);
 

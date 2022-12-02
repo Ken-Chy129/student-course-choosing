@@ -61,7 +61,7 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     }
 
     @Override
-    public Result removeClassCourse(HttpServletRequest httpServletRequest, Integer id) {
+    public Result removeClassCourse(HttpServletRequest httpServletRequest, Long id) {
         LambdaUpdateWrapper<ClassCourse> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(ClassCourse::getId, id)
                 .set(ClassCourse::getIsDeleted, true);
