@@ -38,16 +38,23 @@ public class StudentCreditsServiceImpl extends ServiceImpl<StudentCreditsMapper,
     private RedisTemplate<String, String> redisTemplate;
     
     @Override
-    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
+    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId) {
         LambdaQueryWrapper<StudentCredits> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(StudentCredits::getStudentId, studentId)
-                .eq(StudentCredits::getSemester, semester);
-        return Result.success(studentCreditsMapper.selectOne(queryWrapper));
+        queryWrapper.eq(StudentCredits::getStudentId, studentId);
+        return Result.success(studentCreditsMapper.selectList(queryWrapper));
     }
 
     @Override
     public Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits) {
         return Result.success(studentCreditsMapper.updateById(studentCredits));
+    }
+
+    @Override
+    public Result getStudentCreditOnSemester(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
+        LambdaQueryWrapper<StudentCredits> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StudentCredits::getStudentId, studentId)
+                .eq(StudentCredits::getSemester, semester);
+        return Result.success(studentCreditsMapper.selectOne(queryWrapper));
     }
 
 }

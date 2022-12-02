@@ -29,9 +29,9 @@ public class StudentCreditsController {
     private IStudentCreditsService studentCreditsService;
     
     @GetMapping("get")
-    @ApiOperation("查看学生学分")
+    @ApiOperation("查看学生某个学期学分")
     public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
-        return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
+        return studentCreditsService.getStudentCreditOnSemester(httpServletRequest, studentId, semester);
     }
     
 }

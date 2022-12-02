@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IStudentCreditsService extends IService<StudentCredits> {
 
-    Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester);
+    Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId);
 
     Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits);
+
+    Result getStudentCreditOnSemester(HttpServletRequest httpServletRequest, Integer studentId, Integer semester);
 }

@@ -61,8 +61,8 @@ public class StudentController {
 
     @GetMapping("getStudentCredits")
     @ApiOperation("查看学生学分")
-    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId, Integer semester) {
-        return studentCreditsService.getStudentCredits(httpServletRequest, studentId, semester);
+    public Result getStudentCredits(HttpServletRequest httpServletRequest, Integer studentId) {
+        return studentCreditsService.getStudentCredits(httpServletRequest, studentId);
     }
 
     @PostMapping("updateStudentCredits")
