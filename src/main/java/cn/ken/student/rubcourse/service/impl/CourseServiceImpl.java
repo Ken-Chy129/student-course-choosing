@@ -125,11 +125,29 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 //                .set(CourseDependence::getIsDeleted, true);
 //        courseDependenceMapper.update(null, updateWrapper1);
 //        // todo:更新学生学分表以及删除学生选课表记录并发出通告
+        
+        // 删除课程
+        
+        // 删除所有课程班
+        
+        // 删除课程依赖关系
+        
         return Result.success();
     }
 
     @Override
     public Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id) {
+        // 更改课程班状态
+        
+        // 删除课程上课地点
+        
+        // 减少课程的班级数量
+        
+        // 移除所有选择了该课程班的学生选课
+        
+        // 修改这些学生的学分
+        
+        // 向这些学生发送通知
         return null;
     }
 

@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
+import cn.ken.student.rubcourse.common.constant.WeekDayConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,6 +60,14 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     @Override
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
         List<StudentChooseLogResp> studentCourse = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
+        for (StudentChooseLogResp studentChooseLogResp : studentCourse) {
+            List<CourseTimeplace> courseTimeplaceList = studentChooseLogResp.getCourseTimeplaceList();
+            StringBuilder placeTime = new StringBuilder();
+            for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
+                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay()-1)).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
+            }
+            studentChooseLogResp.setPlaceTime(placeTime.toString());
+        }
         return Result.success(studentCourse);
     }
 

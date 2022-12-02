@@ -58,8 +58,7 @@ public class CourseDependenceServiceImpl extends ServiceImpl<CourseDependenceMap
         LambdaUpdateWrapper<CourseDependence> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(CourseDependence::getId, id)
                 .set(CourseDependence::getIsDeleted, true);
-        courseDependenceMapper.update(null, updateWrapper);
-        return null;
+        return courseDependenceMapper.update(null, updateWrapper) > 0 ? Result.success("删除成功") : Result.fail("删除失败"); 
     }
 
     private List<CourseDependence> getCourseDependence(String courseId) {

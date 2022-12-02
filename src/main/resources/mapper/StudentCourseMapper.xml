@@ -25,7 +25,7 @@
         and is_deleted = 0
     </select>
     
-    <select id="getStudentChooseLogs" resultType="cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp">
+    <select id="getStudentChooseLogs" resultMap="logs">
         select scc.course_id course_id, course_name, teacher, credits, type, language,
         duration_time, week_day, day_no, place
         from student_course_choosing.scc_student_course ssc
@@ -36,7 +36,9 @@
         and ssc.semester = #{semester}
         and sct.is_deleted = false
         and ssc.is_deleted = !#{isChosen}
-        and sc.type = #{type}
+        <if test="type != null">   
+            and sc.type = #{type}
+        </if>
     </select>
     
     <select id="getIsCourseChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
