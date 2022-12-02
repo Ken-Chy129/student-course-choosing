@@ -46,7 +46,7 @@ public class StudentCreditsServiceImpl extends ServiceImpl<StudentCreditsMapper,
 
     @Override
     public Result updateStudentCredits(HttpServletRequest httpServletRequest, StudentCredits studentCredits) {
-        return Result.success(studentCreditsMapper.updateById(studentCredits));
+        return studentCreditsMapper.updateById(studentCredits) > 0 ? Result.success("修改成功") : Result.fail("修改失败");
     }
 
     @Override

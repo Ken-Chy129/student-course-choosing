@@ -1,9 +1,6 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.ken.student.rubcourse.common.constant.DayNoConstant;
-import cn.ken.student.rubcourse.common.constant.ExamTypeConstant;
-import cn.ken.student.rubcourse.common.constant.LanguageTypeConstant;
-import cn.ken.student.rubcourse.common.constant.RedisConstant;
+import cn.ken.student.rubcourse.common.constant.*;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
@@ -54,6 +51,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CourseClassMapper courseClassMapper;
     
     @Autowired
+    private CollegeMapper collegeMapper;
+    
+    @Autowired
     private CourseDependenceMapper courseDependenceMapper;
     
     @Autowired
@@ -85,8 +85,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         assert courseNum != null;
         redisTemplate.opsForValue().set(RedisConstant.COURSE_NUM, String.valueOf(Integer.parseInt(courseNum)+1));
         Course course = courseAddReq.getCourse();
-        String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + (course.getGeneralType() == null ? "0" : course.getGeneralType()+1) + courseNum;
+        String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + course.getGeneralType() + courseNum;
         course.setId(id);
+        course.setCampus(CampusConstant.INSTANCE.get(Integer.parseInt(course.getCampus())));
+        course.setCollege(collegeMapper.selectById(Integer.parseInt(course.getCollege())).getCollegeName());
+        course.setType(CourseTypeConstant.INSTANCE.get(Integer.parseInt(course.getType())));
+        course.setGeneralType(GeneralTypeConstant.INSTANCE.get(Integer.parseInt(course.getGeneralType())));
+        System.out.println(course);
         courseMapper.insert(course);
 
         for (String preCourseId : courseAddReq.getPreCourseIdList()) {
@@ -120,13 +125,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Override
     @Transactional
-    public Result removeCourse(HttpServletRequest httpServletRequest, String id) {        
-        // 删除课程
-        courseMapper.deleteById(id);
+    public Result removeCourse(HttpServletRequest httpServletRequest, String id) {
         // 删除所有课程班
         List<CourseClass> courseClassList = courseClassMapper.selectByCourseId(id);
         for (CourseClass courseClass : courseClassList) {
-            removeClass(courseClass.getId());
+            removeCourseClass(courseClass.getId());
         }
         // 删除课程依赖关系
         List<CourseDependence> courseDependenceList = courseDependenceMapper.selectCourseDependence(id);
@@ -134,13 +137,15 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             courseDependence.setIsDeleted(true);
             courseDependenceMapper.updateById(courseDependence);
         }
+        // 删除课程
+        courseMapper.deleteById(id);
         return Result.success();
     }
 
     @Override
     @Transactional
     public Result removeCourseClass(HttpServletRequest httpServletRequest, Long id) {
-        removeClass(id);
+        removeCourseClass(id);
         return Result.success();
     }
 
@@ -158,7 +163,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return courseClass;
     }
     
-    private void removeClass(Long id) {
+    private void removeCourseClass(Long id) {
         // 更改课程班状态
         CourseClass courseClass = courseClassMapper.selectById(id);
         courseClass.setIsDeleted(true);
