@@ -24,5 +24,6 @@ public interface CourseClassMapper extends BaseMapper<CourseClass> {
     
     List<ClassCourseListResp> getCourseClassInfoList(ClassCourseListReq classCourseListReq);
 
+    List<CourseClass> selectByCourseId(String id);
 }
 

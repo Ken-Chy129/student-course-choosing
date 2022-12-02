@@ -68,7 +68,7 @@ public class CourseController {
     
     @DeleteMapping("removeCourseClass")
     @ApiOperation("删除课程班")
-    public Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id) {
+    public Result removeCourseClass(HttpServletRequest httpServletRequest, Long id) {
         return courseService.removeCourseClass(httpServletRequest, id);
     }
 

@@ -26,4 +26,6 @@ public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
     StudentCourse getIsCourseChoose(String courseId, Long studentId, Integer semester);
 
     StudentCourse selectByStudentAndSemesterAndCourseClass(Long studentId, Integer semester, Long courseClassId);
+
+    List<StudentCourse> selectByCourseClassAndSemester(Long id, Integer semester);
 }

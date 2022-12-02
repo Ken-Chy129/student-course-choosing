@@ -57,7 +57,7 @@ public class CourseClass implements Serializable {
     private String teacher;
     
     @ApiModelProperty(value = "逻辑删除", hidden = true)
-    private Integer isDeleted;
+    private Boolean isDeleted;
     
     @ApiModelProperty(value = "创建时间", hidden = true)
     @TableField(fill = FieldFill.INSERT)

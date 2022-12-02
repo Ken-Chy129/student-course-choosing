@@ -123,5 +123,12 @@
             and scc2.is_deleted = 0
         </where>
     </select>
+    
+    <select id="selectByCourseId" resultType="cn.ken.student.rubcourse.entity.CourseClass">
+        select *
+        from student_course_choosing.scc_course_class
+        where course_id = #{id}
+        and is_deleted = false
+    </select>
 </mapper>
 

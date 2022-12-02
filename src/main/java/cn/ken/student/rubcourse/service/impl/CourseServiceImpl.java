@@ -14,6 +14,7 @@ import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.ICourseService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private CourseTimeplaceMapper courseTimeplaceMapper;
     
     @Autowired
-    private CollegeMapper collegeMapper;
+    private ChooseRoundMapper chooseRoundMapper;
     
     @Autowired
     private CourseClassMapper courseClassMapper;
@@ -56,6 +58,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     
     @Autowired
     private StudentCourseMapper studentCourseMapper;
+    
+    @Autowired
+    private StudentCreditsMapper studentCreditsMapper;
+    
+    @Autowired
+    private SysNoticeMapper sysNoticeMapper;
 
     @Override
     public Result getCourseList(HttpServletRequest httpServletRequest, String searchContent) {
@@ -88,7 +96,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             courseDependence.setPreCourseId(preCourseId);
             courseDependenceMapper.insert(courseDependence);
         }
-        return Result.success();
+        return Result.success(course);
     }
 
     @Override
@@ -107,48 +115,33 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         }
         
         courseClassMapper.insert(courseClass);
-        return null;
+        return Result.success(courseClass);
     }
 
     @Override
-    public Result removeCourse(HttpServletRequest httpServletRequest, String id) {
-//        LambdaUpdateWrapper<CourseClass> updateWrapper0 = new LambdaUpdateWrapper<>();
-//        updateWrapper0.in(CourseClass::getId, courseInfoIds)
-//                .set(CourseClass::getStatus, 1);
-//        courseMapper.update(null, updateWrapper0);
-//        LambdaUpdateWrapper<CourseTimeplace> updateWrapper = new LambdaUpdateWrapper<>();
-//        updateWrapper.in(CourseTimeplace::getCourseId, courseInfoIds)
-//                .set(CourseTimeplace::getIsDeleted, true);
-//        courseTimeplaceMapper.update(null, updateWrapper);
-//        LambdaUpdateWrapper<CourseDependence> updateWrapper1 = new LambdaUpdateWrapper<>();
-//        updateWrapper1.in(CourseDependence::getCourseId, courseInfoIds)
-//                .set(CourseDependence::getIsDeleted, true);
-//        courseDependenceMapper.update(null, updateWrapper1);
-//        // todo:更新学生学分表以及删除学生选课表记录并发出通告
-        
+    @Transactional
+    public Result removeCourse(HttpServletRequest httpServletRequest, String id) {        
         // 删除课程
-        
+        courseMapper.deleteById(id);
         // 删除所有课程班
-        
+        List<CourseClass> courseClassList = courseClassMapper.selectByCourseId(id);
+        for (CourseClass courseClass : courseClassList) {
+            removeClass(courseClass.getId());
+        }
         // 删除课程依赖关系
-        
+        List<CourseDependence> courseDependenceList = courseDependenceMapper.selectCourseDependence(id);
+        for (CourseDependence courseDependence : courseDependenceList) {
+            courseDependence.setIsDeleted(true);
+            courseDependenceMapper.updateById(courseDependence);
+        }
         return Result.success();
     }
 
     @Override
-    public Result removeCourseClass(HttpServletRequest httpServletRequest, Integer id) {
-        // 更改课程班状态
-        
-        // 删除课程上课地点
-        
-        // 减少课程的班级数量
-        
-        // 移除所有选择了该课程班的学生选课
-        
-        // 修改这些学生的学分
-        
-        // 向这些学生发送通知
-        return null;
+    @Transactional
+    public Result removeCourseClass(HttpServletRequest httpServletRequest, Long id) {
+        removeClass(id);
+        return Result.success();
     }
 
     private CourseClass getCourseInfo(CourseClassAddReq courseClassAddReq) {
@@ -163,5 +156,45 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseClass.setExamTime(courseClassAddReq.getExamTime());
         courseClass.setTeacher(courseClassAddReq.getTeacher());
         return courseClass;
+    }
+    
+    private void removeClass(Long id) {
+        // 更改课程班状态
+        CourseClass courseClass = courseClassMapper.selectById(id);
+        courseClass.setIsDeleted(true);
+        String courseId = courseClass.getCourseId();
+        courseClassMapper.updateById(courseClass);
+        // 删除课程上课地点
+        List<CourseTimeplace> courseTimeplaceList = courseTimeplaceMapper.selectByCourseClassId(id);
+        for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
+            courseTimeplace.setIsDeleted(true);
+            courseTimeplaceMapper.updateById(courseTimeplace);
+        }
+        // 减少课程的班级数量
+        Course course = courseMapper.selectById(courseId);
+        course.setClassNum(course.getClassNum() - 1);
+        courseMapper.updateById(course);
+
+        LocalDateTime now = LocalDateTime.now();
+        LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.lt(ChooseRound::getStartTime, now)
+                .gt(ChooseRound::getEndTime, now);
+        ChooseRound chooseRound = chooseRoundMapper.selectOne(queryWrapper);
+        // 当前属于选课期间
+        if (chooseRound != null) {
+            List<StudentCourse> studentCourseList = studentCourseMapper.selectByCourseClassAndSemester(id, chooseRound.getSemester());
+            for (StudentCourse studentCourse : studentCourseList) {
+                // 移除当前学期所有选择了该课程班的学生选课
+                studentCourse.setIsDeleted(true);
+                studentCourseMapper.updateById(studentCourse);
+                // 修改这些学生的学分
+                StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentCourse.getStudentId(), chooseRound.getSemester());
+                studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().subtract(studentCourse.getCredits()));
+                studentCreditsMapper.updateById(studentCredits);
+                // 向这些学生发送通知
+                SysNotice sysNotice = new SysNotice(SnowflakeUtil.nextId(), studentCourse.getStudentId(), "编号为" + id + "的课程班停止开课，系统已自动为您退选.", Short.valueOf("1"));
+                sysNoticeMapper.insert(sysNotice);
+            }
+        }
     }
 }

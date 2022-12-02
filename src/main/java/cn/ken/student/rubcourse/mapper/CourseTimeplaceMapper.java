@@ -3,6 +3,9 @@ package cn.ken.student.rubcourse.mapper;
 import cn.ken.student.rubcourse.entity.CourseTimeplace;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CourseTimeplaceMapper extends BaseMapper<CourseTimeplace> {
 
+    List<CourseTimeplace> selectByCourseClassId(@Param("id") Long id);
 }

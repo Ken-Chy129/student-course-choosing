@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -19,6 +21,8 @@ import lombok.Data;
 @Data
 @TableName("scc_sys_notice")
 @ApiModel(value = "SysNotice对象", description = "系统通知表")
+@AllArgsConstructor
+@NoArgsConstructor
 public class SysNotice implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,5 +45,11 @@ public class SysNotice implements Serializable {
     @ApiModelProperty(value = "修改时间", hidden = true)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
-    
+
+    public SysNotice(Long id, Long studentId, String message, Short status) {
+        this.id = id;
+        this.studentId = studentId;
+        this.message = message;
+        this.status = status;
+    }
 }
