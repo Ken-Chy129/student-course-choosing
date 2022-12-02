@@ -134,10 +134,12 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         // 恢复课程容量
         CourseClass courseClass = courseClassMapper.selectById(studentCourse.getCourseClassId());
         courseClass.setChoosingNum(courseClass.getChoosingNum() - 1);
+        courseClassMapper.updateById(courseClass);
 
         // 恢复学分
         StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentCourse.getStudentId(), studentCourse.getSemester());
         studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().subtract(studentCourse.getCredits()));
+        studentCreditsMapper.updateById(studentCredits);
         
         return Result.success();
     }
