@@ -74,5 +74,11 @@ public class SysCommonController {
     public Result getLanguageTypeList() {
         return Result.success(ConstantUtil.getHashMap(LanguageTypeConstant.INSTANCE));
     }
+
+    @GetMapping("getDayNoList")
+    @ApiOperation("获取课程节数列表")
+    public Result getDayNoList() {
+        return Result.success(ConstantUtil.getHashMap(DayNoConstant.INSTANCE));
+    }
     
 }
