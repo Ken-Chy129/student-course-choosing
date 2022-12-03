@@ -60,6 +60,24 @@
         </collection>
     </resultMap>
     
+    <resultMap id="courseClassInfo" type="cn.ken.student.rubcourse.entity.CourseClass">
+        <result property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="isMooc" column="is_mooc"/>
+        <result property="language" column="language"/>
+        <result property="choosingNum" column="choosing_num"/>
+        <result property="capacity" column="capacity"/>
+        <result property="teacher" column="teacher"/>
+        <result property="examType" column="exam_type"/>
+        <result property="examTime" column="exam_time"/>
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+            <result property="durationTime" column="duration_time"/>
+            <result property="weekDay" column="week_day"/>
+            <result property="dayNo" column="day_no"/>
+            <result property="place" column="place"/>
+        </collection>
+    </resultMap>
+    
     <select id="getCourseInfoPage" resultMap="courseClassInfoResp">
         select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
         course_name, campus, college, sc.type type, general_type, credit,
@@ -124,11 +142,13 @@
         </where>
     </select>
     
-    <select id="selectByCourseId" resultType="cn.ken.student.rubcourse.entity.CourseClass">
-        select *
-        from student_course_choosing.scc_course_class
+    <select id="selectByCourseId" resultMap="courseClassInfo">
+        select scc.*, duration_time, week_day, day_no, place
+        from student_course_choosing.scc_course_class scc
+        left join student_course_choosing.scc_course_timeplace sct on sct.course_class_id = scc.id
         where course_id = #{id}
-        and is_deleted = false
+        and scc.is_deleted = false
+        and sct.is_deleted = false
     </select>
 </mapper>
 

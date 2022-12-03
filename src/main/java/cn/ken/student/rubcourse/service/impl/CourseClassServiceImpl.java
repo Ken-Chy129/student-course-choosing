@@ -1,5 +1,6 @@
 package cn.ken.student.rubcourse.service.impl;
 
+import cn.ken.student.rubcourse.common.constant.WeekDayConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.PageUtil;
@@ -18,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,10 +69,16 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
     
     @Override
     public Result getCourseClass(HttpServletRequest httpServletRequest, String courseId) {
-        LambdaQueryWrapper<CourseClass> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(CourseClass::getCourseId, courseId)
-                .eq(CourseClass::getIsDeleted, false);
-        return Result.success(courseClassMapper.selectList(queryWrapper));
+        List<CourseClass> courseClassList = courseClassMapper.selectByCourseId(courseId);
+        for (CourseClass courseClass : courseClassList) {
+            List<CourseTimeplace> courseTimeplaceList = courseClass.getCourseTimeplaceList();
+            StringBuilder placeTime = new StringBuilder();
+            for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
+                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay()-1)).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
+            }
+            courseClass.setCourseTimeplace(placeTime.toString());
+        }
+        return Result.success(courseClassList);
     }
 
 }

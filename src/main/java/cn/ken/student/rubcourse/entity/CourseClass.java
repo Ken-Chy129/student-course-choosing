@@ -74,5 +74,9 @@ public class CourseClass implements Serializable {
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private List<CourseTimeplace> courseTimeplaceList;
+    
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private String courseTimeplace;
 }
 
