@@ -2,7 +2,6 @@ package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
-import cn.ken.student.rubcourse.dto.req.StudentOnClassReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;

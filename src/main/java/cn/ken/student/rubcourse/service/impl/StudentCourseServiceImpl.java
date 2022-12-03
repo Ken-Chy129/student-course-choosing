@@ -125,7 +125,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
             return Result.success(studentCourse);
         }
         // 已选择过该课
-        chooseCourse.setIsDeleted(true);
+        chooseCourse.setIsDeleted(false);
         studentCourseMapper.updateById(chooseCourse);
         return Result.success(chooseCourse);
     }
