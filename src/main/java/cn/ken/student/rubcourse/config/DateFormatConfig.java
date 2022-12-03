@@ -2,6 +2,8 @@ package cn.ken.student.rubcourse.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -50,8 +52,10 @@ public class DateFormatConfig {
         objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         // 日期类型字符串处理
         objectMapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_PATTERN));
-        
-//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        // 忽略空bean转json的错误
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        // 序列换成json时,将所有的long变成string
+        objectMapper.registerModule(new SimpleModule().addSerializer(Long.class, ToStringSerializer.instance).addSerializer(Long.TYPE, ToStringSerializer.instance));
 
         // Java8日期日期处理
         JavaTimeModule javaTimeModule = new JavaTimeModule();
