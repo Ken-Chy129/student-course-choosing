@@ -44,15 +44,15 @@ public class CourseClassAddReq implements Serializable {
     private String teacher;
 
     @ApiModelProperty("开课时间")
-    private List<String> durationList;
+    private String duration;
 
     @ApiModelProperty("开课地点")
-    private List<String> placeList;
+    private String place;
 
     @ApiModelProperty("上课时间")
-    private List<Short> weekDayList;
+    private Short weekDay;
 
     @ApiModelProperty("第几节课上课(0:1-2,1:3-4,2:6-7,3:6-8,4:7-8,5:10-11,6:10-12)")
-    private List<Short> dayNoList;
+    private Short dayNo;
 
 }

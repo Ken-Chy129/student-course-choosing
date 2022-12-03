@@ -109,16 +109,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Transactional
     public Result addCourseClass(HttpServletRequest httpServletRequest, CourseClassAddReq courseClassAddReq) {
         CourseClass courseClass = getCourseInfo(courseClassAddReq);
-        for (int i = 0; i< courseClassAddReq.getDurationList().size(); i++) {
-            CourseTimeplace courseTimeplace = new CourseTimeplace();
-            courseTimeplace.setId(SnowflakeUtil.nextId());
-            courseTimeplace.setCourseClassId(courseClass.getId());
-            courseTimeplace.setDurationTime(courseClassAddReq.getDurationList().get(i));
-            courseTimeplace.setPlace(courseClassAddReq.getPlaceList().get(i));
-            courseTimeplace.setWeekDay(courseClassAddReq.getWeekDayList().get(i));
-            courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNoList().get(i)));
-            courseTimeplaceMapper.insert(courseTimeplace);
-        }
+        CourseTimeplace courseTimeplace = new CourseTimeplace();
+        courseTimeplace.setId(SnowflakeUtil.nextId());
+        courseTimeplace.setCourseClassId(courseClass.getId());
+        courseTimeplace.setDurationTime(courseClassAddReq.getDuration());
+        courseTimeplace.setPlace(courseClassAddReq.getPlace());
+        courseTimeplace.setWeekDay(courseClassAddReq.getWeekDay());
+        courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNo()));
+        courseTimeplaceMapper.insert(courseTimeplace);
         
         courseClassMapper.insert(courseClass);
         return Result.success(courseClass);
