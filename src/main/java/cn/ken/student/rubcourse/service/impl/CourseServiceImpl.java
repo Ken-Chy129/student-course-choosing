@@ -90,8 +90,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setCampus(CampusConstant.INSTANCE.get(Integer.parseInt(course.getCampus())));
         course.setCollege(collegeMapper.selectById(Integer.parseInt(course.getCollege())).getCollegeName());
         course.setType(CourseTypeConstant.INSTANCE.get(Integer.parseInt(course.getType())));
-        course.setGeneralType(GeneralTypeConstant.INSTANCE.get(Integer.parseInt(course.getGeneralType())));
-        System.out.println(course);
+        if (course.getGeneralType() != null) {
+            course.setGeneralType(GeneralTypeConstant.INSTANCE.get(Integer.parseInt(course.getGeneralType())));
+        }
         courseMapper.insert(course);
 
         for (String preCourseId : courseAddReq.getPreCourseIdList()) {
