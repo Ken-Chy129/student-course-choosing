@@ -94,7 +94,7 @@ public class CourseController {
         return courseDependenceService.removeCourseDependence(httpServletRequest, id);
     }
     
-    @PostMapping("removeCourse")
+    @DeleteMapping("removeCourse")
     @ApiOperation("删除课程")
     public Result removeCourseInfo(HttpServletRequest httpServletRequest, String id) {
         return courseService.removeCourse(httpServletRequest, id);
