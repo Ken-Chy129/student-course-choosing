@@ -5,6 +5,7 @@ import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
 import cn.ken.student.rubcourse.entity.CourseTimeplace;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
+import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,11 @@ public class CourseUtil {
                 placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay()-1)).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
             }
             courseClassInfoResp.setPlaceTime(placeTime.toString());
+
+            // 如果已经选择了该门课则不需判断该课是否冲突
+            if (courseClassInfoResp.getIsChoose()) {
+                continue;
+            }
             
             boolean isConflict = false;
             // 判断是否冲突,遍历学生已选课程

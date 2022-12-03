@@ -50,7 +50,14 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
 
         // 获取课程表
         List<CourseClassInfoResp> courseInfoPage = courseClassMapper.getCourseInfoPage(courseClassListReq);
+
+        // 设置课程是否本学期已选
+        for (CourseClassInfoResp courseClassInfoResp : courseInfoPage) {
+            StudentCourse isCourseClassChoose = studentCourseMapper.getIsCourseClassChoose(courseClassInfoResp.getId(), courseClassListReq.getStudentId(), courseClassListReq.getSemester());
+            courseClassInfoResp.setIsChoose(isCourseClassChoose != null);
+        }
         
+        // 设置上课时间地点和是否冲突
         courseUtil.setPlaceTimeAndIsConflict(courseInfoPage, studentCourses);
         
         IPage<CourseClassInfoResp> page = PageUtil.getPage(new Page<>(), courseClassListReq.getPageNo(), courseClassListReq.getPageSize(), courseInfoPage);

@@ -66,4 +66,13 @@
         and course_class_id = #{param1}
         and is_deleted = false
     </select>
+    
+    <select id="getIsCourseClassChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+        select *
+        from student_course_choosing.scc_student_course
+        where is_deleted = false
+        and course_class_id = #{param1}
+        and student_id = #{param2}
+        and semester = #{param3}
+    </select>
 </mapper>

@@ -24,8 +24,12 @@ public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
     List<StudentChooseLogResp> getStudentChooseLogs(StudentChooseLogReq studentChooseLogReq);
     
     StudentCourse getIsCourseChoose(String courseId, Long studentId, Integer semester);
+    
+    // 查询某个学生某个学期是否已经选择了某门课
+    StudentCourse getIsCourseClassChoose(Long courseClassId, Long studentId, Integer semester);
 
     StudentCourse selectByStudentAndSemesterAndCourseClass(Long studentId, Integer semester, Long courseClassId);
 
+    // 查找某个学期选了某门课的所有学生选课记录
     List<StudentCourse> selectByCourseClassAndSemester(Long id, Integer semester);
 }

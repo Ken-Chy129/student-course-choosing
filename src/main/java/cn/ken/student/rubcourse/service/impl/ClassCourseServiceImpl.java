@@ -7,6 +7,7 @@ import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.dto.resp.ClassCourseListResp;
+import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
 import cn.ken.student.rubcourse.entity.ClassCourse;
 import cn.ken.student.rubcourse.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.*;
@@ -83,6 +84,16 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         // 获取方案内课程的开课班信息
         List<ClassCourseListResp> courseClassInfoRespList = courseClassMapper.getCourseClassInfoList(classCourseListReq);
 
+        // 设置课程是否本学期已选
+        for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
+            List<CourseClassInfoResp> courseClassInfoResps = classCourseListResp.getCourseClassInfoResps();
+            for (CourseClassInfoResp courseClassInfoResp : courseClassInfoResps) {
+                StudentCourse isCourseClassChoose = studentCourseMapper.getIsCourseClassChoose(courseClassInfoResp.getId(), classCourseListReq.getStudentId(), classCourseListReq.getSemester());
+                courseClassInfoResp.setIsChoose(isCourseClassChoose != null);
+            }
+        }
+
+        // 设置上课时间地点和是否冲突
         for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
             courseUtil.setPlaceTimeAndIsConflict(classCourseListResp.getCourseClassInfoResps(), studentCourses);
         }

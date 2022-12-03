@@ -53,6 +53,8 @@ public class CourseClassInfoResp implements Serializable {
     
     private Boolean isConflict;
     
+    private Boolean isChoose;
+    
     @ApiModelProperty(hidden = true)
     private List<CourseTimeplace> courseTimeplaceList;
     
