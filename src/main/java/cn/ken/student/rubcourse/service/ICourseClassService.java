@@ -17,5 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface ICourseClassService extends IService<CourseClass> {
 
     Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, CourseClassListReq courseClassListReq);
+
+    Result getCourseClass(HttpServletRequest httpServletRequest, String courseId);
 }
 

@@ -1,19 +1,13 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.ken.student.rubcourse.common.constant.RedisConstant;
-import cn.ken.student.rubcourse.common.constant.WeekDayConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
 import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
 import cn.ken.student.rubcourse.entity.*;
-import cn.ken.student.rubcourse.mapper.CourseMapper;
-import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.service.ICourseClassService;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -62,6 +56,14 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
         IPage<CourseClassInfoResp> page = PageUtil.getPage(new Page<>(), courseClassListReq.getPageNo(), courseClassListReq.getPageSize(), courseInfoPage);
         
         return Result.success(page);
+    }
+    
+    @Override
+    public Result getCourseClass(HttpServletRequest httpServletRequest, String courseId) {
+        LambdaQueryWrapper<CourseClass> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(CourseClass::getCourseId, courseId)
+                .eq(CourseClass::getIsDeleted, false);
+        return Result.success(courseClassMapper.selectList(queryWrapper));
     }
 
 }

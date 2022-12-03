@@ -6,6 +6,7 @@ import cn.ken.student.rubcourse.dto.req.CourseDependencyAddReq;
 import cn.ken.student.rubcourse.dto.sys.req.CourseAddReq;
 import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.entity.Course;
+import cn.ken.student.rubcourse.service.ICourseClassService;
 import cn.ken.student.rubcourse.service.ICourseDependenceService;
 import cn.ken.student.rubcourse.service.ICourseService;
 import cn.ken.student.rubcourse.service.impl.CourseDependenceServiceImpl;
@@ -35,6 +36,9 @@ public class CourseController {
     
     @Autowired
     private ICourseDependenceService courseDependenceService;
+    
+    @Autowired
+    private ICourseClassService courseClassService;
 
     @GetMapping("list")
     @ApiOperation("下拉框课程列表")
@@ -44,7 +48,7 @@ public class CourseController {
 
     @GetMapping("page")
     @ApiOperation("课程分页显示")
-    public Result getCourseNamePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq) {
+    public Result getCoursePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq) {
         return courseService.getCoursePage(httpServletRequest, coursePageReq);
     }
 
@@ -52,6 +56,12 @@ public class CourseController {
     @ApiOperation("查询课程依赖")
     public Result getCourseDependence(HttpServletRequest httpServletRequest, String courseId) {
         return courseDependenceService.getCourseDependence(httpServletRequest, courseId);
+    }
+    
+    @GetMapping("getCourseClass")
+    @ApiOperation("查询课程班")
+    public Result getCourseClass(HttpServletRequest httpServletRequest, String courseId) {
+        return courseClassService.getCourseClass(httpServletRequest, courseId);
     }
     
     @PostMapping("addCourse")
