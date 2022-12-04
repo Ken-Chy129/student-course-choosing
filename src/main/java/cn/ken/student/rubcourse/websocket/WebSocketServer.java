@@ -1,12 +1,16 @@
 package cn.ken.student.rubcourse.websocket;
 
+import cn.ken.student.rubcourse.entity.SysNotice;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,7 +52,11 @@ public class WebSocketServer {
         this.key = studentId;
         log.info("有新的客户端上线: {}", studentId);
         SESSION_MAP.put(studentId, this.session);
-        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
+        HashMap<String, Integer> loginNum = new LinkedHashMap<>();
+        loginNum.put("num", getSessionMap().size());
+        for(Long sessionId : SESSION_MAP.keySet()) {
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(loginNum));
+        }
     }
 
     /**
@@ -58,7 +66,11 @@ public class WebSocketServer {
     public void onClose() {
         log.info("有客户端离线: {}", this.key);
         SESSION_MAP.remove(this.key);
-        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
+        HashMap<String, Integer> loginNum = new LinkedHashMap<>();
+        loginNum.put("num", getSessionMap().size());
+        for(Long sessionId : SESSION_MAP.keySet()) {
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(loginNum));
+        }
     }
 
     /**
@@ -96,13 +108,11 @@ public class WebSocketServer {
 
     /**
      * 单发 1对1
-     * @param studentId  用户id
-     * @param message 消息
      */
-    public static boolean send(Long studentId, String message) {
-        log.info("发送给用户: {}", studentId);
-        if (SESSION_MAP.containsKey(studentId)) {
-            SESSION_MAP.get(studentId).getAsyncRemote().sendText(message);
+    public static boolean send(SysNotice sysNotice) {
+        log.info("发送给用户: {}", sysNotice.getStudentId());
+        if (SESSION_MAP.containsKey(sysNotice.getStudentId())) {
+            SESSION_MAP.get(sysNotice.getStudentId()).getAsyncRemote().sendText(JSON.toJSONString(sysNotice));
             log.info("消息发送成功");
             return true;
         }
@@ -111,12 +121,11 @@ public class WebSocketServer {
     }
     
     /**
-     * 群发
-     * @param message 消息
+     * 群发公告
      */
-    public static void batchSend(String message) {
+    public static void batchSend(SysNotice sysNotice) {
         for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(message);
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(sysNotice));
         }
     }
     

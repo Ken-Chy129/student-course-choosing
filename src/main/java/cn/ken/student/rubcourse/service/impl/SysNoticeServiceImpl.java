@@ -48,14 +48,8 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         sysNotice.setStudentId(messageDTO.getStudentId());
         sysNotice.setStatus((short) 0);
         sysNoticeMapper.insert(sysNotice);
-        String message = messageDTO.getMessage();
-        messageDTO.setId(id);
-        if (StringUtils.hasText(message)) {
-            String msg = JSON.toJSONString(messageDTO).replace("\\t","").replace("\\n","");
-            amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", msg);
-            return Result.success(sysNotice);
-        }
-        return Result.fail("发送消息为空");
+        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", id);
+        return Result.success(sysNotice);
     }
 
     @Override
@@ -67,15 +61,8 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         sysNotice.setStudentId(-1L);
         sysNotice.setStatus((short) 0);
         sysNoticeMapper.insert(sysNotice);
-        MessageDTO messageDTO = new MessageDTO(id, -1L, announcement);
-        if (StringUtils.hasText(announcement)) {
-            String msg = JSON.toJSONString(messageDTO).replace("\\t","").replace("\\n","");
-            amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", msg);
-            return Result.success(sysNotice);
-        }
-        sysNotice.setStatus((short) 2);
-        sysNoticeMapper.updateById(sysNotice);
-        return Result.fail("发送消息为空");
+        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", id);
+        return Result.success(sysNotice);
     }
 
     @Override

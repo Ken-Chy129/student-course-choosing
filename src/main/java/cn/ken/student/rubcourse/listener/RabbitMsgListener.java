@@ -40,21 +40,14 @@ public class RabbitMsgListener {
             exchange=@Exchange(name= RabbitMQConfig.FANOUT_EXCHANGE, type="fanout")
         )
     })
-    public void fanoutReceive(String msg) {
-        MessageDTO messageDTO = JSON.parseObject(msg, MessageDTO.class);
-        String message = messageDTO.getMessage();
-        LambdaUpdateWrapper<SysNotice> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(SysNotice::getId, messageDTO.getId())
-                .set(SysNotice::getStatus, 1);
-        if (!StringUtils.hasText(message)) {
-            return;
+    public void fanoutReceive(Long id) {
+        SysNotice sysNotice = sysNoticeMapper.selectById(id);
+        if (sysNotice.getStudentId() == -1) {
+            WebSocketServer.batchSend(sysNotice);
+        } else {
+            WebSocketServer.send(sysNotice);
         }
-        if (messageDTO.getStudentId() == -1) {
-            WebSocketServer.batchSend(message);
-        } else if(!WebSocketServer.send(messageDTO.getStudentId(), message)) {
-            return;
-        }
-        sysNoticeMapper.update(null, updateWrapper);
+        sysNoticeMapper.updateById(sysNotice);
         log.info("{}", "监听并推送消息");
     }
 }
