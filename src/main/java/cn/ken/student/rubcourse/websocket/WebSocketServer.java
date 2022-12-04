@@ -52,10 +52,8 @@ public class WebSocketServer {
         this.key = studentId;
         log.info("有新的客户端上线: {}", studentId);
         SESSION_MAP.put(studentId, this.session);
-        HashMap<String, Integer> loginNum = new LinkedHashMap<>();
-        loginNum.put("num", getSessionMap().size());
-        for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(loginNum));
+       for(Long sessionId : SESSION_MAP.keySet()) {
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + getSessionMap().size());
         }
     }
 
@@ -66,10 +64,8 @@ public class WebSocketServer {
     public void onClose() {
         log.info("有客户端离线: {}", this.key);
         SESSION_MAP.remove(this.key);
-        HashMap<String, Integer> loginNum = new LinkedHashMap<>();
-        loginNum.put("num", getSessionMap().size());
         for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(loginNum));
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + getSessionMap().size());
         }
     }
 
@@ -112,7 +108,7 @@ public class WebSocketServer {
     public static boolean send(SysNotice sysNotice) {
         log.info("发送给用户: {}", sysNotice.getStudentId());
         if (SESSION_MAP.containsKey(sysNotice.getStudentId())) {
-            SESSION_MAP.get(sysNotice.getStudentId()).getAsyncRemote().sendText(JSON.toJSONString(sysNotice));
+            SESSION_MAP.get(sysNotice.getStudentId()).getAsyncRemote().sendText("msg:" +  sysNotice.getMessage());
             log.info("消息发送成功");
             return true;
         }
@@ -125,7 +121,7 @@ public class WebSocketServer {
      */
     public static void batchSend(SysNotice sysNotice) {
         for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText(JSON.toJSONString(sysNotice));
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("msg:" + sysNotice.getMessage());
         }
     }
     
