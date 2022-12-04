@@ -85,7 +85,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         assert courseNum != null;
         redisTemplate.opsForValue().set(RedisConstant.COURSE_NUM, String.valueOf(Integer.parseInt(courseNum)+1));
         Course course = courseAddReq.getCourse();
-        String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + course.getGeneralType() + courseNum;
+        String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + ((course.getGeneralType() == null) ? "0" : course.getGeneralType()) + courseNum;
         course.setId(id);
         course.setCampus(CampusConstant.INSTANCE.get(Integer.parseInt(course.getCampus())));
         course.setCollege(collegeMapper.selectById(Integer.parseInt(course.getCollege())).getCollegeName());
@@ -119,6 +119,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseTimeplaceMapper.insert(courseTimeplace);
         
         courseClassMapper.insert(courseClass);
+        Course course = courseMapper.selectById(courseClass.getCourseId());
+        course.setClassNum(course.getClassNum() + 1);
+        courseMapper.updateById(course);
         return Result.success(courseClass);
     }
 
