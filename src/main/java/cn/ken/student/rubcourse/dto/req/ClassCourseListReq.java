@@ -28,6 +28,8 @@ public class ClassCourseListReq extends Page implements Serializable {
     
     private Integer semester;
     
+    private String searchContent;
+    
     @ApiModelProperty("班级id")
     private Integer classId;
     

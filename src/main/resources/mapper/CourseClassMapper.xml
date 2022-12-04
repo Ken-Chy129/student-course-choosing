@@ -127,6 +127,10 @@
         left join student_course_choosing.scc_class_course scc2 on sc.id = scc2.course_id
         <where>
             scc2.class_id = #{classId}
+            <if test="searchContent != null">
+                and (course_id like concat('%',#{searchContent},'%')
+                or course_name like concat('%',#{searchContent},'%')
+            </if>
             <if test="recommendedTime != null">
                 and commended_time = #{recommendedTime}
             </if>
