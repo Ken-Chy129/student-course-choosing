@@ -20,7 +20,7 @@ public interface ISysNoticeService extends IService<SysNotice> {
     
     Result sendMessage(HttpServletRequest httpServletRequest, MessageDTO messageDTO);
     
-    Result sendAnnouncement(HttpServletRequest httpServletRequest, String announcement);
+    Result sendAnnouncement(HttpServletRequest httpServletRequest, MessageDTO messageDTO);
 
     Result getNoticePage(HttpServletRequest httpServletRequest, SysNoticePageReq sysNoticePageReq);
 }

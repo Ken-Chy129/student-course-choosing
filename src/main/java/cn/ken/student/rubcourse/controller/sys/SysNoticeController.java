@@ -35,8 +35,8 @@ public class SysNoticeController {
 
     @PostMapping("sendAnnouncement")
     @ApiOperation("发送公告")
-    public Result sendAnnouncement(HttpServletRequest httpServletRequest, String announcement) {
-        return sysNoticeService.sendAnnouncement(httpServletRequest, announcement);
+    public Result sendAnnouncement(HttpServletRequest httpServletRequest, @RequestBody MessageDTO messageDTO) {
+        return sysNoticeService.sendAnnouncement(httpServletRequest, messageDTO);
     }
     
     @GetMapping("page")
