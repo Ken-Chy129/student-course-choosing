@@ -1,18 +1,16 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
-import cn.ken.student.rubcourse.common.constant.WeekDayConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.*;
-import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,20 +51,25 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     private CourseClassMapper courseClassMapper;
     
     @Autowired
+    private CourseUtil courseUtil;
+    
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
-        List<StudentChooseLogResp> studentCourse = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
-        for (StudentChooseLogResp studentChooseLogResp : studentCourse) {
-            List<CourseTimeplace> courseTimeplaceList = studentChooseLogResp.getCourseTimeplaceList();
-            StringBuilder placeTime = new StringBuilder();
-            for (CourseTimeplace courseTimeplace : courseTimeplaceList) {
-                placeTime.append(courseTimeplace.getDurationTime()).append(" 星期").append(WeekDayConstant.INSTANCE.get(courseTimeplace.getWeekDay()-1)).append(" ").append(courseTimeplace.getDayNo()).append(" ").append(courseTimeplace.getPlace()).append("\n");
-            }
-            studentChooseLogResp.setPlaceTime(placeTime.toString());
+        // 获取学生已选课程表
+        List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+        
+        List<StudentChooseLogResp> studentCourseLogs = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
+        
+        for (StudentChooseLogResp studentChooseLogResp : studentCourseLogs) {
+            studentChooseLogResp.setIsChoose(studentChooseLogReq.getIsChosen());
         }
-        return Result.success(studentCourse);
+
+        courseUtil.setPlaceTimeAndIsConflict2(studentCourseLogs, studentCourses);
+        
+        return Result.success(studentCourseLogs);
     }
 
     @Override

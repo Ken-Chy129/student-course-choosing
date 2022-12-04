@@ -20,6 +20,8 @@ public class StudentChooseLogResp implements Serializable {
     
     private Integer courseId;
     
+    private Long courseClassId;
+    
     private String courseName;
     
     private String teacher;
@@ -35,6 +37,12 @@ public class StudentChooseLogResp implements Serializable {
     private Integer chooseNum;
     
     private Boolean isConflict;
+    
+    private Boolean isChoose;
+    
+    private Integer choosingNum;
+    
+    private Integer capacity;
     
     private List<CourseTimeplace> courseTimeplaceList;
 }

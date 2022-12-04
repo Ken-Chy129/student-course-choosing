@@ -95,7 +95,7 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
 
         // 设置上课时间地点和是否冲突
         for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
-            courseUtil.setPlaceTimeAndIsConflict(classCourseListResp.getCourseClassInfoResps(), studentCourses);
+            courseUtil.setPlaceTimeAndIsConflict1(classCourseListResp.getCourseClassInfoResps(), studentCourses);
         }
 
         IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), courseClassInfoRespList);

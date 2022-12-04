@@ -9,7 +9,6 @@ import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.service.ICourseClassService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,7 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +58,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
         }
         
         // 设置上课时间地点和是否冲突
-        courseUtil.setPlaceTimeAndIsConflict(courseInfoPage, studentCourses);
+        courseUtil.setPlaceTimeAndIsConflict1(courseInfoPage, studentCourses);
         
         IPage<CourseClassInfoResp> page = PageUtil.getPage(new Page<>(), courseClassListReq.getPageNo(), courseClassListReq.getPageSize(), courseInfoPage);
         
