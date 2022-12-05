@@ -44,5 +44,7 @@ public class StudentChooseLogResp implements Serializable {
     
     private Integer capacity;
     
+    private Integer semester;
+    
     private List<CourseTimeplace> courseTimeplaceList;
 }
