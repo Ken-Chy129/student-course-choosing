@@ -1,9 +1,11 @@
 package cn.ken.student.rubcourse.websocket;
 
+import cn.ken.student.rubcourse.config.SpringContextUtil;
 import cn.ken.student.rubcourse.entity.SysNotice;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -39,10 +41,6 @@ public class WebSocketServer {
     
     private Long key;
     
-    public static Map<Long, Session> getSessionMap(){
-        return SESSION_MAP;
-    }
-    
     /**
      * 连接建立成功调用的方法
      */
@@ -52,8 +50,12 @@ public class WebSocketServer {
         this.key = studentId;
         log.info("有新的客户端上线: {}", studentId);
         SESSION_MAP.put(studentId, this.session);
-       for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + getSessionMap().size());
+        RedisTemplate<String, String> redisTemplate = (RedisTemplate<String, String>) SpringContextUtil.getBean("redisTemplate");
+        String online_num = redisTemplate.opsForValue().get("online_num");
+        Integer num = Integer.valueOf(online_num) + 1;
+        redisTemplate.opsForValue().set("online_num", num.toString());
+        for(Long sessionId : SESSION_MAP.keySet()) {
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + num);
         }
     }
 
@@ -64,8 +66,12 @@ public class WebSocketServer {
     public void onClose() {
         log.info("有客户端离线: {}", this.key);
         SESSION_MAP.remove(this.key);
+        RedisTemplate<String, String> redisTemplate = (RedisTemplate<String, String>) SpringContextUtil.getBean("redisTemplate");
+        String online_num = redisTemplate.opsForValue().get("online_num");
+        Integer num = Integer.valueOf(online_num) - 1;
+        redisTemplate.opsForValue().set("online_num", num.toString());
         for(Long sessionId : SESSION_MAP.keySet()) {
-            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + getSessionMap().size());
+            SESSION_MAP.get(sessionId).getAsyncRemote().sendText("num:" + num);
         }
     }
 
@@ -94,12 +100,17 @@ public class WebSocketServer {
     @OnError
     public void onError(Session session, Throwable error) {
         String sessionId = session.getId();
+        RedisTemplate<String, String> redisTemplate = (RedisTemplate<String, String>) SpringContextUtil.getBean("redisTemplate");
+        String online_num = redisTemplate.opsForValue().get("online_num");
+        Integer num = Integer.valueOf(online_num);
         if (SESSION_MAP.get(Long.valueOf(sessionId)) != null) {
             log.info("发生了错误,移除客户端: {}", sessionId);
             SESSION_MAP.remove(Long.valueOf(sessionId));
+            num = num - 1;
+            redisTemplate.opsForValue().set("online_num", num.toString());
         }
         log.error("发生异常：",error);
-        this.session.getAsyncRemote().sendText(String.valueOf(WebSocketServer.getSessionMap().size()));
+        this.session.getAsyncRemote().sendText("num:" + num);
     }
 
     /**

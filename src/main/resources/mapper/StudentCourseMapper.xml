@@ -47,7 +47,7 @@
     
     <select id="getIsCourseChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
         select *
-        from student_course_choosing.scc_class_course scc
+        from student_course_choosing.scc_course_class scc
         where course_id = #{param1}
         and scc.id in
         (select course_class_id from student_course_choosing.scc_student_course
