@@ -1,0 +1,42 @@
+server:
+  port: 9111
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 
+    username: 
+    password: 
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  redis:
+    host: 
+    port: 6379
+    password: 
+    database: 0
+    jedis:
+      pool: #链接池设置
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: 1.12.238.52
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    # 开启消息发送确认
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
