@@ -23,7 +23,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   rabbitmq:
-    host: 1.12.238.52
+    host: 
     port: 5672
     username: guest
     password: guest
