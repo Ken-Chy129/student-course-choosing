@@ -6,6 +6,8 @@ import cn.ken.student.rubcourse.entity.StudentCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -22,4 +24,6 @@ public interface IStudentCourseService extends IService<StudentCourse> {
     Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
 
     Result unChooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse);
+
+    void downloadStudentCourse(HttpServletRequest httpServletRequest, HttpServletResponse response, StudentChooseLogReq studentChooseLogReq) throws IOException;
 }

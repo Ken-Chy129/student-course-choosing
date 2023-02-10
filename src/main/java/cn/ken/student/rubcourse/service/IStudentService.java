@@ -5,6 +5,7 @@ import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,4 +32,6 @@ public interface IStudentService extends IService<Student> {
     Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws IOException;
 
     Result logout(HttpServletRequest httpServletRequest, Long token);
+
+    Result batchAddStudent(HttpServletRequest httpServletRequest, MultipartFile file) throws IOException;
 }

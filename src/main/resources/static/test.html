@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="Zh-CN">
+<head>
+    <title>File Upload</title>
+    <meta name="token" content="1602701234140086272">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <br>
+        <form action="sys/student/batchAdd" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <input type="submit" value="上传" />
+        </form>
+        <br>
+        <br>
+        <form>
+            <label>学号: <input type="text" id="studentId" value=""></label><br>
+            <label>学期: <input type="text" id="semester" value=""></label><br>
+            <button type="button" onclick="downloadFile()">下载文件</button>
+        </form>
+        <br>
+<!--        <form action="verify_code" method="post">-->
+<!--            <label>输入验证码:</label><br>-->
+<!--            <input type="text" name="code" />-->
+<!--            <br>-->
+<!--            <img src="path/to/checking_code_image.png" alt="Checking code image" />-->
+<!--            <br>-->
+<!--            <input type="submit" value="Submit" />-->
+<!--        </form>-->
+    </div>
+    <script>
+        function downloadFile() {
+            var param1 = document.getElementById("studentId").value;
+            var param2 = document.getElementById("semester").value;
+            var link = document.createElement("a");
+            link.href = "sys/student/downloadStudentCourse?studentId=" + param1 + "&semester=" + param2;
+            link.download = param1 + "_" + param2 + "选课.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
+</body>
+</html>

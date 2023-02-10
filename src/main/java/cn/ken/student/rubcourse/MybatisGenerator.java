@@ -30,10 +30,7 @@ public class MybatisGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "E:\\eclipse-workspace\\student-course-choosing\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-//                    builder.addInclude("ct_problem", "ct_label", "ct_problem_label"
-//                    , "ct_list", "ct_list_problem", "ct_list_type")
-                builder
-                            .addTablePrefix("scc_"); // 设置过滤表前缀
+                    builder.addTablePrefix("scc_"); // 设置过滤表前缀
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();

@@ -12,9 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * <p>
@@ -42,6 +45,12 @@ public class StudentController {
     @ApiOperation("新增学生")
     public Result addStudent(HttpServletRequest httpServletRequest, @RequestBody @Valid Student student) throws Exception {
         return studentService.addStudent(httpServletRequest, student);
+    }
+    
+    @PostMapping("batchAdd")
+    @ApiOperation("批量新增学生")
+    public Result batchAddStudent(HttpServletRequest httpServletRequest, MultipartFile file) throws IOException {
+        return studentService.batchAddStudent(httpServletRequest, file);
     }
     
     @GetMapping("/{id}")
@@ -73,6 +82,12 @@ public class StudentController {
     @ApiOperation("查询学生选课日志")
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
         return studentCourseService.getStudentChooseLog(httpServletRequest, studentChooseLogReq);
+    }
+
+    @GetMapping("downloadStudentCourse")
+    @ApiOperation("下载学生已选课程excel文件")
+    public void downloadStudentCourse(HttpServletRequest httpServletRequest, HttpServletResponse response, StudentChooseLogReq studentChooseLogReq) throws IOException {
+        studentCourseService.downloadStudentCourse(httpServletRequest, response, studentChooseLogReq);
     }
 
 }
