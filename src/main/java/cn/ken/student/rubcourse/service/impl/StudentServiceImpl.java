@@ -10,16 +10,19 @@ import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
+import cn.ken.student.rubcourse.dto.req.StudentExcel;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.dto.sys.resp.StudentResp;
 import cn.ken.student.rubcourse.entity.Class;
 import cn.ken.student.rubcourse.entity.Student;
 import cn.ken.student.rubcourse.entity.StudentCredits;
+import cn.ken.student.rubcourse.listener.StudentExcelListener;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import cn.ken.student.rubcourse.service.IStudentService;
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -30,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -165,5 +169,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         redisTemplate.delete(RedisConstant.STUDENT_TOKEN_PREFIX + token.toString());
         return Result.success();
     }
-    
+
+    @Override
+    public Result batchAddStudent(HttpServletRequest httpServletRequest, MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), StudentExcel.class, new StudentExcelListener(studentMapper)).sheet().doRead();
+        return Result.success();
+    }
+
 }

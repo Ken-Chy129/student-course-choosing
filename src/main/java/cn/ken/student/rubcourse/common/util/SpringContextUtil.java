@@ -1,4 +1,4 @@
-package cn.ken.student.rubcourse.config;
+package cn.ken.student.rubcourse.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

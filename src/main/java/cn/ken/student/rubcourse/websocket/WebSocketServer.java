@@ -1,9 +1,7 @@
 package cn.ken.student.rubcourse.websocket;
 
-import cn.ken.student.rubcourse.config.SpringContextUtil;
+import cn.ken.student.rubcourse.common.util.SpringContextUtil;
 import cn.ken.student.rubcourse.entity.SysNotice;
-import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -11,8 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

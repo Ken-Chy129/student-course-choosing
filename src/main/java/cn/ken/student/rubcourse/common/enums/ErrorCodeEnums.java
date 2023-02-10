@@ -42,7 +42,9 @@ public enum ErrorCodeEnums {
     
     CREDITS_NOT_ENOUGH("70001", "学分不足"),
     PRECOURSE_NOT_CHOOSE("70002", "尚未修得先修课程"),
-    CONDITION_NOT_SATISFIED("70003", "不满足选择条件")
+    CONDITION_NOT_SATISFIED("70003", "不满足选择条件"),
+    
+    DOWNLOAD_ERROR("80001", "文件下载失败"),
     ;
 
     private final String code;

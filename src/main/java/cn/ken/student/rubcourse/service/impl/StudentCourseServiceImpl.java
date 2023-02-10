@@ -10,6 +10,8 @@ import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -49,6 +56,9 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     
     @Autowired
     private CourseClassMapper courseClassMapper;
+    
+    @Autowired
+    private CourseMapper courseMapper;
     
     @Autowired
     private CourseUtil courseUtil;
@@ -153,5 +163,31 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         studentCreditsMapper.updateById(studentCredits);
         
         return Result.success();
+    }
+
+    @Override
+    public void downloadStudentCourse(HttpServletRequest httpServletRequest, HttpServletResponse response, StudentChooseLogReq studentChooseLogReq) throws IOException {
+        try {
+            // 设置响应类型为excel
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setCharacterEncoding("utf-8");
+            String filename = studentChooseLogReq.getStudentId() + "-" + studentChooseLogReq.getSemester() + URLEncoder.encode("选课.xlsx", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+            /*
+             * 设置响应头以及文件名称
+             *      Content-disposition 是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。
+             *      浏览器接收到头时，它会激活文件下载对话框
+             *      attachment 附件
+             *      filename 附件名
+             */
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            List<StudentCourse> studentCourse = studentCourseMapper.getStudentCourse(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+            EasyExcel.write(response.getOutputStream(), StudentCourse.class).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet("学生选课").doWrite(studentCourse);
+        } catch (IOException e) {
+            // 重置response
+            response.reset();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().println(JSON.toJSONString(Result.fail(ErrorCodeEnums.DOWNLOAD_ERROR)));
+        }
     }
 }
