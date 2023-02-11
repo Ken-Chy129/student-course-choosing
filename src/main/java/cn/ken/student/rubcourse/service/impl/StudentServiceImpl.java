@@ -50,7 +50,6 @@ import java.util.concurrent.TimeUnit;
  * @author Ken-Chy129
  * @since 2022-11-16
  */
-@Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 

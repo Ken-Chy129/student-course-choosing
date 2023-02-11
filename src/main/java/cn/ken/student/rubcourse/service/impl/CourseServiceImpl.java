@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.ken.student.rubcourse.common.constant.*;
+import cn.ken.student.rubcourse.common.constant.ComboBoxConstant;
+import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
@@ -87,11 +88,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         Course course = courseAddReq.getCourse();
         String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + ((course.getGeneralType() == null) ? "0" : course.getGeneralType()) + courseNum;
         course.setId(id);
-        course.setCampus(CampusConstant.INSTANCE.get(Integer.parseInt(course.getCampus())));
+        course.setCampus(ComboBoxConstant.CampusConstant.INSTANCE.get(Integer.parseInt(course.getCampus())));
         course.setCollege(collegeMapper.selectById(Integer.parseInt(course.getCollege())).getCollegeName());
-        course.setType(CourseTypeConstant.INSTANCE.get(Integer.parseInt(course.getType())));
+        course.setType(ComboBoxConstant.CourseTypeConstant.INSTANCE.get(Integer.parseInt(course.getType())));
         if (course.getGeneralType() != null) {
-            course.setGeneralType(GeneralTypeConstant.INSTANCE.get(Integer.parseInt(course.getGeneralType())));
+            course.setGeneralType(ComboBoxConstant.GeneralTypeConstant.INSTANCE.get(Integer.parseInt(course.getGeneralType())));
         }
         courseMapper.insert(course);
 
@@ -115,7 +116,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseTimeplace.setDurationTime(courseClassAddReq.getDuration());
         courseTimeplace.setPlace(courseClassAddReq.getPlace());
         courseTimeplace.setWeekDay(courseClassAddReq.getWeekDay());
-        courseTimeplace.setDayNo(DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNo()));
+        courseTimeplace.setDayNo(ComboBoxConstant.DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNo()));
         courseTimeplaceMapper.insert(courseTimeplace);
         
         courseClassMapper.insert(courseClass);
@@ -156,10 +157,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseClass.setId(SnowflakeUtil.nextId());
         courseClass.setCourseId(courseClassAddReq.getCourseId());
         courseClass.setIsMooc(courseClassAddReq.getIsMooc());
-        courseClass.setLanguage(LanguageTypeConstant.INSTANCE.get(courseClassAddReq.getLanguage()));
+        courseClass.setLanguage(ComboBoxConstant.LanguageTypeConstant.INSTANCE.get(courseClassAddReq.getLanguage()));
         courseClass.setChoosingNum(0);
         courseClass.setCapacity(courseClassAddReq.getCapacity());
-        courseClass.setExamType(ExamTypeConstant.INSTANCE.get(courseClassAddReq.getExamType()));
+        courseClass.setExamType(ComboBoxConstant.ExamTypeConstant.INSTANCE.get(courseClassAddReq.getExamType()));
         courseClass.setExamTime(courseClassAddReq.getExamTime());
         courseClass.setTeacher(courseClassAddReq.getTeacher());
         return courseClass;

@@ -44,41 +44,41 @@ public class SysCommonController {
     public Result getPresentRound(HttpServletRequest httpServletRequest) throws Exception {
         return chooseRoundService.getPresentRound(httpServletRequest);
     }
-    
+
     @GetMapping("getCampusList")
     @ApiOperation("获取校区列表")
     public Result getCampusList() {
-        return Result.success(ConstantUtil.getHashMap(CampusConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.CampusConstant.INSTANCE));
     }
-    
+
     @GetMapping("getCourseTypeList")
     @ApiOperation("获取课程类别表")
     public Result getCourseTypeList() {
-        return Result.success(ConstantUtil.getHashMap(CourseTypeConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.CourseTypeConstant.INSTANCE));
     }
 
     @GetMapping("getExamTypeList")
     @ApiOperation("获取考试类型列表")
     public Result getExamTypeList() {
-        return Result.success(ConstantUtil.getHashMap(ExamTypeConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.ExamTypeConstant.INSTANCE));
     }
-    
+
     @GetMapping("getGeneralTypeList")
     @ApiOperation("获取通识课类别表")
     public Result getGeneralTypeList() {
-        return Result.success(ConstantUtil.getHashMap(GeneralTypeConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.GeneralTypeConstant.INSTANCE));
     }
 
     @GetMapping("getLanguageTypeList")
     @ApiOperation("获取授课语言类型列表")
     public Result getLanguageTypeList() {
-        return Result.success(ConstantUtil.getHashMap(LanguageTypeConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.LanguageTypeConstant.INSTANCE));
     }
 
     @GetMapping("getDayNoList")
     @ApiOperation("获取课程节数列表")
     public Result getDayNoList() {
-        return Result.success(ConstantUtil.getHashMap(DayNoConstant.INSTANCE));
+        return Result.success(ConstantUtil.getHashMap(ComboBoxConstant.DayNoConstant.INSTANCE));
     }
-    
+
 }
