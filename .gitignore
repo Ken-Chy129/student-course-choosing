@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/application.yml
+/src/main/java/cn/ken/student/rubcourse/common/constant/GithubConstants.java
