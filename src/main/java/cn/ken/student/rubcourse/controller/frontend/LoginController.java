@@ -39,6 +39,18 @@ public class LoginController {
         return studentService.getCode(httpServletRequest, httpServletResponse, studentId);
     }
 
+    @GetMapping("/github/url")
+    @ApiOperation("获取github登录地址")
+    public Result getGithubUrl(HttpServletRequest httpServletRequest) throws Exception {
+        return studentService.getGithubUrl(httpServletRequest);
+    }
+
+    @GetMapping("/github/callback")
+    @ApiOperation("github回调登录")
+    public Result githubCallback(HttpServletRequest httpServletRequest, String code, String state) throws Exception {
+        return studentService.githubCallback(httpServletRequest, code, state);
+    }
+
     @GetMapping("logout")
     @ApiOperation("退出登录")
     public Result logout(HttpServletRequest httpServletRequest, Long token) {

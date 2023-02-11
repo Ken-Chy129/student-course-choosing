@@ -23,5 +23,10 @@ public class BusinessException extends Exception {
     public BusinessException(ErrorCodeEnums errorCodeEnums) {
         this.code = errorCodeEnums.getCode();
         this.desc = errorCodeEnums.getDesc();
-    } 
+    }
+
+    public BusinessException(String desc) {
+        this.code = ErrorCodeEnums.ERROR.getCode();
+        this.desc = desc;
+    }
 }

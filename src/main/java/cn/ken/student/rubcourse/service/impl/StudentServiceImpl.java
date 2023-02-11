@@ -2,14 +2,12 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.ken.student.rubcourse.common.constant.GithubConstants;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
-import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.common.util.StringUtils;
-import cn.ken.student.rubcourse.common.util.ValidateCodeUtil;
+import cn.ken.student.rubcourse.common.util.*;
 import cn.ken.student.rubcourse.dto.req.StudentExcel;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
@@ -41,10 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,10 +56,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private StudentMapper studentMapper;
-    
+
     @Autowired
     private ClassMapper classMapper;
-    
+
     @Autowired
     private StudentCreditsMapper studentCreditsMapper;
 
@@ -91,17 +86,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         studentMapper.insert(student);
         // 插入各个学期的学分
         String substring = student.getId().toString().substring(0, 4);
-        for (int i=0; i<=3; i++) {
+        for (int i = 0; i <= 3; i++) {
             int integer = Integer.parseInt(substring) + i;
-            for (int j=1; j<=2; j++) {
+            for (int j = 1; j <= 2; j++) {
                 Integer semester = Integer.valueOf(integer + String.valueOf(j));
-                StudentCredits studentCredits = new StudentCredits(SnowflakeUtil.nextId(), student.getId(), semester, BigDecimal.valueOf(22),  BigDecimal.ZERO);
+                StudentCredits studentCredits = new StudentCredits(SnowflakeUtil.nextId(), student.getId(), semester, BigDecimal.valueOf(22), BigDecimal.ZERO);
                 studentCreditsMapper.insert(studentCredits);
             }
         }
         return Result.success(student);
     }
-    
+
     @Override
     public Result getStudentById(HttpServletRequest httpServletRequest, Long id) {
         Student selectById = studentMapper.selectById(id);
@@ -154,7 +149,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public Result getCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Long studentId) throws IOException {
         StringBuilder randomString = new StringBuilder();
-        for (int i=1; i<=6; i++) {
+        for (int i = 1; i <= 6; i++) {
             String rand = ValidateCodeUtil.getRandomString(new Random().nextInt(62));
             randomString.append(rand);
         }
@@ -173,6 +168,41 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public Result batchAddStudent(HttpServletRequest httpServletRequest, MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), StudentExcel.class, new StudentExcelListener(studentMapper)).sheet().doRead();
+        return Result.success();
+    }
+
+    @Override
+    public Result getGithubUrl(HttpServletRequest httpServletRequest) {
+        String state = UUID.randomUUID().toString().replace("-", "");
+        String url = String.format(GithubConstants.CODE_URL, GithubConstants.CLIENT_ID, state, GithubConstants.CALLBACK);
+        redisTemplate.opsForValue().set("STATE_" + state, "1", 5, TimeUnit.MINUTES);
+        return Result.success(url);
+    }
+
+    @Override
+    public Result githubCallback(HttpServletRequest httpServletRequest, String code, String state) throws Exception {
+        // 校验state，确保是自己发出的请求
+        if (redisTemplate.opsForValue().get("STATE_"+state) != null) {
+            throw new BusinessException("state值不合法");
+        }
+        // 通过github返回的code请求获取accessToken
+        String getTokenUrl = String.format(GithubConstants.TOKEN_URL, GithubConstants.CLIENT_ID, GithubConstants.CLIENT_SECRET, code, GithubConstants.CALLBACK);
+        String tokenResponse = HttpClientUtils.doGet(getTokenUrl);
+        if (tokenResponse == null) {
+            throw new BusinessException("请求回调失败");
+        }
+        String accessToken = HttpClientUtils.parseResponseEntity(tokenResponse).get("access_token");
+        
+        // 通过accessToken获取用户数据
+        Map<String, String> headers = new HashMap<>(1);
+        headers.put("Authorization", "token " + accessToken);
+        String infoResponse = HttpClientUtils.doGetWithHeaders(GithubConstants.USER_INFO_URL, headers);
+        if (infoResponse == null) {
+            throw new BusinessException("获取信息失败");
+        }
+        Map<String, String> responseMap = HttpClientUtils.parseResponseEntityJson(infoResponse);
+        
+        // todo:校验用户是否登录
         return Result.success();
     }
 

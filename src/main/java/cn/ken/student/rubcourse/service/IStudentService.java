@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.entity.Student;
@@ -34,4 +35,8 @@ public interface IStudentService extends IService<Student> {
     Result logout(HttpServletRequest httpServletRequest, Long token);
 
     Result batchAddStudent(HttpServletRequest httpServletRequest, MultipartFile file) throws IOException;
+
+    Result getGithubUrl(HttpServletRequest httpServletRequest);
+
+    Result githubCallback(HttpServletRequest httpServletRequest, String code, String state) throws Exception;
 }
