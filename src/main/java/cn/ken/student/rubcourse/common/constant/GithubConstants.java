@@ -10,9 +10,9 @@ package cn.ken.student.rubcourse.common.constant;
  */
 public class GithubConstants {
 
-    public static final String CLIENT_ID = "5a666ebcd73953ec7235";
-    public static final String CLIENT_SECRET = "5abcc5aca5cf6437291f4a5e70b8e1ac314a5464";
-        public static final String CALLBACK = "http://jwxk.ken-chy129.cn/#/wholecourses";
+    public static final String CLIENT_ID = "";
+    public static final String CLIENT_SECRET = "";
+    public static final String CALLBACK = "";
 
     /**
      * 获取code的url
