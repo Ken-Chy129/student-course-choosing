@@ -94,6 +94,10 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 <!--        数据脱敏-->
 <!--        <dependency>-->
 <!--            <groupId>red.zyc.boot</groupId>-->
