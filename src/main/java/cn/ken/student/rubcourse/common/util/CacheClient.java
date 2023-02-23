@@ -57,7 +57,7 @@ public class CacheClient {
     }
 
     /**
-     * 获取通过逻辑设置过期时间的缓存
+     * 避免缓存穿透的获取
      */
     public <R, V> R get(String keyPrefix, V id, Class<R> clazz, Function<V, R> dbFallback, Long expireTime, TimeUnit unit) {
         String key = keyPrefix + id;
@@ -84,7 +84,10 @@ public class CacheClient {
         return result;
     }
 
-    public <R, V> R getWithLogicalExpire(String keyPrefix, V id, Class<R> clazz, Function<V, R> dbFallback, Long expireTime, TimeUnit unit) {
+    /**
+     * 逻辑过期，互斥锁获取值，用于避免热点数据出现缓存击穿
+     */
+    public <R, V> R getMutex(String keyPrefix, V id, Class<R> clazz, Function<V, R> dbFallback, Long expireTime, TimeUnit unit) {
         String key = keyPrefix + id;
         String value = redisTemplate.opsForValue().get(key);
         if (StringUtils.isBlank(value)) {
