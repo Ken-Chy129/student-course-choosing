@@ -10,6 +10,13 @@ package cn.ken.student.rubcourse.common.constant;
  */
 public class RedisConstant {
     
+    public static String LOCK = "lock:";
+    
+    /**
+     * 空缓存过期时间（单位分钟）
+     */
+    public static long CACHE_NULL_TTL = 2;
+    
     public static String CHECK_CODE_PREFIX = "code:";
     
     public static String PRESENT_ROUND = "present_round";
