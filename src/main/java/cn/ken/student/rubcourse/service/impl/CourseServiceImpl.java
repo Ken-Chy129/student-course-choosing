@@ -5,12 +5,11 @@ import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.model.dto.req.CourseClassAddReq;
 import cn.ken.student.rubcourse.model.dto.resp.CourseNameListResp;
 import cn.ken.student.rubcourse.model.dto.sys.req.CourseAddReq;
 import cn.ken.student.rubcourse.model.dto.sys.req.CoursePageReq;
-import cn.ken.student.rubcourse.entity.*;
-import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.model.entity.*;
 import cn.ken.student.rubcourse.service.ICourseService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -39,31 +38,31 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    
+
     @Autowired
     private CourseMapper courseMapper;
-    
+
     @Autowired
     private CourseTimeplaceMapper courseTimeplaceMapper;
-    
+
     @Autowired
     private ChooseRoundMapper chooseRoundMapper;
-    
+
     @Autowired
     private CourseClassMapper courseClassMapper;
-    
+
     @Autowired
     private CollegeMapper collegeMapper;
-    
+
     @Autowired
     private CourseDependenceMapper courseDependenceMapper;
-    
+
     @Autowired
     private StudentCourseMapper studentCourseMapper;
-    
+
     @Autowired
     private StudentCreditsMapper studentCreditsMapper;
-    
+
     @Autowired
     private SysNoticeMapper sysNoticeMapper;
 
@@ -85,7 +84,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public Result addCourse(HttpServletRequest httpServletRequest, CourseAddReq courseAddReq) {
         String courseNum = redisTemplate.opsForValue().get("course_num");
         assert courseNum != null;
-        redisTemplate.opsForValue().set(RedisConstant.COURSE_NUM, String.valueOf(Integer.parseInt(courseNum)+1));
+        redisTemplate.opsForValue().set(RedisConstant.COURSE_NUM, String.valueOf(Integer.parseInt(courseNum) + 1));
         Course course = courseAddReq.getCourse();
         String id = course.getCampus() + (course.getCollege().length() == 1 ? "0" : "") + course.getCollege() + course.getType() + ((course.getGeneralType() == null) ? "0" : course.getGeneralType()) + courseNum;
         course.setId(id);
@@ -119,7 +118,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseTimeplace.setWeekDay(courseClassAddReq.getWeekDay());
         courseTimeplace.setDayNo(ComboBoxConstant.DayNoConstant.INSTANCE.get(courseClassAddReq.getDayNo()));
         courseTimeplaceMapper.insert(courseTimeplace);
-        
+
         courseClassMapper.insert(courseClass);
         Course course = courseMapper.selectById(courseClass.getCourseId());
         course.setClassNum(course.getClassNum() + 1);
@@ -166,7 +165,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         courseClass.setTeacher(courseClassAddReq.getTeacher());
         return courseClass;
     }
-    
+
     private void removeCourseClass(Long id) {
         // 更改课程班状态
         CourseClass courseClass = courseClassMapper.selectById(id);
