@@ -1,6 +1,6 @@
 package cn.ken.student.rubcourse.mapper;
 
-import cn.ken.student.rubcourse.entity.CourseTimeplace;
+import cn.ken.student.rubcourse.model.entity.CourseTimeplace;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

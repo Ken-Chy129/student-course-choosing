@@ -2,7 +2,7 @@ package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.entity.CourseEmergency;
+import cn.ken.student.rubcourse.model.entity.CourseEmergency;
 import cn.ken.student.rubcourse.mapper.CourseEmergencyMapper;
 import cn.ken.student.rubcourse.service.ICourseEmergencyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.sys.req.DepartmentAddReq;
+import cn.ken.student.rubcourse.model.dto.sys.req.DepartmentAddReq;
 import cn.ken.student.rubcourse.service.IDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

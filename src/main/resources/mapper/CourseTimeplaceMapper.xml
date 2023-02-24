@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper">
     
-    <select id="selectByCourseClassId" resultType="cn.ken.student.rubcourse.entity.CourseTimeplace">
+    <select id="selectByCourseClassId" resultType="cn.ken.student.rubcourse.model.entity.CourseTimeplace">
         select *
         from student_course_choosing.scc_course_timeplace
         where course_class_id = #{param1}

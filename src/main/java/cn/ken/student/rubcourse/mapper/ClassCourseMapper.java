@@ -1,8 +1,8 @@
 package cn.ken.student.rubcourse.mapper;
 
-import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
-import cn.ken.student.rubcourse.dto.ClassInfoDTO;
-import cn.ken.student.rubcourse.entity.ClassCourse;
+import cn.ken.student.rubcourse.model.dto.req.ClassCourseListReq;
+import cn.ken.student.rubcourse.model.dto.ClassInfoDTO;
+import cn.ken.student.rubcourse.model.entity.ClassCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

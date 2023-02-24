@@ -6,8 +6,8 @@ import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.IpUtil;
 import cn.ken.student.rubcourse.common.util.StringUtils;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.entity.SysBackendLog;
-import cn.ken.student.rubcourse.entity.SysFrontendLog;
+import cn.ken.student.rubcourse.model.entity.SysBackendLog;
+import cn.ken.student.rubcourse.model.entity.SysFrontendLog;
 import cn.ken.student.rubcourse.mapper.SysBackendLogMapper;
 import cn.ken.student.rubcourse.mapper.SysFrontendLogMapper;
 import com.alibaba.fastjson.JSON;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**

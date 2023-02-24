@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.websocket;
 
 import cn.ken.student.rubcourse.common.util.SpringContextUtil;
-import cn.ken.student.rubcourse.entity.SysNotice;
+import cn.ken.student.rubcourse.model.entity.SysNotice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

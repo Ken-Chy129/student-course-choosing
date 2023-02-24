@@ -1,9 +1,9 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
+import cn.ken.student.rubcourse.model.dto.req.CourseClassListReq;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cn.ken.student.rubcourse.entity.CourseClass;
+import cn.ken.student.rubcourse.model.entity.CourseClass;
 
 import javax.servlet.http.HttpServletRequest;
 

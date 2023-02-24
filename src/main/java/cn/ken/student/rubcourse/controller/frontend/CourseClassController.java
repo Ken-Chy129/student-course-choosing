@@ -3,8 +3,8 @@ package cn.ken.student.rubcourse.controller.frontend;
 
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
-import cn.ken.student.rubcourse.dto.req.CourseClassListReq;
+import cn.ken.student.rubcourse.model.dto.req.ClassCourseListReq;
+import cn.ken.student.rubcourse.model.dto.req.CourseClassListReq;
 import cn.ken.student.rubcourse.service.IClassCourseService;
 import cn.ken.student.rubcourse.service.ICourseClassService;
 import io.swagger.annotations.Api;

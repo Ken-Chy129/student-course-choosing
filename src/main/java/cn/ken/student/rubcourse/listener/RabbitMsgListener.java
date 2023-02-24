@@ -1,12 +1,9 @@
 package cn.ken.student.rubcourse.listener;
 
 import cn.ken.student.rubcourse.config.RabbitMQConfig;
-import cn.ken.student.rubcourse.dto.MessageDTO;
-import cn.ken.student.rubcourse.entity.SysNotice;
+import cn.ken.student.rubcourse.model.entity.SysNotice;
 import cn.ken.student.rubcourse.mapper.SysNoticeMapper;
 import cn.ken.student.rubcourse.websocket.WebSocketServer;
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -14,7 +11,6 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  * <pre>

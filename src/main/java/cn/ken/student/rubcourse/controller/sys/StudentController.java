@@ -1,10 +1,10 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
-import cn.ken.student.rubcourse.dto.req.StudentOnConditionReq;
-import cn.ken.student.rubcourse.entity.Student;
-import cn.ken.student.rubcourse.entity.StudentCredits;
+import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
+import cn.ken.student.rubcourse.model.dto.req.StudentOnConditionReq;
+import cn.ken.student.rubcourse.model.entity.Student;
+import cn.ken.student.rubcourse.model.entity.StudentCredits;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
 import cn.ken.student.rubcourse.service.IStudentCreditsService;
 import cn.ken.student.rubcourse.service.IStudentService;

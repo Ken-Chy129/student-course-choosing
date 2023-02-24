@@ -2,8 +2,8 @@ package cn.ken.student.rubcourse.listener;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.ken.student.rubcourse.dto.req.StudentExcel;
-import cn.ken.student.rubcourse.entity.Student;
+import cn.ken.student.rubcourse.model.dto.req.StudentExcel;
+import cn.ken.student.rubcourse.model.entity.Student;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;

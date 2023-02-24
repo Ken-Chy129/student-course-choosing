@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseClassMapper">
     
-    <resultMap type="cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp" id="courseClassInfoResp">
+    <resultMap type="cn.ken.student.rubcourse.model.dto.resp.CourseClassInfoResp" id="courseClassInfoResp">
         <result property="id" column="id"/>
         <result property="courseId" column="course_id"/>
         <result property="isMooc" column="is_mooc"/>
@@ -18,7 +18,7 @@
         <result property="type" column="type"/>
         <result property="generalType" column="general_type"/>
         <result property="credit" column="credit"/>
-        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.model.entity.CourseTimeplace" javaType="list">
             <result property="durationTime" column="duration_time"/>
             <result property="weekDay" column="week_day"/>
             <result property="dayNo" column="day_no"/>
@@ -26,7 +26,7 @@
         </collection>
     </resultMap>
 
-    <resultMap type="cn.ken.student.rubcourse.dto.resp.ClassCourseListResp" id="classCourseListResp">
+    <resultMap type="cn.ken.student.rubcourse.model.dto.resp.ClassCourseListResp" id="classCourseListResp">
         <id property="id" column="class_course_id"/>
         <result property="courseId" column="course_id"/>
         <result property="courseName" column="course_name"/>
@@ -35,7 +35,7 @@
         <result property="isMust" column="is_must"/>
         <result property="collegeName" column="college"/>
         <result property="credit" column="credit"/>
-        <collection property="courseClassInfoResps" ofType="cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp" javaType="list">
+        <collection property="courseClassInfoResps" ofType="cn.ken.student.rubcourse.model.dto.resp.CourseClassInfoResp" javaType="list">
             <result property="id" column="id"/>
             <result property="courseId" column="course_id"/>
             <result property="isMooc" column="is_mooc"/>
@@ -51,7 +51,7 @@
             <result property="type" column="type"/>
             <result property="generalType" column="general_type"/>
             <result property="credit" column="credit"/>
-            <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+            <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.model.entity.CourseTimeplace" javaType="list">
                 <result property="durationTime" column="duration_time"/>
                 <result property="weekDay" column="week_day"/>
                 <result property="dayNo" column="day_no"/>
@@ -60,7 +60,7 @@
         </collection>
     </resultMap>
     
-    <resultMap id="courseClassInfo" type="cn.ken.student.rubcourse.entity.CourseClass">
+    <resultMap id="courseClassInfo" type="cn.ken.student.rubcourse.model.entity.CourseClass">
         <result property="id" column="id"/>
         <result property="courseId" column="course_id"/>
         <result property="isMooc" column="is_mooc"/>
@@ -70,7 +70,7 @@
         <result property="teacher" column="teacher"/>
         <result property="examType" column="exam_type"/>
         <result property="examTime" column="exam_time"/>
-        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.model.entity.CourseTimeplace" javaType="list">
             <result property="durationTime" column="duration_time"/>
             <result property="weekDay" column="week_day"/>
             <result property="dayNo" column="day_no"/>

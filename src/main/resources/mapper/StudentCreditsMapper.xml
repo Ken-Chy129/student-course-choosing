@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.StudentCreditsMapper">
 
-    <select id="selectByStudentAndSemester" resultType="cn.ken.student.rubcourse.entity.StudentCredits">
+    <select id="selectByStudentAndSemester" resultType="cn.ken.student.rubcourse.model.entity.StudentCredits">
         select *
         from student_course_choosing.scc_student_credits
         where student_id = #{param1}

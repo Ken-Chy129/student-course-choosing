@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseMapper">
     
-    <select id="getCourseList" resultType="cn.ken.student.rubcourse.dto.resp.CourseNameListResp">
+    <select id="getCourseList" resultType="cn.ken.student.rubcourse.model.dto.resp.CourseNameListResp">
         select *
         from student_course_choosing.scc_course
         <where>
@@ -12,7 +12,7 @@
         </where>
     </select>
     
-    <select id="getCoursePage" resultType="cn.ken.student.rubcourse.entity.Course">
+    <select id="getCoursePage" resultType="cn.ken.student.rubcourse.model.entity.Course">
         select *
         from student_course_choosing.scc_course
         <where>

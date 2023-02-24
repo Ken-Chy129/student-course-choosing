@@ -6,8 +6,7 @@ import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.IpUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.common.util.StringUtils;
-import cn.ken.student.rubcourse.entity.SysBackendLog;
-import cn.ken.student.rubcourse.entity.SysFrontendLog;
+import cn.ken.student.rubcourse.model.entity.SysBackendLog;
 import cn.ken.student.rubcourse.mapper.SysBackendLogMapper;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 

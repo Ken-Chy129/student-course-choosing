@@ -1,10 +1,10 @@
 package cn.ken.student.rubcourse.common.util;
 
 import cn.ken.student.rubcourse.common.constant.ComboBoxConstant;
-import cn.ken.student.rubcourse.dto.resp.CourseClassInfoResp;
-import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
-import cn.ken.student.rubcourse.entity.CourseTimeplace;
-import cn.ken.student.rubcourse.entity.StudentCourse;
+import cn.ken.student.rubcourse.model.dto.resp.CourseClassInfoResp;
+import cn.ken.student.rubcourse.model.dto.resp.StudentChooseLogResp;
+import cn.ken.student.rubcourse.model.entity.CourseTimeplace;
+import cn.ken.student.rubcourse.model.entity.StudentCourse;
 import cn.ken.student.rubcourse.mapper.CourseTimeplaceMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,22 +1,19 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.CourseClassAddReq;
-import cn.ken.student.rubcourse.dto.req.CourseDependencyAddReq;
-import cn.ken.student.rubcourse.dto.sys.req.CourseAddReq;
-import cn.ken.student.rubcourse.dto.sys.req.CoursePageReq;
-import cn.ken.student.rubcourse.entity.Course;
+import cn.ken.student.rubcourse.model.dto.req.CourseClassAddReq;
+import cn.ken.student.rubcourse.model.dto.req.CourseDependencyAddReq;
+import cn.ken.student.rubcourse.model.dto.sys.req.CourseAddReq;
+import cn.ken.student.rubcourse.model.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.service.ICourseClassService;
 import cn.ken.student.rubcourse.service.ICourseDependenceService;
 import cn.ken.student.rubcourse.service.ICourseService;
-import cn.ken.student.rubcourse.service.impl.CourseDependenceServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * <p>

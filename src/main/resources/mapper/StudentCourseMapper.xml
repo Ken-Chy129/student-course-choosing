@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.StudentCourseMapper">
     
-    <resultMap id="logs" type="cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp">
+    <resultMap id="logs" type="cn.ken.student.rubcourse.model.dto.resp.StudentChooseLogResp">
         <result property="courseId" column="course_id"/>
         <result property="courseClassId" column="course_class_id"/>
         <result property="courseName" column="course_name"/>
@@ -13,7 +13,7 @@
         <result property="choosingNum" column="choosing_num"/>
         <result property="capacity" column="capacity"/>
         <result property="semester" column="semester"/>
-        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.entity.CourseTimeplace" javaType="list">
+        <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.model.entity.CourseTimeplace" javaType="list">
             <result property="durationTime" column="duration_time"/>
             <result property="weekDay" column="week_day"/>
             <result property="dayNo" column="day_no"/>
@@ -21,7 +21,7 @@
         </collection>
     </resultMap>
     
-    <select id="getStudentCourse" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+    <select id="getStudentCourse" resultType="cn.ken.student.rubcourse.model.entity.StudentCourse">
         select *
         from student_course_choosing.scc_student_course
         where student_id = #{param1}
@@ -45,7 +45,7 @@
         </if>
     </select>
     
-    <select id="getIsCourseChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+    <select id="getIsCourseChoose" resultType="cn.ken.student.rubcourse.model.entity.StudentCourse">
         select *
         from student_course_choosing.scc_course_class scc
         where course_id = #{param1}
@@ -54,7 +54,7 @@
             where student_id = #{param2} and semester != #{param3} and is_deleted = false)
     </select>
     
-    <select id="selectByStudentAndSemesterAndCourseClass" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+    <select id="selectByStudentAndSemesterAndCourseClass" resultType="cn.ken.student.rubcourse.model.entity.StudentCourse">
         select *
         from student_course_choosing.scc_student_course
         where student_id = #{param1}
@@ -63,7 +63,7 @@
 <!--        and is_deleted = false-->
     </select>
     
-    <select id="selectByCourseClassAndSemester" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+    <select id="selectByCourseClassAndSemester" resultType="cn.ken.student.rubcourse.model.entity.StudentCourse">
         select *
         from student_course_choosing.scc_student_course
         where semester = #{param2}
@@ -71,7 +71,7 @@
         and is_deleted = false
     </select>
     
-    <select id="getIsCourseClassChoose" resultType="cn.ken.student.rubcourse.entity.StudentCourse">
+    <select id="getIsCourseClassChoose" resultType="cn.ken.student.rubcourse.model.entity.StudentCourse">
         select *
         from student_course_choosing.scc_student_course
         where is_deleted = false

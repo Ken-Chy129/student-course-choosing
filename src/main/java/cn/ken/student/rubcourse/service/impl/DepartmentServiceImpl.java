@@ -1,8 +1,8 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.sys.req.DepartmentAddReq;
-import cn.ken.student.rubcourse.entity.Department;
+import cn.ken.student.rubcourse.model.dto.sys.req.DepartmentAddReq;
+import cn.ken.student.rubcourse.model.entity.Department;
 import cn.ken.student.rubcourse.mapper.DepartmentMapper;
 import cn.ken.student.rubcourse.service.IDepartmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

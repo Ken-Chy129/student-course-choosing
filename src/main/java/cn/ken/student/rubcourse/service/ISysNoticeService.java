@@ -1,9 +1,9 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.MessageDTO;
-import cn.ken.student.rubcourse.dto.sys.req.SysNoticePageReq;
-import cn.ken.student.rubcourse.entity.SysNotice;
+import cn.ken.student.rubcourse.model.dto.MessageDTO;
+import cn.ken.student.rubcourse.model.dto.sys.req.SysNoticePageReq;
+import cn.ken.student.rubcourse.model.entity.SysNotice;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;

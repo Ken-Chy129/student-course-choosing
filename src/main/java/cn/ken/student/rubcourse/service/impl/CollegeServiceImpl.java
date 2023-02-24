@@ -1,7 +1,7 @@
 package cn.ken.student.rubcourse.service.impl;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.entity.College;
+import cn.ken.student.rubcourse.model.entity.College;
 import cn.ken.student.rubcourse.mapper.CollegeMapper;
 import cn.ken.student.rubcourse.service.ICollegeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

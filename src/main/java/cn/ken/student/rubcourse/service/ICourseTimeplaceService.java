@@ -1,6 +1,6 @@
 package cn.ken.student.rubcourse.service;
 
-import cn.ken.student.rubcourse.entity.CourseTimeplace;
+import cn.ken.student.rubcourse.model.entity.CourseTimeplace;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

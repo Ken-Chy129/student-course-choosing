@@ -1,10 +1,10 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
-import cn.ken.student.rubcourse.dto.req.ClassListReq;
-import cn.ken.student.rubcourse.entity.Class;
-import cn.ken.student.rubcourse.entity.ClassCourse;
+import cn.ken.student.rubcourse.model.dto.req.ClassCourseListReq;
+import cn.ken.student.rubcourse.model.dto.req.ClassListReq;
+import cn.ken.student.rubcourse.model.entity.Class;
+import cn.ken.student.rubcourse.model.entity.ClassCourse;
 import cn.ken.student.rubcourse.service.IClassCourseService;
 import cn.ken.student.rubcourse.service.IClassService;
 import io.swagger.annotations.Api;

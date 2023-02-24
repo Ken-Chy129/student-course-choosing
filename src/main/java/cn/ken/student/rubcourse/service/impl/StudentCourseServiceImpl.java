@@ -5,10 +5,11 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
-import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
-import cn.ken.student.rubcourse.dto.resp.StudentChooseLogResp;
+import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
+import cn.ken.student.rubcourse.model.dto.resp.StudentChooseLogResp;
 import cn.ken.student.rubcourse.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
+import cn.ken.student.rubcourse.model.entity.*;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
@@ -26,7 +27,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -38,31 +38,28 @@ import java.util.Map;
  */
 @Service
 public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, StudentCourse> implements IStudentCourseService {
-    
+
     @Autowired
     private StudentCourseMapper studentCourseMapper;
-    
+
     @Autowired
     private StudentCreditsMapper studentCreditsMapper;
-    
+
     @Autowired
     private CourseDependenceMapper courseDependenceMapper;
-    
+
     @Autowired
     private ClassMapper classMapper;
-    
+
     @Autowired
     private CourseEmergencyMapper courseEmergencyMapper;
-    
+
     @Autowired
     private CourseClassMapper courseClassMapper;
-    
-    @Autowired
-    private CourseMapper courseMapper;
-    
+
     @Autowired
     private CourseUtil courseUtil;
-    
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -70,15 +67,15 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
         // 获取学生已选课程表
         List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
-        
+
         List<StudentChooseLogResp> studentCourseLogs = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
-        
+
         for (StudentChooseLogResp studentChooseLogResp : studentCourseLogs) {
             studentChooseLogResp.setIsChoose(studentChooseLogReq.getIsChosen());
         }
 
         courseUtil.setPlaceTimeAndIsConflict2(studentCourseLogs, studentCourses);
-        
+
         return Result.success(studentCourseLogs);
     }
 
@@ -105,7 +102,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
                 return Result.fail(ErrorCodeEnums.CONDITION_NOT_SATISFIED);
             }
         }
-        
+
         // 查询课程班信息
         CourseClass courseClass = courseClassMapper.selectById(studentCourse.getCourseClassId());
         // 通过课程id查询依赖课程
@@ -122,11 +119,11 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentId, semester);
         studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().add(studentCourse.getCredits()));
         studentCreditsMapper.updateById(studentCredits);
-        
+
         // 增加课程选择人数
         courseClass.setChoosingNum(courseClass.getChoosingNum() + 1);
         courseClassMapper.updateById(courseClass);
-        
+
         // 新增选课
         StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
         if (chooseCourse == null) {
@@ -144,14 +141,14 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     @Override
     @Transactional
     public Result unChooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
-        
+
         // 查询到选择的记录
         StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
-        
+
         // 设置退选
         chooseCourse.setIsDeleted(true);
         studentCourseMapper.updateById(chooseCourse);
-        
+
         // 恢复课程容量
         CourseClass courseClass = courseClassMapper.selectById(studentCourse.getCourseClassId());
         courseClass.setChoosingNum(courseClass.getChoosingNum() - 1);
@@ -161,7 +158,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentCourse.getStudentId(), studentCourse.getSemester());
         studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().subtract(studentCourse.getCredits()));
         studentCreditsMapper.updateById(studentCredits);
-        
+
         return Result.success();
     }
 

@@ -1,17 +1,15 @@
 package cn.ken.student.rubcourse.controller.frontend;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.StudentChooseLogReq;
-import cn.ken.student.rubcourse.entity.StudentCourse;
+import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
+import cn.ken.student.rubcourse.model.entity.StudentCourse;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 
 /**
  * <p>

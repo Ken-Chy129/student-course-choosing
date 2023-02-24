@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ken.student.rubcourse.mapper.CourseEmergencyMapper">
 
-    <select id="selectByCourseId" resultType="cn.ken.student.rubcourse.entity.CourseEmergency">
+    <select id="selectByCourseId" resultType="cn.ken.student.rubcourse.model.entity.CourseEmergency">
         select *
         from student_course_choosing.scc_course_emergency
         where course_id = #{courseId}

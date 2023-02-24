@@ -1,12 +1,11 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.dto.req.ClassCourseListReq;
-import cn.ken.student.rubcourse.entity.ClassCourse;
+import cn.ken.student.rubcourse.model.dto.req.ClassCourseListReq;
+import cn.ken.student.rubcourse.model.entity.ClassCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * <p>
