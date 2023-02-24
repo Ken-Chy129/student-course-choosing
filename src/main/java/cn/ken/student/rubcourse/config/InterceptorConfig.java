@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.config;
 
-import cn.ken.student.rubcourse.interceptor.RefreshTokenInterceptor;
+import cn.ken.student.rubcourse.interceptor.RefreshManagerTokenInterceptor;
+import cn.ken.student.rubcourse.interceptor.RefreshStudentTokenInterceptor;
 import cn.ken.student.rubcourse.interceptor.TokenInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,8 +30,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/doc.html", "/webjars/**", "favicon.ico","/swagger-resources", "/v2/api-docs", "error", "/student/login", "/sys/manager/login", "static/test.html")
                 .order(1);
-        registry.addInterceptor(new RefreshTokenInterceptor(redisTemplate))
+        registry.addInterceptor(new RefreshManagerTokenInterceptor(redisTemplate))
+                .addPathPatterns("/sys/**")
+                .order(0);
+        registry.addInterceptor(new RefreshStudentTokenInterceptor(redisTemplate))
                 .addPathPatterns("/**")
+                .excludePathPatterns("/sys/**")
                 .order(0);
     }
 }

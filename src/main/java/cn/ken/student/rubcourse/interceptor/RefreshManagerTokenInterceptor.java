@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.interceptor;
 
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
+import cn.ken.student.rubcourse.common.entity.UserHolder;
 import com.alibaba.fastjson.JSON;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,11 +21,11 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="https://github.com/Ken-Chy129">Ken-Chy129</a>
  * @date 2023/2/21 23:18
  */
-public class RefreshTokenInterceptor implements HandlerInterceptor {
+public class RefreshManagerTokenInterceptor implements HandlerInterceptor {
 
     private RedisTemplate<String, String> redisTemplate;
 
-    public RefreshTokenInterceptor(RedisTemplate<String, String> redisTemplate) {
+    public RefreshManagerTokenInterceptor(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -42,8 +43,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         // 保存用户信息
-        ThreadLocal<HashMap<String, String>> local = new ThreadLocal<>();
-        local.set(hashMap);
+        UserHolder.set(hashMap);
         redisTemplate.expire(tokenKey, 30, TimeUnit.MINUTES);
         return true;
     }
