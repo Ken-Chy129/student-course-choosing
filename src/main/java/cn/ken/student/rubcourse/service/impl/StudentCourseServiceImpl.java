@@ -64,16 +64,18 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
 
     @Override
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
+        
         // 获取学生已选课程表
-        List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+        List<StudentCourse> studentCourses = courseUtil.getStudentCourseClasses(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+
+        List<CourseTimeplace> courseTimePlaces = courseUtil.getCourseTimePlaces(null);
 
         List<StudentChooseLogResp> studentCourseLogs = studentCourseMapper.getStudentChooseLogs(studentChooseLogReq);
 
         for (StudentChooseLogResp studentChooseLogResp : studentCourseLogs) {
             studentChooseLogResp.setIsChoose(studentChooseLogReq.getIsChosen());
+            studentChooseLogResp.setIsConflict(courseUtil.isConflict(studentChooseLogResp.getCourseClassId(), studentCourses, courseTimePlaces));
         }
-
-//        courseUtil.setPlaceTimeAndIsConflict2(studentCourseLogs, studentCourses);
 
         return Result.success(studentCourseLogs);
     }
