@@ -34,7 +34,7 @@ public class ClassCourse implements Serializable {
     private Integer classId;
 
     @ApiModelProperty("课程编号")
-    private Integer courseId;
+    private String courseId;
 
     @ApiModelProperty("推荐选课时间")
     private Integer commendedTime;

@@ -6,6 +6,7 @@ import cn.ken.student.rubcourse.model.entity.CourseTimeplace;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -83,9 +84,5 @@ public class CourseClassInfoResp implements Serializable {
         this.setType(course.getType());
         this.setGeneralType(course.getGeneralType());
         this.setCredit(course.getCredit());
-    }
-    
-    public void fillWithTimeplace() {
-        
     }
 }

@@ -73,7 +73,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
             studentChooseLogResp.setIsChoose(studentChooseLogReq.getIsChosen());
         }
 
-        courseUtil.setPlaceTimeAndIsConflict2(studentCourseLogs, studentCourses);
+//        courseUtil.setPlaceTimeAndIsConflict2(studentCourseLogs, studentCourses);
 
         return Result.success(studentCourseLogs);
     }

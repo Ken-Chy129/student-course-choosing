@@ -8,19 +8,24 @@ import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.model.dto.req.ClassCourseListReq;
 import cn.ken.student.rubcourse.model.dto.resp.ClassCourseListResp;
 import cn.ken.student.rubcourse.model.dto.resp.CourseClassInfoResp;
-import cn.ken.student.rubcourse.model.entity.ClassCourse;
-import cn.ken.student.rubcourse.model.entity.StudentCourse;
+import cn.ken.student.rubcourse.model.entity.*;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.service.IClassCourseService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -76,29 +81,77 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
     }
 
     @Override
-    public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq classCourseListReq) {
+    public Result getClassCoursePage(HttpServletRequest httpServletRequest, ClassCourseListReq req) {
+        
+        // 查询课程表
+        Map<String, Course> courseMap = courseUtil.getCourses();
+        Set<String> courseIdSet = courseMap.values().stream().filter(course -> req.getType() == null || course.getType().equals(req.getType())).map(Course::getId).collect(Collectors.toSet());
 
         // 获取学生已选课程表
-        List<StudentCourse> studentCourses = studentCourseMapper.getStudentCourse(classCourseListReq.getStudentId(), classCourseListReq.getSemester());
+        List<StudentCourse> studentCourseClassList = courseUtil.getStudentCourseClasses(req.getStudentId(), req.getSemester());
+        Set<Long> studentCourseClassIdSet = studentCourseClassList
+                .stream()
+                .map(StudentCourse::getCourseClassId)
+                .collect(Collectors.toSet());
         
+        // 获取上课时间地点列表
+        List<CourseTimeplace> courseTimeplaceList = courseUtil.getCourseTimePlaces(null);
+
+        // 查询满足条件课程班
+        LambdaQueryWrapper<CourseClass> courseClassQueryWrapper = new LambdaQueryWrapper<>();
+        courseClassQueryWrapper.eq(StringUtils.isNotBlank(req.getSearchContent()), CourseClass::getCourseId, req.getSearchContent())
+                .eq(StringUtils.isNotBlank(req.getSearchContent()), CourseClass::getCourseName, req.getSearchContent())
+                .in(req.getType() != null, CourseClass::getCourseId, courseIdSet)
+                .eq(CourseClass::getIsDeleted, 0);
+        List<CourseClass> courseClassList = courseClassMapper.selectList(courseClassQueryWrapper);
+
         // 获取方案内课程的开课班信息
-        List<ClassCourseListResp> courseClassInfoRespList = courseClassMapper.getCourseClassInfoList(classCourseListReq);
+        LambdaQueryWrapper<ClassCourse> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ClassCourse::getClassId, req.getClassId())
+                .eq(req.getIsMust() != null, ClassCourse::getIsMust, req.getIsMust())
+                .eq(req.getRecommendedTime() != null, ClassCourse::getCommendedTime, req.getRecommendedTime())
+                .in(ClassCourse::getCourseId, courseIdSet)
+                .eq(ClassCourse::getIsDeleted, 0);
+        List<ClassCourse> classCourseList = classCourseMapper.selectList(queryWrapper);
+
+        List<ClassCourseListResp> res = new ArrayList<>();
+        for (ClassCourse classCourse : classCourseList) {
+            ClassCourseListResp classCourseListResp = new ClassCourseListResp();
+            classCourseListResp.setId(classCourse.getId());
+            classCourseListResp.setIsMust(classCourse.getIsMust());
+            classCourseListResp.fillWithCourse(courseMap.get(classCourse.getCourseId()));
+            List<CourseClassInfoResp> courseClassInfoRespList = new ArrayList<>();
+            for (CourseClass courseClass : courseClassList) {
+                CourseClassInfoResp courseClassInfoResp = CourseClassInfoResp.builder().build();
+                if (courseClass.getCourseId().equals(classCourse.getCourseId())) {
+                    courseClassInfoResp.fillWithCourseClass(courseClass);
+                    courseClassInfoResp.fillWithCourse(courseMap.get(courseClass.getCourseId()));
+                    courseClassInfoRespList.add(courseClassInfoResp);
+                }
+            }
+            if (courseClassInfoRespList.size() > 0) {
+                classCourseListResp.setCourseClassInfoResps(courseClassInfoRespList);
+                res.add(classCourseListResp);
+            }
+        }
 
         // 设置课程是否本学期已选
-        for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
+        for (ClassCourseListResp classCourseListResp : res) {
             List<CourseClassInfoResp> courseClassInfoResps = classCourseListResp.getCourseClassInfoResps();
             for (CourseClassInfoResp courseClassInfoResp : courseClassInfoResps) {
-                StudentCourse isCourseClassChoose = studentCourseMapper.getIsCourseClassChoose(courseClassInfoResp.getId(), classCourseListReq.getStudentId(), classCourseListReq.getSemester());
-                courseClassInfoResp.setIsChoose(isCourseClassChoose != null);
+                courseClassInfoResp.setIsChoose(studentCourseClassIdSet.contains(courseClassInfoResp.getId()));
             }
         }
 
         // 设置上课时间地点和是否冲突
-        for (ClassCourseListResp classCourseListResp : courseClassInfoRespList) {
-            courseUtil.setPlaceTimeAndIsConflict1(classCourseListResp.getCourseClassInfoResps(), studentCourses);
+        for (ClassCourseListResp classCourseListResp : res) {
+            List<CourseClassInfoResp> courseClassInfoResps = classCourseListResp.getCourseClassInfoResps();
+            for (CourseClassInfoResp courseClassInfoResp : courseClassInfoResps) {
+                courseClassInfoResp.setIsConflict(courseUtil.isConflict(courseClassInfoResp.getId(), studentCourseClassList, courseTimeplaceList));
+            }
         }
 
-        IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), classCourseListReq.getPageNo(), classCourseListReq.getPageSize(), courseClassInfoRespList);
+        IPage<ClassCourseListResp> page = PageUtil.getPage(new Page<>(), req.getPageNo(), req.getPageSize(), res);
         
         return Result.success(page);
     }

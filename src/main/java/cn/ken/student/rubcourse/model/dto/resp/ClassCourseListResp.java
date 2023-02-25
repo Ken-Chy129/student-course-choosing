@@ -1,5 +1,6 @@
 package cn.ken.student.rubcourse.model.dto.resp;
 
+import cn.ken.student.rubcourse.model.entity.Course;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -33,4 +34,13 @@ public class ClassCourseListResp {
     private BigDecimal credit;
     
     private List<CourseClassInfoResp> courseClassInfoResps;
+    
+    public void fillWithCourse(Course course) {
+        this.courseId = course.getId();
+        this.courseName = course.getCourseName();
+        this.classNum = course.getClassNum();
+        this.type = course.getType();
+        this.collegeName = course.getCollege();
+        this.credit = course.getCredit();
+    }
 }

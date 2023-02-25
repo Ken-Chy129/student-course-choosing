@@ -69,7 +69,7 @@
         <result property="capacity" column="capacity"/>
         <result property="teacher" column="teacher"/>
         <result property="examType" column="exam_type"/>
-        <result property="examTime" column="exam_time"/>
+        <result property="examTime" column="exam_time" jdbcType="VARCHAR" javaType="String"/>
         <collection property="courseTimeplaceList" ofType="cn.ken.student.rubcourse.model.entity.CourseTimeplace" javaType="list">
             <result property="durationTime" column="duration_time"/>
             <result property="weekDay" column="week_day"/>
@@ -119,7 +119,7 @@
     
     <select id="getCourseClassInfoList" resultMap="classCourseListResp">
         select scc.id id, scc.course_id course_id, is_mooc, scc.language `language`, choosing_num, capacity, teacher, exam_type, exam_time,
-               course_name, campus, college, sc.type type, general_type, credit, class_num, scc2.is_must is_must, scc2.id class_course_id,
+               sc.course_name, campus, college, sc.type type, general_type, credit, class_num, scc2.is_must is_must, scc2.id class_course_id,
                duration_time, week_day, day_no, place
         from student_course_choosing.scc_course_class scc
         left join student_course_choosing.scc_course sc on scc.course_id = sc.id

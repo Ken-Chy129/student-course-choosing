@@ -3,17 +3,15 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
-import cn.ken.student.rubcourse.common.util.PageUtil;
-import cn.ken.student.rubcourse.model.dto.sys.req.ChooseRoundListReq;
-import cn.ken.student.rubcourse.model.entity.ChooseRound;
-import cn.ken.student.rubcourse.model.entity.StudentCredits;
 import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
+import cn.ken.student.rubcourse.model.dto.sys.req.ChooseRoundListReq;
+import cn.ken.student.rubcourse.model.entity.ChooseRound;
+import cn.ken.student.rubcourse.model.entity.StudentCredits;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +35,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, ChooseRound> implements IChooseRoundService {
-    
+
     @Autowired
     private ChooseRoundMapper chooseRoundMapper;
-    
+
     @Autowired
     private StudentCreditsMapper studentCreditsMapper;
-    
+
     @Autowired
     private StudentMapper studentMapper;
-    
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -75,16 +73,15 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     public Result getRoundList(HttpServletRequest httpServletRequest, ChooseRoundListReq chooseRoundListReq) {
         Integer presentRoundId = chooseRoundListReq.getPresentRoundId();
         Boolean showAll = chooseRoundListReq.getShowAll();
-        
+
+        Page<ChooseRound> page = new Page<>(chooseRoundListReq.getPageNo(), chooseRoundListReq.getPageSize());
         LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
         if (!showAll) {
             Integer prefix = Integer.valueOf(presentRoundId.toString().substring(0, presentRoundId.toString().length() - 1));
             queryWrapper.likeRight(ChooseRound::getId, prefix);
         }
-        List<ChooseRound> list = chooseRoundMapper.selectList(queryWrapper);
-        
-        IPage<ChooseRound> page = PageUtil.getPage(new Page<>(), chooseRoundListReq.getPageNo(), chooseRoundListReq.getPageSize(), list);
-        
+        page = chooseRoundMapper.selectPage(page, queryWrapper);
+
         return Result.success(page);
     }
 
@@ -100,7 +97,7 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
         }
         Integer id = Integer.valueOf(chooseRound.getSemester().toString() + chooseRound.getRoundNo().toString());
         chooseRound.setId(id);
-        
+
 //        // 如果是当前学期第一次创建则同时创建学生学分表
 //        LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
 //        queryWrapper.eq(ChooseRound::getSemester, chooseRound.getSemester());
@@ -119,9 +116,9 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
 //                studentCreditsMapper.insert(studentCredits);
 //            }
 //        }
-        
+
         chooseRoundMapper.insert(chooseRound);
-       
+
         return Result.success();
     }
 
