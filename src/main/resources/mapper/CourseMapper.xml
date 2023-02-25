@@ -12,25 +12,4 @@
         </where>
     </select>
     
-    <select id="getCoursePage" resultType="cn.ken.student.rubcourse.model.entity.Course">
-        select *
-        from student_course_choosing.scc_course
-        <where>
-            <if test="searchContent != null and searchContent != ''">
-                id = #{searchContent} or course_name = #{searchContent}
-            </if>
-            <if test="campus != null and campus != ''">
-                and campus = #{campus}
-            </if>
-            <if test="college != null and college != ''">
-                and college = #{college}
-            </if>
-            <if test="credit != null">
-                and credit = #{credit}
-            </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
-            </if>
-        </where>
-    </select>
 </mapper>

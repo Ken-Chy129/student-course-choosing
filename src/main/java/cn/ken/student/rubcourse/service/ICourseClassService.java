@@ -18,6 +18,6 @@ public interface ICourseClassService extends IService<CourseClass> {
 
     Result getAllCourseInfoPage(HttpServletRequest httpServletRequest, CourseClassListReq courseClassListReq);
 
-    Result getCourseClass(HttpServletRequest httpServletRequest, String courseId);
+    Result getCourseClassByCourseId(HttpServletRequest httpServletRequest, String courseId);
 }
 

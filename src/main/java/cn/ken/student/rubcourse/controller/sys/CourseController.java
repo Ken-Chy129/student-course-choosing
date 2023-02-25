@@ -56,9 +56,9 @@ public class CourseController {
     }
     
     @GetMapping("getCourseClass")
-    @ApiOperation("查询课程班")
+    @ApiOperation("根据课程id查询课程班")
     public Result getCourseClass(HttpServletRequest httpServletRequest, String courseId) {
-        return courseClassService.getCourseClass(httpServletRequest, courseId);
+        return courseClassService.getCourseClassByCourseId(httpServletRequest, courseId);
     }
     
     @PostMapping("addCourse")

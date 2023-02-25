@@ -245,7 +245,7 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
     }
 
     @Override
-    public Result getCourseClass(HttpServletRequest httpServletRequest, String courseId) {
+    public Result getCourseClassByCourseId(HttpServletRequest httpServletRequest, String courseId) {
         List<CourseClass> courseClassList = courseClassMapper.selectByCourseId(courseId);
         for (CourseClass courseClass : courseClassList) {
             List<CourseTimeplace> courseTimeplaceList = courseClass.getCourseTimeplaceList();

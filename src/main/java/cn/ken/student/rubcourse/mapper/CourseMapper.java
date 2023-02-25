@@ -22,5 +22,4 @@ public interface CourseMapper extends BaseMapper<Course> {
 
     List<CourseNameListResp> getCourseList(@Param("searchContent") String searchContent);
 
-    List<Course> getCoursePage(CoursePageReq coursePageReq);
 }

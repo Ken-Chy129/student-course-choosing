@@ -3,7 +3,6 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.constant.ComboBoxConstant;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
-import cn.ken.student.rubcourse.common.util.PageUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.model.dto.req.CourseClassAddReq;
@@ -13,9 +12,9 @@ import cn.ken.student.rubcourse.model.dto.sys.req.CoursePageReq;
 import cn.ken.student.rubcourse.model.entity.*;
 import cn.ken.student.rubcourse.service.ICourseService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -73,9 +72,19 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public Result getCoursePage(HttpServletRequest httpServletRequest, CoursePageReq coursePageReq) {
-        List<Course> courseNameList = courseMapper.getCoursePage(coursePageReq);
-        IPage<Course> page = PageUtil.getPage(new Page<>(), coursePageReq.getPageNo(), coursePageReq.getPageSize(), courseNameList);
+    public Result getCoursePage(HttpServletRequest httpServletRequest, CoursePageReq req) {
+        String searchContent = req.getSearchContent();
+        Page<Course> page = new Page<>(req.getPageNo(), req.getPageSize());
+        LambdaQueryWrapper<Course> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.or(qw -> qw
+                        .eq(StringUtils.isNotBlank(searchContent), Course::getId, searchContent)
+                        .or()
+                        .like(StringUtils.isNotBlank(searchContent), Course::getCourseName, searchContent))
+                .eq(StringUtils.isNotBlank(req.getCampus()), Course::getCampus, req.getCampus())
+                .eq(StringUtils.isNotBlank(req.getCollege()), Course::getCollege, req.getCollege())
+                .eq(req.getCredit() != null, Course::getCredit, req.getCredit())
+                .eq(StringUtils.isNotBlank(req.getType()), Course::getType, req.getType());
+        page = courseMapper.selectPage(page, queryWrapper);
         return Result.success(page);
     }
 
