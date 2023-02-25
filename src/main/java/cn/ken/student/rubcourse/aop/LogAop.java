@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.aop;
 
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
+import cn.ken.student.rubcourse.common.entity.UserHolder;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.IpUtil;
@@ -62,15 +63,10 @@ public class LogAop {
     @Around(value = "backendCut()")
     public Object backendAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long id = SnowflakeUtil.nextId();
-        String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
+        String methodName = proceedingJoinPoint.getSignature().getName();
         HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
-        String token = httpServletRequest.getHeader("token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.SYSTEM_TOKEN_PREFIX + token), HashMap.class);
-        redisTemplate.opsForValue().set(RedisConstant.SYSTEM_TOKEN_PREFIX + token, JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
-        if (hashMap == null) {
-            throw new BusinessException(ErrorCodeEnums.SYS_UN_LOGIN);
-        }
-        String ipAddr = IpUtil.getIpAddr((HttpServletRequest) proceedingJoinPoint.getArgs()[0]);
+        HashMap<String, String> hashMap = UserHolder.get();
+        String ipAddr = IpUtil.getIpAddr(httpServletRequest);
         SysBackendLog sysBackendLog = new SysBackendLog(id, 0, ipAddr, Integer.valueOf(hashMap.get("id")), methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
         Object result;
         try{
@@ -90,14 +86,9 @@ public class LogAop {
     @Around(value = "frontendCut()")
     public Object frontendAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Long id = SnowflakeUtil.nextId();
-        String methodName = proceedingJoinPoint.getSignature().getName(); // 请求方法名
+        String methodName = proceedingJoinPoint.getSignature().getName();
         HttpServletRequest httpServletRequest = (HttpServletRequest) proceedingJoinPoint.getArgs()[0];
-        String token = httpServletRequest.getHeader("token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
-        redisTemplate.opsForValue().set(RedisConstant.STUDENT_TOKEN_PREFIX + token, JSON.toJSONString(hashMap), 86400, TimeUnit.SECONDS);
-        if (hashMap == null) {
-            throw new BusinessException(ErrorCodeEnums.LOGIN_CREDENTIAL_EXPIRED);
-        }
+        HashMap<String, String> hashMap = UserHolder.get();
         String ipAddr = IpUtil.getIpAddr(httpServletRequest);
         SysFrontendLog sysFrontendLog = new SysFrontendLog(id, 0, ipAddr, Integer.valueOf(hashMap.get("id")), methodName, StringUtils.toString(Arrays.toString(proceedingJoinPoint.getArgs())), null);
         Object result;
