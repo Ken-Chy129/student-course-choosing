@@ -48,12 +48,10 @@ public class SysManagerServiceImpl extends ServiceImpl<SysManagerMapper, SysMana
         queryWrapper.eq(SysManager::getManagerName, managerLoginReq.getUsername())
                 .eq(SysManager::getIsDeleted, false);
         SysManager sysManager = sysManagerMapper.selectOne(queryWrapper);
-        System.out.println(sysManager);
         if (sysManager == null) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }
         String md5Password = DigestUtil.md5Hex(managerLoginReq.getPassword() + sysManager.getSalt());
-        System.out.println(md5Password);
         if (!md5Password.equals(sysManager.getPassword())) {
             return Result.fail(ErrorCodeEnums.ACCOUNT_PASSWORD_ERROR);
         }

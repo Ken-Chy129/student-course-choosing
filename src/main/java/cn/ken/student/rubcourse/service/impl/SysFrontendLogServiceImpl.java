@@ -37,8 +37,8 @@ public class SysFrontendLogServiceImpl extends ServiceImpl<SysFrontendLogMapper,
                 .eq(sysLogPageReq.getType() != null, SysFrontendLog::getType, sysLogPageReq.getType())
                 .ge(sysLogPageReq.getRequestStartTime() != null, SysFrontendLog::getCreateTime, sysLogPageReq.getRequestStartTime())
                 .le(sysLogPageReq.getRequestEndTime() != null, SysFrontendLog::getCreateTime, sysLogPageReq.getRequestEndTime());
-        List<SysFrontendLog> sysBackendLogs = sysFrontendLogMapper.selectList(queryWrapper);
-        IPage<SysFrontendLog> page = PageUtil.getPage(new Page<>(), sysLogPageReq.getPageNo(), sysLogPageReq.getPageSize(), sysBackendLogs);
+        Page<SysFrontendLog> page = new Page<>(sysLogPageReq.getPageNo(), sysLogPageReq.getPageSize());
+        page = sysFrontendLogMapper.selectPage(page, queryWrapper);
         return Result.success(page);
     }
 }
