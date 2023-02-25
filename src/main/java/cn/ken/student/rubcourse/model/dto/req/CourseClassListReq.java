@@ -53,6 +53,6 @@ public class CourseClassListReq extends Page implements Serializable {
     private Boolean isMooc;
 
     @ApiModelProperty("上课时间")
-    private Integer weekDay;
+    private Short weekDay;
     
 }

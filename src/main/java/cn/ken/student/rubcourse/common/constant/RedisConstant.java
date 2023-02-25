@@ -27,4 +27,10 @@ public class RedisConstant {
     
     public static String COURSE_NUM = "course_num";
     
+    public static String COURSE_INFO = "course:info";
+    
+    public static String COURSE_CLASS_TIMEPLACE = "course:class:timeplace";
+    
+    public static String COURSE_CLASS_STUDENT_CHOOSE = "course:class:student:";
+    
 }

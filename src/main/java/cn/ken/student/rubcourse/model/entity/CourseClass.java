@@ -34,6 +34,9 @@ public class CourseClass implements Serializable {
     
     @ApiModelProperty(value = "课程id")
     private String courseId;
+
+    @ApiModelProperty(value = "课程名称")
+    private String courseName;
     
     @ApiModelProperty(value = "是否慕课")
     private Boolean isMooc;
