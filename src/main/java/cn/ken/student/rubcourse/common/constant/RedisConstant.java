@@ -10,8 +10,6 @@ package cn.ken.student.rubcourse.common.constant;
  */
 public class RedisConstant {
     
-    public static String LOCK = "lock:";
-    
     /**
      * 空缓存过期时间（单位分钟）
      */

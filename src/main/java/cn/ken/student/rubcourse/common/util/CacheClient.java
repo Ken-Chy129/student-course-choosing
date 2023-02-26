@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.RedisData;
+import cn.ken.student.rubcourse.common.entity.SimpleRedisLock;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -98,10 +99,10 @@ public class CacheClient {
         if (redisData.getExpireTime().isAfter(LocalDateTime.now())) {
             return result;
         }
-        // 如果缓存已过期，则尝试更新
-        String localKey = RedisConstant.LOCK + id;
+        // 如果缓存已过期，则获取锁尝试更新
+        SimpleRedisLock lock = new SimpleRedisLock(key, redisTemplate);
         // 获取锁成功
-        if (getLock(localKey)) {
+        if (lock.tryLock(5)) {
             // 异步更新缓存
             CACHE_REBUILD_EXECUTOR.submit(
                     () -> {
@@ -111,19 +112,11 @@ public class CacheClient {
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         } finally {
-                            unLock(localKey);
+                            lock.unlock();
                         }
                     }
             );
         }
         return result;
-    }
-
-    private boolean getLock(String key) {
-        return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, "1"));
-    }
-
-    private void unLock(String key) {
-        redisTemplate.delete(key);
     }
 }
