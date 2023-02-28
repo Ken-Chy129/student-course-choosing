@@ -3,6 +3,7 @@ package cn.ken.student.rubcourse.service.impl;
 import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.mapper.ChooseRoundMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
@@ -49,24 +50,24 @@ public class ChooseRoundServiceImpl extends ServiceImpl<ChooseRoundMapper, Choos
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public Result getPresentRound(HttpServletRequest httpServletRequest) {
+    public ChooseRound getPresentRound() throws BusinessException {
         // 从缓存中获取
-        ChooseRound chooseRound0 = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
-        if (chooseRound0 != null) {
-            return Result.success(chooseRound0);
+        ChooseRound chooseRound = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.PRESENT_ROUND), ChooseRound.class);
+        if (chooseRound != null) {
+            return chooseRound;
         }
         // 缓存中不存在则查库
         LocalDateTime now = LocalDateTime.now();
         LambdaQueryWrapper<ChooseRound> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.lt(ChooseRound::getStartTime, now)
                 .gt(ChooseRound::getEndTime, now);
-        ChooseRound chooseRound = chooseRoundMapper.selectOne(queryWrapper);
+        chooseRound = chooseRoundMapper.selectOne(queryWrapper);
         if (chooseRound == null) {
-            return Result.fail(ErrorCodeEnums.NO_ROUND_PRESENT);
+            throw new BusinessException(ErrorCodeEnums.NO_ROUND_PRESENT);
         }
         // 库中存在则同时存入缓存，有效时间为当前轮次结束时间
         redisTemplate.opsForValue().set(RedisConstant.PRESENT_ROUND, JSON.toJSONString(chooseRound), Duration.between(LocalDateTime.now(), chooseRound.getEndTime()).toSeconds(), TimeUnit.SECONDS);
-        return Result.success(chooseRound);
+        return chooseRound;
     }
 
     @Override

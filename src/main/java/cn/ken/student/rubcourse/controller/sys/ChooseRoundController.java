@@ -4,6 +4,7 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.model.dto.sys.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.model.entity.ChooseRound;
 import cn.ken.student.rubcourse.service.IChooseRoundService;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ChooseRoundController {
     @GetMapping("present")
     @ApiOperation("通过当前时间自动获取当前选课轮次")
     public Result getPresentRound(HttpServletRequest httpServletRequest) throws Exception {
-        return chooseRoundService.getPresentRound(httpServletRequest);
+        return Result.success(JSON.toJSONString(chooseRoundService.getPresentRound()));
     }
 
     @GetMapping("list")

@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.model.dto.sys.req.ChooseRoundListReq;
 import cn.ken.student.rubcourse.model.entity.ChooseRound;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IChooseRoundService extends IService<ChooseRound> {
 
-    Result getPresentRound(HttpServletRequest httpServletRequest);
+    ChooseRound getPresentRound() throws BusinessException;
 
     Result getRoundList(HttpServletRequest httpServletRequest, ChooseRoundListReq chooseRoundListReq);
 
