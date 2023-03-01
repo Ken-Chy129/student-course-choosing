@@ -15,10 +15,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String FANOUT_EXCHANGE ="FanoutExchange";
+    public static final String NOTICE_EXCHANGE = "NoticeExchange";
+
+    public static final String CHOOSE_EXCHANGE = "ChooseExchange";
 
     @Bean
-    public FanoutExchange fanoutExchange(){
-        return new FanoutExchange(FANOUT_EXCHANGE);
+    public FanoutExchange noticeExchange() {
+        return new FanoutExchange(NOTICE_EXCHANGE);
+    }
+
+    @Bean
+    public FanoutExchange chooseExchange() {
+        return new FanoutExchange(CHOOSE_EXCHANGE);
     }
 }

@@ -85,7 +85,7 @@ public class WebSocketServer {
 //        String msg = JSON.toJSONString(msgDTO);
 //        log.info("消息: {}", message);
 //        msg = msg.replace("\\t", "").replace("\\n", "");
-//        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", message);
+//        amqpTemplate.convertAndSend(RabbitMQConfig.NOTICE_EXCHANGE, "", message);
 //        log.info("{}", "消息为空，不进行发送");
     }
 

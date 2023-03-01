@@ -46,7 +46,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         sysNotice.setStudentId(messageDTO.getStudentId());
         sysNotice.setStatus((short) 0);
         sysNoticeMapper.insert(sysNotice);
-        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", id);
+        amqpTemplate.convertAndSend(RabbitMQConfig.NOTICE_EXCHANGE, "", id);
         return Result.success(sysNotice);
     }
 
@@ -59,7 +59,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
         sysNotice.setStudentId(-1L);
         sysNotice.setStatus((short) 0);
         sysNoticeMapper.insert(sysNotice);
-        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", id);
+        amqpTemplate.convertAndSend(RabbitMQConfig.NOTICE_EXCHANGE, "", id);
         return Result.success(sysNotice);
     }
 
