@@ -31,4 +31,12 @@ public class RedisConstant {
     
     public static String COURSE_CLASS_STUDENT_CHOOSE = "course:class:student:";
     
+    public static String STUDENT_CREDITS_CHOSEN = "student:credits:chosen:";
+    
+    public static String STUDENT_CREDITS_MAX = "student:credits:max:";
+    
+    public static String COURSE_CHOSEN = "course:chosen:";
+    
+    public static String COURSE_MAX = "course:max:";
+    
 }

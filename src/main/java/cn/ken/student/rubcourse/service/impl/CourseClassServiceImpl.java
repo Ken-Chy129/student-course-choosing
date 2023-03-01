@@ -94,11 +94,8 @@ public class CourseClassServiceImpl extends ServiceImpl<CourseClassMapper, Cours
         courseClassPage = courseClassMapper.selectPage(courseClassPage, courseClassLambdaQueryWrapper);
 
         // 获取学生已选课程表
-        List<StudentCourse> studentCourseClassList = courseUtil.getStudentCourseClasses(req.getStudentId(), req.getSemester());
-        Set<Long> studentCourseClassIdSet = studentCourseClassList
-                .stream()
-                .map(StudentCourse::getCourseClassId)
-                .collect(Collectors.toSet());
+        Set<Long> studentCourseClassIdSet = courseUtil.getStudentCourseClasses(req.getStudentId(), req.getSemester());
+        List<StudentCourse> studentCourseClassList = studentCourseMapper.selectList(new LambdaQueryWrapper<StudentCourse>().in(StudentCourse::getCourseClassId, studentCourseClassIdSet));
 
         // 查询结果集
         List<CourseClassInfoResp> courseClassInfoRespList = new ArrayList<>(req.getPageSize());

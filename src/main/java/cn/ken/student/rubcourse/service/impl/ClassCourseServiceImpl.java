@@ -88,12 +88,9 @@ public class ClassCourseServiceImpl extends ServiceImpl<ClassCourseMapper, Class
         Set<String> courseIdSet = courseMap.values().stream().filter(course -> req.getType() == null || course.getType().equals(req.getType())).map(Course::getId).collect(Collectors.toSet());
 
         // 获取学生已选课程表
-        List<StudentCourse> studentCourseClassList = courseUtil.getStudentCourseClasses(req.getStudentId(), req.getSemester());
-        Set<Long> studentCourseClassIdSet = studentCourseClassList
-                .stream()
-                .map(StudentCourse::getCourseClassId)
-                .collect(Collectors.toSet());
-        
+        Set<Long> studentCourseClassIdSet = courseUtil.getStudentCourseClasses(req.getStudentId(), req.getSemester());
+        List<StudentCourse> studentCourseClassList = studentCourseMapper.selectList(new LambdaQueryWrapper<StudentCourse>().in(StudentCourse::getCourseClassId, studentCourseClassIdSet));
+
         // 获取上课时间地点列表
         List<CourseTimeplace> courseTimeplaceList = courseUtil.getCourseTimePlaces(null);
 
