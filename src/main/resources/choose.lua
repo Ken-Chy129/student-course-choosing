@@ -6,7 +6,7 @@
 
 local studentId = KEYS[1]
 local courseClassId = KEYS[2]
-local credits = ARGV[1]
+local credits = tonumber(ARGV[1])
 
 --- 获取学生已选学分和最大可选学分
 local chosenCreditKey = "student:credits:chosen:" .. studentId
@@ -33,6 +33,6 @@ end
 --- 选课
 redis.call("set", chosenCreditKey, tostring(chosenCredit + credits))
 redis.call("set", chosenCourseClassKey, tostring(chosenCourseClass + 1))
-redis.call("sadd", "course:class:student:" .. studentId, tostring(courseClassId))
+redis.call("sadd", "student:class:choose:" .. studentId, tostring(courseClassId))
 
 return 0

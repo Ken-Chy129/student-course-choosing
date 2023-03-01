@@ -1,6 +1,9 @@
 package cn.ken.student.rubcourse.config;
 
 import cn.ken.student.rubcourse.listener.KeyExpiredListener;
+import cn.ken.student.rubcourse.model.entity.Student;
+import cn.ken.student.rubcourse.model.entity.StudentCourse;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +45,11 @@ public class RedisConfig {
         // 2.关联redisConnectionFactory
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         // 3.创建序列化类
+        /*
+        Jackson2JsonRedisSerializer序列化方式：
+        1.如果VALUE直接存对象或者对象集合，获取时结果为LinkedHashMap,无法直接使用JDK强转方法转为对象或对象集合，需借助ObjectMapper实现对象直接序列化存储到Redis,从Redis读取反序列化对象
+        2.如果VALUE存JSON字符串，取值也为JSON字符串,需借助JSON工具进行转换为实体类或实体集合
+         */
         Jackson2JsonRedisSerializer<String> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(String.class);
         ObjectMapper objectMapper = new ObjectMapper();
         // 4.设置可见度
@@ -51,21 +59,10 @@ public class RedisConfig {
         // 6.序列化类，对象映射设置
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
         // 7.设置value的转化格式和key的转换格式
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
-
-    @Bean
-    public RedisTemplate<String, BigDecimal> numberRedisTemplate() {
-        RedisTemplate<String, BigDecimal> numberRedisTemplate = new RedisTemplate<>();
-        numberRedisTemplate.setConnectionFactory(redisConnectionFactory);
-        numberRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        numberRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(BigDecimal.class));
-        numberRedisTemplate.afterPropertiesSet();
-        return numberRedisTemplate;
-    }
-    
 	
 }

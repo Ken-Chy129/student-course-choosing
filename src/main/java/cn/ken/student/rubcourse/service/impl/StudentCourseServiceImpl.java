@@ -152,7 +152,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
         Long execute = redisTemplate.execute(
                 CHOOSE_SCRIPT,
                 List.of(studentId.toString(), courseClassId.toString()),
-                studentCourse.getCredits().floatValue()
+                studentCourse.getCredits().toString()
         );
 
         if (execute == 1) {

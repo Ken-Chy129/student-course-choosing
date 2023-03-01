@@ -75,9 +75,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    
-    @Autowired
-    private RedisTemplate<String, BigDecimal> numberRedisTemplate;
 
     @Override
     @Transactional
@@ -226,9 +223,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         for (Student student : studentList) {
             StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(student.getId(), semester);
             // 缓存学生已选学分
-            numberRedisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_CHOSEN + student.getId(), studentCredits.getChooseSubjectCredit());
+            redisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_CHOSEN + student.getId(), studentCredits.getChooseSubjectCredit().toString());
             // 缓存学生最大可选学分
-            numberRedisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_MAX + student.getId(), studentCredits.getMaxSubjectCredit());
+            redisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_MAX + student.getId(), studentCredits.getMaxSubjectCredit().toString());
         }
     }
 
