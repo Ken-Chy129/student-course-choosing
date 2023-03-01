@@ -65,9 +65,6 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Autowired
     private SysNoticeMapper sysNoticeMapper;
-    
-    @Autowired
-    private RedisTemplate<String, BigDecimal> numbRedisTemplate;
 
     @Override
     public Result getCourseList(HttpServletRequest httpServletRequest, String searchContent) {
@@ -170,9 +167,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         List<CourseClass> courseClasses = courseClassMapper.selectList(new LambdaQueryWrapper<CourseClass>().eq(CourseClass::getIsDeleted, 0));
         for (CourseClass courseClass : courseClasses) {
             // 缓存课程已选人数
-            numbRedisTemplate.opsForValue().set(RedisConstant.COURSE_CHOSEN + courseClass.getId(), BigDecimal.valueOf(courseClass.getChoosingNum()));
+            redisTemplate.opsForValue().set(RedisConstant.COURSE_CHOSEN + courseClass.getId(), courseClass.getChoosingNum().toString());
             // 缓存课程总容量
-            numbRedisTemplate.opsForValue().set(RedisConstant.COURSE_MAX + courseClass.getId(), BigDecimal.valueOf(courseClass.getCapacity()));
+            redisTemplate.opsForValue().set(RedisConstant.COURSE_MAX + courseClass.getId(), courseClass.getCapacity().toString());
         }
     }
 

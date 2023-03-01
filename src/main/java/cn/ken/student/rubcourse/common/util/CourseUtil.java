@@ -172,16 +172,16 @@ public class CourseUtil {
      * @return 当前学期学生已选课程班
      */
     public Set<Long> getStudentCourseClasses(Long studentId, Integer semester) {
-        String key = studentId + ":" + semester;
         // 尝试从redis中拿到所有学生选课信息
-        Set<String> members = redisTemplate.opsForSet().members(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key);
+        Set<String> members = redisTemplate.opsForSet().members(RedisConstant.STUDENT_CHOOSE_COURSE_CLASS + studentId);
         Set<Long> res;
         if (members == null || members.isEmpty()) {
             List<StudentCourse> list = studentCourseMapper.getStudentCourse(studentId, semester);
             res = list.stream().map(StudentCourse::getCourseClassId).collect(Collectors.toSet());
             for (Long id : res) {
-                redisTemplate.opsForSet().add(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key, id.toString());
+                redisTemplate.opsForSet().add(RedisConstant.STUDENT_CHOOSE_COURSE_CLASS + studentId, id.toString());
             }
+            redisTemplate.expire(RedisConstant.STUDENT_CHOOSE_COURSE_CLASS + studentId, 3, TimeUnit.DAYS);
         } else {
             res = members.stream().map(Long::valueOf).collect(Collectors.toSet());
         }

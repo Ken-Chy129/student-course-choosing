@@ -29,7 +29,7 @@ public class RedisConstant {
     
     public static String COURSE_CLASS_TIMEPLACE = "course:class:timeplace";
     
-    public static String COURSE_CLASS_STUDENT_CHOOSE = "course:class:student:";
+    public static String STUDENT_CHOOSE_COURSE_CLASS = "student:class:choose:";
     
     public static String STUDENT_CREDITS_CHOSEN = "student:credits:chosen:";
     
