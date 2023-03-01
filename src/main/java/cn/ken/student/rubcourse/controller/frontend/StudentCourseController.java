@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.frontend;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.model.entity.StudentCourse;
 import cn.ken.student.rubcourse.service.IStudentCourseService;
@@ -35,7 +36,7 @@ public class StudentCourseController {
 
     @PostMapping("chooseCourse")
     @ApiOperation("学生选课")
-    public Result chooseCourse(HttpServletRequest httpServletRequest, @RequestBody StudentCourse studentCourse) {
+    public Result chooseCourse(HttpServletRequest httpServletRequest, @RequestBody StudentCourse studentCourse) throws BusinessException {
         return studentCourseService.chooseCourse(httpServletRequest, studentCourse);
     }
 

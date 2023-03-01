@@ -1,10 +1,12 @@
 package cn.ken.student.rubcourse.service.impl;
 
-import cn.ken.student.rubcourse.common.constant.RedisConstant;
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.entity.UserHolder;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.CourseUtil;
 import cn.ken.student.rubcourse.common.util.SnowflakeUtil;
+import cn.ken.student.rubcourse.config.RabbitMQConfig;
 import cn.ken.student.rubcourse.mapper.*;
 import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.model.dto.resp.StudentChooseLogResp;
@@ -13,9 +15,13 @@ import cn.ken.student.rubcourse.service.IStudentCourseService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +32,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -60,13 +67,25 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     private CourseUtil courseUtil;
 
     @Autowired
+    private AmqpTemplate amqpTemplate;
+    
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    
+    private static final DefaultRedisScript<Long> CHOOSE_SCRIPT;
+    
+    static {
+        CHOOSE_SCRIPT = new DefaultRedisScript<>();
+        CHOOSE_SCRIPT.setLocation(new ClassPathResource("choose.lua"));
+        CHOOSE_SCRIPT.setResultType(Long.class);
+    }
 
     @Override
     public Result getStudentChooseLog(HttpServletRequest httpServletRequest, StudentChooseLogReq studentChooseLogReq) {
         
         // 获取学生已选课程表
-        List<StudentCourse> studentCourses = courseUtil.getStudentCourseClasses(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+        Set<Long> studentCourseClassIdSet = courseUtil.getStudentCourseClasses(studentChooseLogReq.getStudentId(), studentChooseLogReq.getSemester());
+        List<StudentCourse> studentCourseClassList = studentCourseMapper.selectList(new LambdaQueryWrapper<StudentCourse>().in(StudentCourse::getCourseClassId, studentCourseClassIdSet));
 
         List<CourseTimeplace> courseTimePlaces = courseUtil.getCourseTimePlaces(null);
 
@@ -74,7 +93,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
 
         for (StudentChooseLogResp studentChooseLogResp : studentCourseLogs) {
             studentChooseLogResp.setIsChoose(studentChooseLogReq.getIsChosen());
-            studentChooseLogResp.setIsConflict(courseUtil.isConflict(studentChooseLogResp.getCourseClassId(), studentCourses, courseTimePlaces));
+            studentChooseLogResp.setIsConflict(courseUtil.isConflict(studentChooseLogResp.getCourseClassId(), studentCourseClassList, courseTimePlaces));
         }
 
         return Result.success(studentCourseLogs);
@@ -82,13 +101,27 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
 
     @Override
     @Transactional
-    public Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) {
+    public Result chooseCourse(HttpServletRequest httpServletRequest, StudentCourse studentCourse) throws BusinessException {
+        
+        /*
+        流程：
+        0.判断前置条件：是否没有选过，是否满足选课条件以及已修依赖课程
+        1.封装lua脚本判断学生学生是否重组以及可选名额是否充足，进行选课人数增加和学生已选学分增加
+        2.新增选课记录和缓存数据落库操作传递至阻塞队列
+        3.开辟独立地线程执行数据库层面的操作(减少学生学分、新增课程已选人数、新增选课记录)
+        4.直接返回
+         */
+        
         // 只有已经确定了学分充足，没有冲突的时候才可以进入选课
-        String token = httpServletRequest.getHeader("token");
-        HashMap<String, String> hashMap = JSON.parseObject(redisTemplate.opsForValue().get(RedisConstant.STUDENT_TOKEN_PREFIX + token), HashMap.class);
+        HashMap<String, String> hashMap = UserHolder.get();
         Long studentId = studentCourse.getStudentId();
         Integer classId = Integer.valueOf(hashMap.get("classId"));
         Integer semester = studentCourse.getSemester();
+        Long courseClassId = studentCourse.getCourseClassId();
+
+        if (courseUtil.getStudentCourseClasses(studentId, semester).contains(courseClassId)) {
+            throw new BusinessException(ErrorCodeEnums.COURSE_HAS_CHOSEN);
+        }
 
         // 遍历该课程的应急设置
         List<CourseEmergency> courseEmergencyList = courseEmergencyMapper.selectByCourseId(studentCourse.getCourseClassId());
@@ -116,27 +149,21 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
             }
         }
 
-        // 更新所选学分
-        StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(studentId, semester);
-        studentCredits.setChooseSubjectCredit(studentCredits.getChooseSubjectCredit().add(studentCourse.getCredits()));
-        studentCreditsMapper.updateById(studentCredits);
+        Long execute = redisTemplate.execute(
+                CHOOSE_SCRIPT,
+                List.of(studentId.toString(), courseClassId.toString()),
+                studentCourse.getCredits().floatValue()
+        );
 
-        // 增加课程选择人数
-        courseClass.setChoosingNum(courseClass.getChoosingNum() + 1);
-        courseClassMapper.updateById(courseClass);
-
-        // 新增选课
-        StudentCourse chooseCourse = studentCourseMapper.selectByStudentAndSemesterAndCourseClass(studentCourse.getStudentId(), studentCourse.getSemester(), studentCourse.getCourseClassId());
-        if (chooseCourse == null) {
-            // 第一次选择
-            studentCourse.setId(SnowflakeUtil.nextId());
-            studentCourseMapper.insert(studentCourse);
-            return Result.success(studentCourse);
+        if (execute == 1) {
+            throw new BusinessException(ErrorCodeEnums.CREDITS_NOT_ENOUGH);
+        } else if (execute == 2) {
+            throw new BusinessException(ErrorCodeEnums.COURSE_CAPACITY_NOT_ENOUGH);
         }
-        // 已选择过该课
-        chooseCourse.setIsDeleted(false);
-        studentCourseMapper.updateById(chooseCourse);
-        return Result.success(chooseCourse);
+
+        amqpTemplate.convertAndSend(RabbitMQConfig.CHOOSE_EXCHANGE, "", studentCourse);
+        
+        return Result.success();
     }
 
     @Override

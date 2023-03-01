@@ -30,7 +30,7 @@
     </select>
     
     <select id="getStudentChooseLogs" resultMap="logs">
-        select scc.course_id course_id, course_name, teacher, credits, type, language,
+        select scc.course_id course_id, scc.course_name, teacher, credits, type, language,
         duration_time, week_day, day_no, place, choosing_num, capacity, sct.course_class_id course_class_id, ssc.semester semester
         from student_course_choosing.scc_student_course ssc
         left join student_course_choosing.scc_course_class scc on scc.id = ssc.course_class_id
