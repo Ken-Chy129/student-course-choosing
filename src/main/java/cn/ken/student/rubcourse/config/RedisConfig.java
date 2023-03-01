@@ -9,9 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.math.BigDecimal;
 
 @Configuration
 public class RedisConfig {
@@ -52,5 +56,16 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
+
+    @Bean
+    public RedisTemplate<String, BigDecimal> numberRedisTemplate() {
+        RedisTemplate<String, BigDecimal> numberRedisTemplate = new RedisTemplate<>();
+        numberRedisTemplate.setConnectionFactory(redisConnectionFactory);
+        numberRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        numberRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(BigDecimal.class));
+        numberRedisTemplate.afterPropertiesSet();
+        return numberRedisTemplate;
+    }
+    
 	
 }
