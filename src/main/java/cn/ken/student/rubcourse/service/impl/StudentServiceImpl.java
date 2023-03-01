@@ -8,17 +8,20 @@ import cn.ken.student.rubcourse.common.entity.Result;
 import cn.ken.student.rubcourse.common.enums.ErrorCodeEnums;
 import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.common.util.*;
+import cn.ken.student.rubcourse.mapper.StudentCourseMapper;
 import cn.ken.student.rubcourse.model.dto.req.StudentExcel;
 import cn.ken.student.rubcourse.model.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.model.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.model.dto.sys.resp.StudentResp;
 import cn.ken.student.rubcourse.model.entity.Class;
 import cn.ken.student.rubcourse.model.entity.Student;
+import cn.ken.student.rubcourse.model.entity.StudentCourse;
 import cn.ken.student.rubcourse.model.entity.StudentCredits;
 import cn.ken.student.rubcourse.listener.StudentExcelListener;
 import cn.ken.student.rubcourse.mapper.ClassMapper;
 import cn.ken.student.rubcourse.mapper.StudentCreditsMapper;
 import cn.ken.student.rubcourse.mapper.StudentMapper;
+import cn.ken.student.rubcourse.service.IChooseRoundService;
 import cn.ken.student.rubcourse.service.IStudentService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
@@ -40,6 +43,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static com.baomidou.mybatisplus.extension.toolkit.SimpleQuery.selectList;
 
 /**
  * <p>
@@ -51,9 +57,15 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
+    
+    @Autowired
+    private IChooseRoundService chooseRoundService;
 
     @Autowired
     private StudentMapper studentMapper;
+    
+    @Autowired
+    private StudentCourseMapper studentCourseMapper;
 
     @Autowired
     private ClassMapper classMapper;
@@ -63,6 +75,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    
+    @Autowired
+    private RedisTemplate<String, BigDecimal> numberRedisTemplate;
 
     @Override
     @Transactional
@@ -202,6 +217,19 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         
         // todo:校验用户是否登录
         return Result.success();
+    }
+
+    @Override
+    public void preheatStudentInfo() throws BusinessException {
+        List<Student> studentList = studentMapper.selectList(new LambdaQueryWrapper<Student>().eq(Student::getStatus, 0));
+        Integer semester = chooseRoundService.getPresentRound().getSemester();
+        for (Student student : studentList) {
+            StudentCredits studentCredits = studentCreditsMapper.selectByStudentAndSemester(student.getId(), semester);
+            // 缓存学生已选学分
+            numberRedisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_CHOSEN + student.getId(), studentCredits.getChooseSubjectCredit());
+            // 缓存学生最大可选学分
+            numberRedisTemplate.opsForValue().set(RedisConstant.STUDENT_CREDITS_MAX + student.getId(), studentCredits.getMaxSubjectCredit());
+        }
     }
 
 }

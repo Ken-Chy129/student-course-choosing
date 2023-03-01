@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.service;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.model.dto.req.StudentLoginReq;
 import cn.ken.student.rubcourse.model.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.model.entity.Student;
@@ -38,4 +39,6 @@ public interface IStudentService extends IService<Student> {
     Result getGithubUrl(HttpServletRequest httpServletRequest);
 
     Result githubCallback(HttpServletRequest httpServletRequest, String code, String state) throws Exception;
+
+    void preheatStudentInfo() throws BusinessException;
 }

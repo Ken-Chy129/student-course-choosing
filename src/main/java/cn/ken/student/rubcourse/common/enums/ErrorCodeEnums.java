@@ -43,6 +43,8 @@ public enum ErrorCodeEnums {
     CREDITS_NOT_ENOUGH("70001", "学分不足"),
     PRECOURSE_NOT_CHOOSE("70002", "尚未修得先修课程"),
     CONDITION_NOT_SATISFIED("70003", "不满足选择条件"),
+    COURSE_CAPACITY_NOT_ENOUGH("70004", "课程容量不足"),
+    COURSE_HAS_CHOSEN("70005", "不得重复选课"),
     
     DOWNLOAD_ERROR("80001", "文件下载失败"),
     ;

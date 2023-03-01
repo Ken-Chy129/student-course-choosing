@@ -37,6 +37,13 @@ public class CourseController {
     @Autowired
     private ICourseClassService courseClassService;
 
+    @PostMapping("preheat")
+    @ApiOperation("课程班容量预热")
+    public Result preheatCourseClassInfo(HttpServletRequest httpServletRequest) {
+        courseService.preheatCourseClassInfo();
+        return Result.success();
+    }
+
     @GetMapping("list")
     @ApiOperation("下拉框课程列表")
     public Result getCourseNameList(HttpServletRequest httpServletRequest, String searchContent) {

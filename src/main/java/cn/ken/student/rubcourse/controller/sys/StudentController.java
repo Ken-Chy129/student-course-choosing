@@ -1,6 +1,7 @@
 package cn.ken.student.rubcourse.controller.sys;
 
 import cn.ken.student.rubcourse.common.entity.Result;
+import cn.ken.student.rubcourse.common.exception.BusinessException;
 import cn.ken.student.rubcourse.model.dto.req.StudentChooseLogReq;
 import cn.ken.student.rubcourse.model.dto.req.StudentOnConditionReq;
 import cn.ken.student.rubcourse.model.entity.Student;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -40,6 +42,13 @@ public class StudentController {
 
     @Autowired
     private IStudentCourseService studentCourseService;
+
+    @PostMapping("preheat")
+    @ApiOperation("学生信息预热")
+    public Result preheatStudentInfo(HttpServletRequest httpServletRequest) throws BusinessException {
+        studentService.preheatStudentInfo();
+        return Result.success();
+    }
     
     @PostMapping("add")
     @ApiOperation("新增学生")

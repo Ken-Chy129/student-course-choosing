@@ -19,11 +19,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -173,18 +171,20 @@ public class CourseUtil {
      * @param semester  学期
      * @return 当前学期学生已选课程班
      */
-    public List<StudentCourse> getStudentCourseClasses(Long studentId, Integer semester) {
+    public Set<Long> getStudentCourseClasses(Long studentId, Integer semester) {
         String key = studentId + ":" + semester;
         // 尝试从redis中拿到所有学生选课信息
-        String studentCourseClassList = redisTemplate.opsForValue().get(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key);
-        List<StudentCourse> list;
-        if (studentCourseClassList == null) {
-            list = studentCourseMapper.getStudentCourse(studentId, semester);
-            redisTemplate.opsForValue().set(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key, JSON.toJSONString(list), 3, TimeUnit.DAYS);
+        Set<String> members = redisTemplate.opsForSet().members(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key);
+        Set<Long> res;
+        if (members == null || members.isEmpty()) {
+            List<StudentCourse> list = studentCourseMapper.getStudentCourse(studentId, semester);
+            res = list.stream().map(StudentCourse::getCourseClassId).collect(Collectors.toSet());
+            for (Long id : res) {
+                redisTemplate.opsForSet().add(RedisConstant.COURSE_CLASS_STUDENT_CHOOSE + key, id.toString());
+            }
         } else {
-            // 存在则直接转换为list
-            list = JSON.parseArray(studentCourseClassList, StudentCourse.class);
+            res = members.stream().map(Long::valueOf).collect(Collectors.toSet());
         }
-        return list;
+        return res;
     }
 }

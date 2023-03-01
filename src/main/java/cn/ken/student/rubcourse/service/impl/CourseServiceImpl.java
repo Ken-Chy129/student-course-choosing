@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,6 +65,9 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Autowired
     private SysNoticeMapper sysNoticeMapper;
+    
+    @Autowired
+    private RedisTemplate<String, BigDecimal> numbRedisTemplate;
 
     @Override
     public Result getCourseList(HttpServletRequest httpServletRequest, String searchContent) {
@@ -159,6 +163,17 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public Result removeCourseClass(HttpServletRequest httpServletRequest, Long id) {
         removeCourseClass(id);
         return Result.success();
+    }
+
+    @Override
+    public void preheatCourseClassInfo() {
+        List<CourseClass> courseClasses = courseClassMapper.selectList(new LambdaQueryWrapper<CourseClass>().eq(CourseClass::getIsDeleted, 0));
+        for (CourseClass courseClass : courseClasses) {
+            // 缓存课程已选人数
+            numbRedisTemplate.opsForValue().set(RedisConstant.COURSE_CHOSEN + courseClass.getId(), BigDecimal.valueOf(courseClass.getChoosingNum()));
+            // 缓存课程总容量
+            numbRedisTemplate.opsForValue().set(RedisConstant.COURSE_MAX + courseClass.getId(), BigDecimal.valueOf(courseClass.getCapacity()));
+        }
     }
 
     private CourseClass getCourseInfo(CourseClassAddReq courseClassAddReq) {

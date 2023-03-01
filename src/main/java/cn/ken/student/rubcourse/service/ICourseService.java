@@ -30,4 +30,6 @@ public interface ICourseService extends IService<Course> {
     Result removeCourse(HttpServletRequest httpServletRequest, String id);
 
     Result removeCourseClass(HttpServletRequest httpServletRequest, Long id);
+
+    void preheatCourseClassInfo();
 }
