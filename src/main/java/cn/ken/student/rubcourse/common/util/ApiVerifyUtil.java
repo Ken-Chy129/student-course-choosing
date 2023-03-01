@@ -24,30 +24,24 @@ import java.util.Set;
 public class ApiVerifyUtil {
 
     public static final String SECRET_KEY = "secretkey";
-
     public static final String ACCESS_KEY = "accesskey";
-
     public static final String TIMESTAMP_KEY = "timestamp";
-
     public static final String NONCE_KEY = "nonce";
-
     public static final String SIGN_KEY = "sign";
 
     private static final HashMap<String, String> KEY_PAIR;
+    static {
+        KEY_PAIR = new HashMap<>();
+        KEY_PAIR.put("app1", "password1"); // 为客户端分配的密钥
+        KEY_PAIR.put("app2", "password2");
+    }
 
     @Autowired
     private RedisTemplate<String, String> redisTemplateBean;
     private static RedisTemplate<String, String> redisTemplate;
-
     @PostConstruct
     public void init() {
         redisTemplate = redisTemplateBean;
-    }
-
-    static {
-        KEY_PAIR = new HashMap<>();
-        KEY_PAIR.put("app1", "password1");
-        KEY_PAIR.put("app2", "password2");
     }
 
     public static final Integer OK = 0;
@@ -106,10 +100,7 @@ public class ApiVerifyUtil {
             sb.append(key).append("=").append(params.get(key)).append("&");
         }
         String newSign = sb.toString();
-        System.out.println(newSign.substring(0, newSign.length() - 1));
         newSign = MD5.create().digestHex16(newSign.substring(0, newSign.length() - 1).toUpperCase());
-        System.out.println(sign);
-        System.out.println(newSign);
         if (newSign.equals(sign)) {
             redisTemplate.opsForSet().add("nonce", nonce);
             return OK;
