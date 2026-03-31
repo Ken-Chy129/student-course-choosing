@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  # MySQL 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/student_course?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username: root
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Redis 配置
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+  # RabbitMQ 配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+  # Jackson 序列化配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 开启驼峰命名自动映射
+    map-underscore-to-camel-case: true
+    # 控制台打印 SQL（开发环境可开启，生产环境关闭）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 逻辑删除字段配置
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 主键策略：雪花算法
+      id-type: assign_id
+
+# Knife4j (Swagger) 配置
+knife4j:
+  enable: true
+
+# 日志级别
+logging:
+  level:
+    cn.ken.student.rubcourse: debug
